@@ -12,9 +12,10 @@ export interface SingleSelectorContainerProps {
     style?: CSSProperties;
     tabIndex?: number;
     defaultValue: ListValue;
-    defaultValueLabel: ListAttributeValue<string>;
     options: ListValue;
-    optionsLabel: ListAttributeValue<string>;
+    firstLabel: ListAttributeValue<string>;
+    secondLabel: ListAttributeValue<string>;
+    imgUrl: ListAttributeValue<string>;
     contextObjLabel: EditableValue<string>;
     selectOption?: ActionValue;
     enableCreate: boolean;
@@ -23,6 +24,7 @@ export interface SingleSelectorContainerProps {
     clearValue?: ActionValue;
     enableSearch: boolean;
     useDefaultStyle: boolean;
+    useAvatar: boolean;
     placeholder: string;
     className: string;
     classNamePrefix: string;
@@ -32,9 +34,10 @@ export interface SingleSelectorPreviewProps {
     class: string;
     style: string;
     defaultValue: {} | null;
-    defaultValueLabel: string;
     options: {} | null;
-    optionsLabel: string;
+    firstLabel: string;
+    secondLabel: string;
+    imgUrl: string;
     contextObjLabel: string;
     selectOption: {} | null;
     enableCreate: boolean;
@@ -43,6 +46,7 @@ export interface SingleSelectorPreviewProps {
     clearValue: {} | null;
     enableSearch: boolean;
     useDefaultStyle: boolean;
+    useAvatar: boolean;
     placeholder: string;
     className: string;
     classNamePrefix: string;

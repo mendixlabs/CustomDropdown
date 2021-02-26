@@ -10,13 +10,16 @@ import Label from './Label';
 export interface Option {
     label: JSX.Element;
     value: string;
+    secondLabel: string;
+    url: string;
   }
 
 export interface SingleSelectComponentProps {
     defaultValue: ListValue;
-    defaultValueLabel: ListAttributeValue<string>;
+    firstLabel: ListAttributeValue<string>;
+    secondLabel: ListAttributeValue<string>;
+    imgUrl: ListAttributeValue<string>;
     options: ListValue;
-    optionsLabel: ListAttributeValue<string>;
     contextObjLabel: EditableValue<string>;
     selectOption?: ActionValue;
     enableCreate: boolean;
@@ -24,6 +27,7 @@ export interface SingleSelectComponentProps {
     enableClear: boolean;
     clearValue?: ActionValue;
     enableSearch: boolean;
+    useAvatar: boolean;
     useDefaultStyle: boolean;
     placeholder: string;
     className: string;
@@ -40,26 +44,29 @@ export default function SingleSelect(props: SingleSelectComponentProps): ReactEl
                 DisplayName={label}
                 UrlString={urlstring}
                 ClassNamePrefix={props.classNamePrefix}
-                EnableAvatar={true}
+                EnableAvatar={props.useAvatar}
                 SecondLabel={secondaryLabel}
                 classNameCreateModal={"xxx"}
             />,
-        value: label
+        value: label,
+        secondLabel: secondaryLabel,
+        url: urlstring
     });
 
     useEffect(() => {
         if(props.defaultValue.status === 'available'){
           const defaultValue = props.defaultValue.items.map(obj =>
-            createOption(props.defaultValueLabel(obj).displayValue, "test", ''));
+            createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue)
+            );
           setValue(defaultValue[0]);
         }
       }, [props.defaultValue]);
 
     useEffect(() => {
         if(props.options.status === 'available'){
-          const tagSuggestions = props.options.items.map(obj =>
-            createOption(props.defaultValueLabel(obj).displayValue, "test", ''));
-          setOptions(tagSuggestions);
+          const options = props.options.items.map(obj =>
+            createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue));
+          setOptions(options);
         }
       }, [props.options]);
 
@@ -75,7 +82,7 @@ export default function SingleSelect(props: SingleSelectComponentProps): ReactEl
             if(props.selectOption.canExecute){
               props.selectOption.execute();
             }
-            setValue(createOption(inputValue.value, 'test', ''));
+            setValue(createOption(inputValue.value, inputValue.secondLabel , inputValue.url));
           } catch (err) {
             console.error('Failed to select a Tag: ' + err);
           }
@@ -92,8 +99,8 @@ export default function SingleSelect(props: SingleSelectComponentProps): ReactEl
             if(props.createValue.canExecute){
               props.createValue.execute();
             }
-            setValue(createOption(inputValue.value, 'test', ''));
-            setOptions([...options, createOption(inputValue.value, 'test', '')]);
+            setValue(createOption(inputValue.value, '' , ''));
+            setOptions([...options, createOption(inputValue.value, '', '')]);
           } catch (err) {
             console.error('Failed to create a Tag: ' + err);
           }

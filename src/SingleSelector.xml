@@ -10,26 +10,33 @@
         <propertyGroup caption="Data source">
             <property key="defaultValue" type="datasource" isList="true" >
                 <caption>Default value</caption>
-                <description>Get the default value that has to be set.</description>
+                <description>Get the default value that has to be set. For options the same object type must be selected.</description>
             </property>
-            <property key="defaultValueLabel" type="attribute" required="true" dataSource="defaultValue">
-                <caption>Default value label</caption>
-                <description>The label attribute of the default value object.</description>
+            <property key="options" type="datasource" isList="true" >
+                <caption>Options</caption>
+                <description>All the objects you want to suggest as options. The same object type as for the default value must be selected.</description>
+            </property>
+            <property key="firstLabel" type="attribute" required="true" dataSource="defaultValue">
+                <caption>First label</caption>
+                <description>The first label attribute of the selectable objects.</description>
                 <attributeTypes>
                     <attributeType name="String"/>
                 </attributeTypes>
             </property> 
-            <property key="options" type="datasource" isList="true" >
-                <caption>Options</caption>
-                <description>All the objects you want to suggest as options.</description>
-            </property>
-            <property key="optionsLabel" type="attribute" required="true" dataSource="options">
-                <caption>Options label</caption>
-                <description>The label attribute of the option object.</description>
+            <property key="secondLabel" type="attribute" required="true" dataSource="defaultValue">
+                <caption>Second label</caption>
+                <description>The second label attribute of the selectable objects.</description>
                 <attributeTypes>
                     <attributeType name="String"/>
                 </attributeTypes>
             </property>
+            <property key="imgUrl" type="attribute" required="true" dataSource="defaultValue">
+                <caption>Image URL</caption>
+                <description>The image url attribute of the selectable objects.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property> 
         </propertyGroup>
 
         <propertyGroup caption="Events">
@@ -70,6 +77,10 @@
             <property key="useDefaultStyle" type="boolean" defaultValue="true">
                 <caption>useDefaultStyle</caption>
                 <description>Do you want to use the default styling?</description>
+            </property>
+            <property key="useAvatar" type="boolean" defaultValue="true">
+                <caption>useAvatar</caption>
+                <description>Do you want add an avatar image to the select values?</description>
             </property>
             <property key="placeholder" type="string" required="false">
                 <caption>Placeholder</caption>

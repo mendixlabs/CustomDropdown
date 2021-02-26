@@ -8,9 +8,10 @@ import "./ui/SingleSelector.css";
 export default function SingleSelector(props: SingleSelectorContainerProps): ReactElement{
     return  <SingleSelect 
                 defaultValue={props.defaultValue}
-                defaultValueLabel={props.defaultValueLabel}
+                firstLabel={props.firstLabel}
+                secondLabel={props.secondLabel}
+                imgUrl={props.imgUrl}
                 options={props.options}
-                optionsLabel={props.optionsLabel}
                 contextObjLabel={props.contextObjLabel}
                 selectOption={props.selectOption}
                 enableCreate={props.enableCreate}
@@ -18,6 +19,7 @@ export default function SingleSelector(props: SingleSelectorContainerProps): Rea
                 enableClear={props.enableClear}
                 clearValue={props.clearValue}
                 enableSearch={props.enableSearch}
+                useAvatar={props.useAvatar}
                 useDefaultStyle={props.useDefaultStyle}
                 placeholder={props.placeholder}
                 className={props.className}
