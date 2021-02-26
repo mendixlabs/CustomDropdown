@@ -1,0 +1,13 @@
+{
+  "@mendix/generator-widget": {
+    "promptValues": {
+      "organization": "Mendix",
+      "copyright": "2020 Mendix Technology BV",
+      "license": "Apache-2.0",
+      "author": "Nick",
+      "programmingLanguage": "typescript",
+      "platform": "web",
+      "boilerplate": "empty"
+    }
+  }
+}

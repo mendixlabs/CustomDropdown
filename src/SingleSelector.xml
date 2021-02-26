@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="mendix.singleselector.SingleSelector" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>Single Selector</name>
+    <description>Widget to make a selection in a dropdown menu.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="Data source">
+            <property key="defaultValue" type="datasource" isList="true" >
+                <caption>Default value</caption>
+                <description>Get the default value that has to be set.</description>
+            </property>
+            <property key="defaultValueLabel" type="attribute" required="true" dataSource="defaultValue">
+                <caption>Default value label</caption>
+                <description>The label attribute of the default value object.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property> 
+            <property key="options" type="datasource" isList="true" >
+                <caption>Options</caption>
+                <description>All the objects you want to suggest as options.</description>
+            </property>
+            <property key="optionsLabel" type="attribute" required="true" dataSource="options">
+                <caption>Options label</caption>
+                <description>The label attribute of the option object.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Events">
+            <property key="contextObjLabel" type="attribute" >
+                <caption>Context object label</caption>
+                <description>Label attribute of the context object.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
+            <property key="selectOption" type="action" >
+                <caption>Select option microflow</caption>
+                <description>Microflow to be executed when a option is selected.</description>
+            </property>
+            <property key="enableCreate" type="boolean" defaultValue="true">
+                <caption>Enable Create</caption>
+                <description>Enable the Single Selector to create options when none are found when searching.</description>
+            </property>
+            <property key="createValue" type="action" >
+                <caption>Create value microflow</caption>
+                <description>Microflow to be executed when a new value is created.</description>
+            </property>
+            <property key="enableClear" type="boolean" defaultValue="true">
+                <caption>Enable Clear</caption>
+                <description>Enable the Single Selector to clear the selected value.</description>
+            </property>
+            <property key="clearValue" type="action" >
+                <caption>Clear value microflow</caption>
+                <description>Microflow to be executed when the selected value is cleared.</description>
+            </property>
+            <property key="enableSearch" type="boolean" defaultValue="true">
+                <caption>Enable Searching</caption>
+                <description>Enable the Single Selector to search for options.</description>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Styling">
+            <property key="useDefaultStyle" type="boolean" defaultValue="true">
+                <caption>useDefaultStyle</caption>
+                <description>Do you want to use the default styling?</description>
+            </property>
+            <property key="placeholder" type="string" required="false">
+                <caption>Placeholder</caption>
+                <description>Placeholder text for when there are no labels.</description>
+            </property>
+                <property key="className" type="string" required="false">
+                <caption>ClassName</caption>
+                <description>Custom class name.</description>
+            </property>
+                <property key="classNamePrefix" type="string" required="false">
+                <caption>ClassNamePrefix</caption>
+                <description>Custom Class name prefix.</description>
+            </property>
+        </propertyGroup> 
+    </properties>
+</widget>
