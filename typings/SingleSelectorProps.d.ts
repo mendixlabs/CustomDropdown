@@ -11,12 +11,13 @@ export interface SingleSelectorContainerProps {
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
-    defaultValue: ListValue;
+    defaultValue?: ListValue;
     options: ListValue;
     firstLabel: ListAttributeValue<string>;
     secondLabel: ListAttributeValue<string>;
     imgUrl: ListAttributeValue<string>;
     contextObjLabel: EditableValue<string>;
+    contextObjForceRefresh?: EditableValue<BigJs.Big | string | boolean>;
     selectOption?: ActionValue;
     enableCreate: boolean;
     createValue?: ActionValue;
@@ -28,6 +29,7 @@ export interface SingleSelectorContainerProps {
     placeholder: string;
     className: string;
     classNamePrefix: string;
+    menuHeight: number;
 }
 
 export interface SingleSelectorPreviewProps {
@@ -39,6 +41,7 @@ export interface SingleSelectorPreviewProps {
     secondLabel: string;
     imgUrl: string;
     contextObjLabel: string;
+    contextObjForceRefresh: string;
     selectOption: {} | null;
     enableCreate: boolean;
     createValue: {} | null;
@@ -50,4 +53,5 @@ export interface SingleSelectorPreviewProps {
     placeholder: string;
     className: string;
     classNamePrefix: string;
+    menuHeight: number | null;
 }

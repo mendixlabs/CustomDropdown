@@ -21,6 +21,7 @@ export interface SingleSelectComponentProps {
     imgUrl: ListAttributeValue<string>;
     options: ListValue;
     contextObjLabel: EditableValue<string>;
+    contextObjForceRefresh?: EditableValue<BigJs.Big | string | boolean>;
     selectOption?: ActionValue;
     enableCreate: boolean;
     createValue?: ActionValue;
@@ -32,6 +33,7 @@ export interface SingleSelectComponentProps {
     placeholder: string;
     className: string;
     classNamePrefix: string;
+    menuHeight: number;
 }
 
 export default function SingleSelect(props: SingleSelectComponentProps): ReactElement{
@@ -54,13 +56,21 @@ export default function SingleSelect(props: SingleSelectComponentProps): ReactEl
     });
 
     useEffect(() => {
+      try{
         if(props.defaultValue.status === 'available'){
           const defaultValue = props.defaultValue.items.map(obj =>
             createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue)
             );
+            console.log("defaultvalue")
+            console.log(props.defaultValue)
+            console.log(defaultValue);
           setValue(defaultValue[0]);
         }
-      }, [props.defaultValue]);
+      }
+      catch{
+        setValue(null);
+      }
+      }, [props.defaultValue, props.contextObjForceRefresh.value]);
 
     useEffect(() => {
         if(props.options.status === 'available'){
@@ -68,7 +78,7 @@ export default function SingleSelect(props: SingleSelectComponentProps): ReactEl
             createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue));
           setOptions(options);
         }
-      }, [props.options]);
+      }, [props.options, props.contextObjForceRefresh.value]);
 
       const handleChange = async (inputValue: any, actionMeta: any) => {
         if (
@@ -99,8 +109,8 @@ export default function SingleSelect(props: SingleSelectComponentProps): ReactEl
             if(props.createValue.canExecute){
               props.createValue.execute();
             }
-            setValue(createOption(inputValue.value, '' , ''));
-            setOptions([...options, createOption(inputValue.value, '', '')]);
+            // setValue(createOption(inputValue.value, '' , ''));
+            // setOptions([...options, createOption(inputValue.value, '', '')]);
           } catch (err) {
             console.error('Failed to create a Tag: ' + err);
           }
@@ -165,6 +175,7 @@ if(props.enableCreate){
             placeholder={props.placeholder}
             className={props.className!}
             classNamePrefix={props.classNamePrefix}
+            maxMenuHeight={props.menuHeight}
         />
     )
 }
@@ -180,6 +191,7 @@ if(props.enableCreate){
             placeholder={props.placeholder}
             className={props.className!}
             classNamePrefix={props.classNamePrefix}
+            maxMenuHeight={props.menuHeight}
         />
     )
 }

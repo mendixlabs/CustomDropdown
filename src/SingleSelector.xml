@@ -8,7 +8,7 @@
     <icon/>
     <properties>
         <propertyGroup caption="Data source">
-            <property key="defaultValue" type="datasource" isList="true" >
+            <property key="defaultValue" type="datasource" isList="true" required="false" >
                 <caption>Default value</caption>
                 <description>Get the default value that has to be set. For options the same object type must be selected.</description>
             </property>
@@ -16,21 +16,21 @@
                 <caption>Options</caption>
                 <description>All the objects you want to suggest as options. The same object type as for the default value must be selected.</description>
             </property>
-            <property key="firstLabel" type="attribute" required="true" dataSource="defaultValue">
+            <property key="firstLabel" type="attribute" required="true" dataSource="options">
                 <caption>First label</caption>
                 <description>The first label attribute of the selectable objects.</description>
                 <attributeTypes>
                     <attributeType name="String"/>
                 </attributeTypes>
             </property> 
-            <property key="secondLabel" type="attribute" required="true" dataSource="defaultValue">
+            <property key="secondLabel" type="attribute" required="true" dataSource="options">
                 <caption>Second label</caption>
                 <description>The second label attribute of the selectable objects.</description>
                 <attributeTypes>
                     <attributeType name="String"/>
                 </attributeTypes>
             </property>
-            <property key="imgUrl" type="attribute" required="true" dataSource="defaultValue">
+            <property key="imgUrl" type="attribute" required="true" dataSource="options">
                 <caption>Image URL</caption>
                 <description>The image url attribute of the selectable objects.</description>
                 <attributeTypes>
@@ -45,6 +45,15 @@
                 <description>Label attribute of the context object.</description>
                 <attributeTypes>
                     <attributeType name="String"/>
+                </attributeTypes>
+            </property>
+            <property key="contextObjForceRefresh" type="attribute" required="false">
+                <caption>Force refresh attribute</caption>
+                <description>Changing the value of the attribute set here will force a refresh.</description>
+                <attributeTypes>
+                    <attributeType name="Integer"/>
+                    <attributeType name="String"/>
+                    <attributeType name="Boolean"/>
                 </attributeTypes>
             </property>
             <property key="selectOption" type="action" >
@@ -93,6 +102,10 @@
                 <property key="classNamePrefix" type="string" required="false">
                 <caption>ClassNamePrefix</caption>
                 <description>Custom Class name prefix.</description>
+            </property>
+            <property key="menuHeight" type="integer" defaultValue="150">
+                <caption>Menu height</caption>
+                <description>Max dropdown menu height in pixels</description>
             </property>
         </propertyGroup> 
     </properties>

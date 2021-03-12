@@ -13,6 +13,7 @@ export default function SingleSelector(props: SingleSelectorContainerProps): Rea
                 imgUrl={props.imgUrl}
                 options={props.options}
                 contextObjLabel={props.contextObjLabel}
+                contextObjForceRefresh={props.contextObjForceRefresh}
                 selectOption={props.selectOption}
                 enableCreate={props.enableCreate}
                 createValue={props.createValue}
@@ -24,5 +25,6 @@ export default function SingleSelector(props: SingleSelectorContainerProps): Rea
                 placeholder={props.placeholder}
                 className={props.className}
                 classNamePrefix={props.classNamePrefix}
+                menuHeight={props.menuHeight}
             />;
 }
