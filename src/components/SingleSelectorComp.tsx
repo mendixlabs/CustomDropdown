@@ -1,4 +1,4 @@
-import { useState, createElement, ReactElement, useEffect } from "react";
+import { useState, createElement, ReactElement, useEffect, useRef } from "react";
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable';
 import { Styles } from 'react-select/src/styles';
@@ -109,8 +109,10 @@ export default function SingleSelect(props: SingleSelectComponentProps): ReactEl
             if(props.createValue.canExecute){
               props.createValue.execute();
             }
-            // setValue(createOption(inputValue.value, '' , ''));
-            // setOptions([...options, createOption(inputValue.value, '', '')]);
+            if(!props.enableCreate){
+            setValue(createOption(inputValue.value, '' , ''));
+            setOptions([...options, createOption(inputValue.value, '', '')])
+          }
           } catch (err) {
             console.error('Failed to create a Tag: ' + err);
           }

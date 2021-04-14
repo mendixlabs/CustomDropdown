@@ -40,7 +40,6 @@
     "@types/webdriverio": "^4.13.0"
   },
   "dependencies": {
-    "classnames": "^2.2.6",
-    "react-select": "^4.1.0"
+    "react-select": "^4.3.0"
   }
 }

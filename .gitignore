@@ -1,5 +1,4 @@
-dist/
 node_modules/
-tests/testProject/
+tests/testProject/deployment
 *.log
 .env
