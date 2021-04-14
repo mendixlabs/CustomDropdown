@@ -1,5 +1,5 @@
-## SingleSelector
-[Widget to make a selection in a dropdown menu.]
+## CustomDropdown
+A custom dropdown selection widget for Mendix.
 
 ## Features
 [feature highlights]

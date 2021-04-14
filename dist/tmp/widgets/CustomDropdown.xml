@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<widget id="mendix.customdropdown.CustomDropdown" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+        supportedPlatform="Web"
+        xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
+    <name>Custom Dropdown</name>
+    <description>Widget to make a selection in a dropdown menu.</description>
+    <icon/>
+    <properties>
+        <propertyGroup caption="Data source">
+            <property key="defaultValue" type="datasource" isList="true" required="false" >
+                <caption>Default value</caption>
+                <description>Get the default value that has to be set. For options the same object type must be selected.</description>
+            </property>
+            <property key="options" type="datasource" isList="true" >
+                <caption>Options</caption>
+                <description>All the objects you want to suggest as options. The same object type as for the default value must be selected.</description>
+            </property>
+            <property key="firstLabel" type="attribute" required="true" dataSource="options">
+                <caption>First label</caption>
+                <description>The first label attribute of the selectable objects.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property> 
+            <property key="secondLabel" type="attribute" required="true" dataSource="options">
+                <caption>Second label</caption>
+                <description>The second label attribute of the selectable objects.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
+            <property key="imgUrl" type="attribute" required="true" dataSource="options">
+                <caption>Image URL</caption>
+                <description>The image url attribute of the selectable objects.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property> 
+        </propertyGroup>
+
+        <propertyGroup caption="Events">
+            <property key="contextObjLabel" type="attribute" >
+                <caption>Context object label</caption>
+                <description>Label attribute of the context object.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
+            <property key="contextObjForceRefresh" type="attribute" required="false">
+                <caption>Force refresh attribute</caption>
+                <description>Changing the value of the attribute set here will force a refresh.</description>
+                <attributeTypes>
+                    <attributeType name="Integer"/>
+                    <attributeType name="String"/>
+                    <attributeType name="Boolean"/>
+                </attributeTypes>
+            </property>
+            <property key="selectOption" type="action" >
+                <caption>Select option microflow</caption>
+                <description>Microflow to be executed when a option is selected.</description>
+            </property>
+            <property key="enableCreate" type="boolean" defaultValue="true">
+                <caption>Enable Create</caption>
+                <description>Enable the Custom Dropdown to create options when none are found when searching.</description>
+            </property>
+            <property key="createValue" type="action" >
+                <caption>Create value microflow</caption>
+                <description>Microflow to be executed when a new value is created.</description>
+            </property>
+            <property key="enableClear" type="boolean" defaultValue="true">
+                <caption>Enable Clear</caption>
+                <description>Enable the Custom Dropdown to clear the selected value.</description>
+            </property>
+            <property key="clearValue" type="action" >
+                <caption>Clear value microflow</caption>
+                <description>Microflow to be executed when the selected value is cleared.</description>
+            </property>
+            <property key="enableSearch" type="boolean" defaultValue="true">
+                <caption>Enable Searching</caption>
+                <description>Enable the Custom Dropdown to search for options.</description>
+            </property>
+        </propertyGroup>
+
+        <propertyGroup caption="Styling">
+            <property key="useDefaultStyle" type="boolean" defaultValue="true">
+                <caption>useDefaultStyle</caption>
+                <description>Do you want to use the default styling?</description>
+            </property>
+            <property key="useAvatar" type="boolean" defaultValue="true">
+                <caption>useAvatar</caption>
+                <description>Do you want add an avatar image to the select values?</description>
+            </property>
+            <property key="placeholder" type="string" required="false">
+                <caption>Placeholder</caption>
+                <description>Placeholder text for when there are no labels.</description>
+            </property>
+                <property key="className" type="string" required="false">
+                <caption>ClassName</caption>
+                <description>Custom class name.</description>
+            </property>
+                <property key="classNamePrefix" type="string" required="false">
+                <caption>ClassNamePrefix</caption>
+                <description>Custom Class name prefix.</description>
+            </property>
+            <property key="menuHeight" type="integer" defaultValue="150">
+                <caption>Menu height</caption>
+                <description>Max dropdown menu height in pixels</description>
+            </property>
+        </propertyGroup> 
+    </properties>
+</widget>

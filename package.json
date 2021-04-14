@@ -1,9 +1,9 @@
 {
-  "name": "singleselector",
-  "widgetName": "SingleSelector",
+  "name": "customdropdown",
+  "widgetName": "CustomDropdown",
   "version": "1.0.0",
   "description": "Widget to make a selection in a dropdown menu.",
-  "copyright": "2020 Mendix Technology BV",
+  "copyright": "2021 Mendix Technology BV",
   "author": "Nick",
   "config": {
     "projectPath": "./tests/testProject/",
