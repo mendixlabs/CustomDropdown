@@ -11,7 +11,7 @@
 <mapEntry key="M2EE_ADMIN_PORT" value="8090"/>
 <mapEntry key="M2EE_CONSOLE_PATH" value="C:/Program Files/Mendix/8.12.0.2541/modeler/MendixConsoleLog.exe"/>
 <mapEntry key="MX_INSTALL_PATH" value="C:/Program Files/Mendix/8.12.0.2541"/>
-<mapEntry key="MXCONSOLE_BASE_PATH" value="//Mac/Home/Git/SingleSelector/tests/testProject/deployment"/>
+<mapEntry key="MXCONSOLE_BASE_PATH" value="//Mac/Home/Git/CustomDropdown/tests/testProject/deployment"/>
 <mapEntry key="MXCONSOLE_RUNTIME_PATH" value="C:/Program Files/Mendix/8.12.0.2541/runtime"/>
 <mapEntry key="MXCONSOLE_RUNTIME_PORT" value="8080"/>
 <mapEntry key="MXCONSOLE_RUNTIME_LISTEN_ADDRESSES" value="*"/>
@@ -26,7 +26,7 @@
 <booleanAttribute key="org.eclipse.jdt.launching.DEFAULT_CLASSPATH" value="false"/>
 <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="com.mendix.container.boot.Main"/>
 <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="testProject"/>
-<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.net.preferIPv4Stack=true -DMX_LOG_LEVEL=INFO -Djava.library.path=&quot;C:/Program Files/Mendix/8.12.0.2541/runtime/lib/x64;//Mac/Home/Git/SingleSelector/tests/testProject/deployment/model/lib/userlib&quot; -Dfile.encoding=UTF-8 -Djava.io.tmpdir=&quot;//Mac/Home/Git/SingleSelector/tests/testProject/deployment/data/tmp&quot;"/>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;//Mac/Home/Git/SingleSelector/tests/testProject/deployment&quot;"/>
-<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="//Mac/Home/Git/SingleSelector/tests/testProject/deployment"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Djava.net.preferIPv4Stack=true -DMX_LOG_LEVEL=INFO -Djava.library.path=&quot;C:/Program Files/Mendix/8.12.0.2541/runtime/lib/x64;//Mac/Home/Git/CustomDropdown/tests/testProject/deployment/model/lib/userlib&quot; -Dfile.encoding=UTF-8 -Djava.io.tmpdir=&quot;//Mac/Home/Git/CustomDropdown/tests/testProject/deployment/data/tmp&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="&quot;//Mac/Home/Git/CustomDropdown/tests/testProject/deployment&quot;"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="//Mac/Home/Git/CustomDropdown/tests/testProject/deployment"/>
 </launchConfiguration>

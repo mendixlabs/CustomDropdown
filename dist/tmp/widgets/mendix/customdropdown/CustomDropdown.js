@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "9e21798a3c0c6742173a";
+/******/ 	var hotCurrentHash = "066bf3b225a95dca312d";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -10290,7 +10290,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function CustomDropdown(props) {
-    return Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_CustomDropdownComp__WEBPACK_IMPORTED_MODULE_1__["default"], { defaultValue: props.defaultValue, firstLabel: props.firstLabel, secondLabel: props.secondLabel, imgUrl: props.imgUrl, options: props.options, contextObjLabel: props.contextObjLabel, contextObjForceRefresh: props.contextObjForceRefresh, selectOption: props.selectOption, enableCreate: props.enableCreate, createValue: props.createValue, enableClear: props.enableClear, clearValue: props.clearValue, enableSearch: props.enableSearch, useAvatar: props.useAvatar, useDefaultStyle: props.useDefaultStyle, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, menuHeight: props.menuHeight });
+    return Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_CustomDropdownComp__WEBPACK_IMPORTED_MODULE_1__["default"], { defaultValue: props.defaultValue, firstLabel: props.firstLabel, secondLabel: props.secondLabel, imgUrl: props.imgUrl, options: props.options, contextObjLabel: props.contextObjLabel, selectOption: props.selectOption, enableCreate: props.enableCreate, createValue: props.createValue, enableClear: props.enableClear, clearValue: props.clearValue, enableSearch: props.enableSearch, useAvatar: props.useAvatar, useDefaultStyle: props.useDefaultStyle, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, menuHeight: props.menuHeight, onFocus: props.onFocus });
 }
 
 
@@ -10375,7 +10375,6 @@ function SingleSelect(props) {
                 var defaultValue = props.defaultValue.items.map(function (obj) {
                     return createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue);
                 });
-                console.log("defaultvalue");
                 console.log(props.defaultValue);
                 console.log(defaultValue);
                 setValue(defaultValue[0]);
@@ -10384,7 +10383,7 @@ function SingleSelect(props) {
         catch (_a) {
             setValue(null);
         }
-    }, [props.defaultValue, props.contextObjForceRefresh.value]);
+    }, [props.defaultValue]);
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
         if (props.options.status === 'available') {
             var options_1 = props.options.items.map(function (obj) {
@@ -10392,7 +10391,7 @@ function SingleSelect(props) {
             });
             setOptions(options_1);
         }
-    }, [props.options, props.contextObjForceRefresh.value]);
+    }, [props.options]);
     var handleChange = function (inputValue, actionMeta) { return __awaiter(_this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             if (actionMeta.action === 'select-option') {
@@ -10450,6 +10449,12 @@ function SingleSelect(props) {
             return [2 /*return*/];
         });
     }); };
+    var handleFocus = function () {
+        console.log(props);
+        if (props.onFocus != undefined && props.onFocus.canExecute) {
+            props.onFocus.execute();
+        }
+    };
     var styles = {};
     if (!props.useDefaultStyle) {
         styles = {
@@ -10478,9 +10483,9 @@ function SingleSelect(props) {
         };
     }
     if (props.enableCreate) {
-        return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_select_creatable__WEBPACK_IMPORTED_MODULE_2__["default"], { options: options, value: value, onChange: handleChange, isLoading: isLoading, isClearable: props.enableClear, isSearchable: props.enableSearch, styles: styles, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, maxMenuHeight: props.menuHeight }));
+        return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_select_creatable__WEBPACK_IMPORTED_MODULE_2__["default"], { options: options, value: value, onChange: handleChange, isLoading: isLoading, isClearable: props.enableClear, isSearchable: props.enableSearch, styles: styles, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, maxMenuHeight: props.menuHeight, onFocus: handleFocus }));
     }
-    return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_select__WEBPACK_IMPORTED_MODULE_1__["default"], { options: options, value: value, onChange: handleChange, isLoading: isLoading, isClearable: props.enableClear, isSearchable: props.enableSearch, styles: styles, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, maxMenuHeight: props.menuHeight }));
+    return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_select__WEBPACK_IMPORTED_MODULE_1__["default"], { options: options, value: value, onChange: handleChange, isLoading: isLoading, isClearable: props.enableClear, isSearchable: props.enableSearch, styles: styles, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, maxMenuHeight: props.menuHeight, onFocus: handleFocus }));
 }
 
 

@@ -1,4 +1,4 @@
-import { useState, createElement, ReactElement, useEffect, useRef } from "react";
+import { useState, createElement, ReactElement, useEffect } from "react";
 import Select from 'react-select'
 import CreatableSelect from 'react-select/creatable';
 import { Styles } from 'react-select/src/styles';
@@ -21,7 +21,6 @@ export interface CustomDropdownComponentProps {
     imgUrl: ListAttributeValue<string>;
     options: ListValue;
     contextObjLabel: EditableValue<string>;
-    contextObjForceRefresh?: EditableValue<BigJs.Big | string | boolean>;
     selectOption?: ActionValue;
     enableCreate: boolean;
     createValue?: ActionValue;
@@ -34,9 +33,10 @@ export interface CustomDropdownComponentProps {
     className: string;
     classNamePrefix: string;
     menuHeight: number;
+    onFocus: ActionValue;
 }
 
-export default function SingleSelect(props: CustomDropdownComponentProps): ReactElement{
+export default function CustomDropdownComp(props: CustomDropdownComponentProps): ReactElement{
     const [isLoading, setIsLoading] = useState(false);
     const [options, setOptions] = useState<Option[]>([]);
     const [value, setValue] = useState<Option>();
@@ -61,7 +61,6 @@ export default function SingleSelect(props: CustomDropdownComponentProps): React
           const defaultValue = props.defaultValue.items.map(obj =>
             createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue)
             );
-            console.log("defaultvalue")
             console.log(props.defaultValue)
             console.log(defaultValue);
           setValue(defaultValue[0]);
@@ -70,7 +69,7 @@ export default function SingleSelect(props: CustomDropdownComponentProps): React
       catch{
         setValue(null);
       }
-      }, [props.defaultValue, props.contextObjForceRefresh.value]);
+      }, [props.defaultValue]);
 
     useEffect(() => {
         if(props.options.status === 'available'){
@@ -78,7 +77,7 @@ export default function SingleSelect(props: CustomDropdownComponentProps): React
             createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue));
           setOptions(options);
         }
-      }, [props.options, props.contextObjForceRefresh.value]);
+      }, [props.options]);
 
       const handleChange = async (inputValue: any, actionMeta: any) => {
         if (
@@ -137,6 +136,14 @@ export default function SingleSelect(props: CustomDropdownComponentProps): React
             setIsLoading(false);
           }
       };
+
+      const handleFocus = () => {
+        console.log(props)
+        if(props.onFocus != undefined && props.onFocus.canExecute){
+          props.onFocus.execute();
+        }
+      }
+
       let styles: Styles<OptionTypeBase, true> = {};
       if (!props.useDefaultStyle) {
         styles = {
@@ -178,6 +185,7 @@ if(props.enableCreate){
             className={props.className!}
             classNamePrefix={props.classNamePrefix}
             maxMenuHeight={props.menuHeight}
+            onFocus={handleFocus}
         />
     )
 }
@@ -194,6 +202,7 @@ if(props.enableCreate){
             className={props.className!}
             classNamePrefix={props.classNamePrefix}
             maxMenuHeight={props.menuHeight}
+            onFocus={handleFocus}
         />
     )
 }

@@ -48,6 +48,21 @@ public class Microflows
 		params.put("AnimalOwner", _animalOwner == null ? null : _animalOwner.getMendixObject());
 		Core.microflowCall("MyFirstModule.Widget_CreateValueSimple").withParams(params).execute(context);
 	}
+	public static java.util.List<myfirstmodule.proxies.Animal> widget_GetAnimalOptions(IContext context, myfirstmodule.proxies.SelectContext _selectContext, myfirstmodule.proxies.AnimalOwner _animalOwner)
+	{
+		Map<java.lang.String, Object> params = new HashMap<>();
+		params.put("SelectContext", _selectContext == null ? null : _selectContext.getMendixObject());
+		params.put("AnimalOwner", _animalOwner == null ? null : _animalOwner.getMendixObject());
+		java.util.List<IMendixObject> objs = Core.microflowCall("MyFirstModule.Widget_GetAnimalOptions").withParams(params).execute(context);
+		java.util.List<myfirstmodule.proxies.Animal> result = null;
+		if (objs != null)
+		{
+			result = new java.util.ArrayList<>();
+			for (IMendixObject obj : objs)
+				result.add(myfirstmodule.proxies.Animal.initialize(context, obj));
+		}
+		return result;
+	}
 	public static java.util.List<myfirstmodule.proxies.Animal> widget_GetDefaultValue(IContext context, myfirstmodule.proxies.AnimalOwner _animalOwner)
 	{
 		Map<java.lang.String, Object> params = new HashMap<>();

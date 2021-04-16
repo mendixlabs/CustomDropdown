@@ -21,7 +21,6 @@ public class SelectContext
 	public enum MemberNames
 	{
 		Label("Label"),
-		updateAttribute("updateAttribute"),
 		SecondName("SecondName"),
 		ImageUrl("ImageUrl"),
 		SelectContext_AnimalOwner("MyFirstModule.SelectContext_AnimalOwner");
@@ -145,42 +144,6 @@ public class SelectContext
 	public final void setLabel(com.mendix.systemwideinterfaces.core.IContext context, java.lang.String label)
 	{
 		getMendixObject().setValue(context, MemberNames.Label.toString(), label);
-	}
-
-	/**
-	 * @return value of updateAttribute
-	 */
-	public final java.lang.Integer getupdateAttribute()
-	{
-		return getupdateAttribute(getContext());
-	}
-
-	/**
-	 * @param context
-	 * @return value of updateAttribute
-	 */
-	public final java.lang.Integer getupdateAttribute(com.mendix.systemwideinterfaces.core.IContext context)
-	{
-		return (java.lang.Integer) getMendixObject().getValue(context, MemberNames.updateAttribute.toString());
-	}
-
-	/**
-	 * Set value of updateAttribute
-	 * @param updateattribute
-	 */
-	public final void setupdateAttribute(java.lang.Integer updateattribute)
-	{
-		setupdateAttribute(getContext(), updateattribute);
-	}
-
-	/**
-	 * Set value of updateAttribute
-	 * @param context
-	 * @param updateattribute
-	 */
-	public final void setupdateAttribute(com.mendix.systemwideinterfaces.core.IContext context, java.lang.Integer updateattribute)
-	{
-		getMendixObject().setValue(context, MemberNames.updateAttribute.toString(), updateattribute);
 	}
 
 	/**

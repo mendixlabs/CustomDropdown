@@ -10,11 +10,11 @@
         <propertyGroup caption="Data source">
             <property key="defaultValue" type="datasource" isList="true" required="false" >
                 <caption>Default value</caption>
-                <description>Get the default value that has to be set. For options the same object type must be selected.</description>
+                <description>Please use a microflow to retrieve. Get the default value that has to be set. For options the same object type must be selected.</description>
             </property>
             <property key="options" type="datasource" isList="true" >
                 <caption>Options</caption>
-                <description>All the objects you want to suggest as options. The same object type as for the default value must be selected.</description>
+                <description>lease use a microflow to retrieve. Get all the objects you want to suggest as options. The same object type as for the default value must be selected.</description>
             </property>
             <property key="firstLabel" type="attribute" required="true" dataSource="options">
                 <caption>First label</caption>
@@ -47,21 +47,12 @@
                     <attributeType name="String"/>
                 </attributeTypes>
             </property>
-            <property key="contextObjForceRefresh" type="attribute" required="false">
-                <caption>Force refresh attribute</caption>
-                <description>Changing the value of the attribute set here will force a refresh.</description>
-                <attributeTypes>
-                    <attributeType name="Integer"/>
-                    <attributeType name="String"/>
-                    <attributeType name="Boolean"/>
-                </attributeTypes>
-            </property>
             <property key="selectOption" type="action" >
                 <caption>Select option microflow</caption>
                 <description>Microflow to be executed when a option is selected.</description>
             </property>
             <property key="enableCreate" type="boolean" defaultValue="true">
-                <caption>Enable Create</caption>
+                <caption>Enable create</caption>
                 <description>Enable the Custom Dropdown to create options when none are found when searching.</description>
             </property>
             <property key="createValue" type="action" >
@@ -69,7 +60,7 @@
                 <description>Microflow to be executed when a new value is created.</description>
             </property>
             <property key="enableClear" type="boolean" defaultValue="true">
-                <caption>Enable Clear</caption>
+                <caption>Enable clear</caption>
                 <description>Enable the Custom Dropdown to clear the selected value.</description>
             </property>
             <property key="clearValue" type="action" >
@@ -77,8 +68,12 @@
                 <description>Microflow to be executed when the selected value is cleared.</description>
             </property>
             <property key="enableSearch" type="boolean" defaultValue="true">
-                <caption>Enable Searching</caption>
+                <caption>Enable searching</caption>
                 <description>Enable the Custom Dropdown to search for options.</description>
+            </property>
+            <property key="onFocus" type="action" >
+                <caption>On focus action</caption>
+                <description>Action to be executed when the widget element is focussed.</description>
             </property>
         </propertyGroup>
 
