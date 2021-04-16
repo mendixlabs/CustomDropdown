@@ -1,4 +1,11 @@
 node_modules/
 tests/testProject/deployment
+tests/testProject/.classpath
+tests/testProject/.project
+tests/testProject/javasource
+tests/testProject/testProject.launch
+tests/testProject/userlib
+tests/testProject/resources
+tests/testProject/javascriptsource
 *.log
 .env
