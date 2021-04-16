@@ -35,3 +35,6 @@ A test project is stored at /tests/testProject.
 
 ## Development and contribution
 This widget has community support level.
+
+## Demo video
+Can be found [here](https://youtu.be/e8WhGu1pufw).
