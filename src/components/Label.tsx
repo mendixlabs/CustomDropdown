@@ -36,7 +36,7 @@ export default function Label(props: LabelProps): ReactElement {
       userDefinedClassname +
       '__name.' +
       userDefinedClassname +
-      '--name2 {font-size: 12px; line-height: 14px;color: gray;}\
+      '--name2 {font-size: 12px; line-height: 14px;color: gray; transform: translateY(1px);}\
       .' +
       userDefinedClassname +
       '__divider {width: 0.5rem}\
@@ -171,7 +171,7 @@ export default function Label(props: LabelProps): ReactElement {
                 '--name2'
               }
             >
-              ({props.SecondLabel})
+              {props.SecondLabel}
             </div>
           </React.Fragment>
         ) : (
@@ -203,7 +203,7 @@ export default function Label(props: LabelProps): ReactElement {
                 '--name2'
               }
             >
-              ({props.SecondLabel})
+              {props.SecondLabel}
             </div>
           </React.Fragment>
         ) : (
@@ -228,7 +228,7 @@ export default function Label(props: LabelProps): ReactElement {
                 '--name2'
               }
             >
-              ({props.SecondLabel})
+              {props.SecondLabel}
             </div>
           </React.Fragment>
         ) : (

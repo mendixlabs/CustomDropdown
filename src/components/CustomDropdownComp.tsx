@@ -207,8 +207,8 @@ if(props.enableCreate){
 
   function getLabelValues(obj) {
     let firstLabel: string = props.firstLabel != undefined ? props.firstLabel(obj).displayValue : '';
-    let secondLabel: string = props.secondLabel != undefined ? props.firstLabel(obj).displayValue : '';
-    let imgUrl: string = props.imgUrl != undefined ? props.firstLabel(obj).displayValue : '';
+    let secondLabel: string = props.secondLabel != undefined ? props.secondLabel(obj).displayValue : '';
+    let imgUrl: string = props.imgUrl != undefined ? props.imgUrl(obj).displayValue : '';
     return { firstLabel, secondLabel, imgUrl };
   }
 }
