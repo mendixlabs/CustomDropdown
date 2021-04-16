@@ -14,8 +14,8 @@ export interface CustomDropdownContainerProps {
     defaultValue?: ListValue;
     options: ListValue;
     firstLabel: ListAttributeValue<string>;
-    secondLabel: ListAttributeValue<string>;
-    imgUrl: ListAttributeValue<string>;
+    secondLabel?: ListAttributeValue<string>;
+    imgUrl?: ListAttributeValue<string>;
     contextObjLabel: EditableValue<string>;
     selectOption?: ActionValue;
     enableCreate: boolean;

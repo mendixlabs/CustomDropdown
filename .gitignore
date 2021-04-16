@@ -7,5 +7,6 @@ tests/testProject/testProject.launch
 tests/testProject/userlib
 tests/testProject/resources
 tests/testProject/javascriptsource
+tests/testProject/CustomDropdownTestProject.mpr.lock
 *.log
 .env

@@ -10,11 +10,11 @@
         <propertyGroup caption="Data source">
             <property key="defaultValue" type="datasource" isList="true" required="false" >
                 <caption>Default value</caption>
-                <description>Please use a microflow to retrieve. Get the default value that has to be set. For options the same object type must be selected.</description>
+                <description>Please use a microflow to retrieve. Get the default value that has to be set. Currently it is only possible to return lists in this datasource property, therefore make sure to return a list only containing the object you want to have as the default value. For options the same object type must be selected.</description>
             </property>
             <property key="options" type="datasource" isList="true" >
                 <caption>Options</caption>
-                <description>lease use a microflow to retrieve. Get all the objects you want to suggest as options. The same object type as for the default value must be selected.</description>
+                <description>Please use a microflow to retrieve. Get all the objects you want to suggest as options. The same object type as for the default value must be selected.</description>
             </property>
             <property key="firstLabel" type="attribute" required="true" dataSource="options">
                 <caption>First label</caption>
@@ -23,14 +23,14 @@
                     <attributeType name="String"/>
                 </attributeTypes>
             </property> 
-            <property key="secondLabel" type="attribute" required="true" dataSource="options">
+            <property key="secondLabel" type="attribute" required="false" dataSource="options">
                 <caption>Second label</caption>
                 <description>The second label attribute of the selectable objects.</description>
                 <attributeTypes>
                     <attributeType name="String"/>
                 </attributeTypes>
             </property>
-            <property key="imgUrl" type="attribute" required="true" dataSource="options">
+            <property key="imgUrl" type="attribute" required="false" dataSource="options">
                 <caption>Image URL</caption>
                 <description>The image url attribute of the selectable objects.</description>
                 <attributeTypes>

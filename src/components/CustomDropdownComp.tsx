@@ -58,11 +58,10 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
     useEffect(() => {
       try{
         if(props.defaultValue.status === 'available'){
-          const defaultValue = props.defaultValue.items.map(obj =>
-            createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue)
-            );
-            console.log(props.defaultValue)
-            console.log(defaultValue);
+          const defaultValue = props.defaultValue.items.map(obj =>{
+            let { firstLabel, secondLabel, imgUrl }: { firstLabel: string; secondLabel: string; imgUrl: string; } = getLabelValues(obj);
+            return createOption(firstLabel, secondLabel, imgUrl);
+          })
           setValue(defaultValue[0]);
         }
       }
@@ -73,8 +72,10 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
 
     useEffect(() => {
         if(props.options.status === 'available'){
-          const options = props.options.items.map(obj =>
-            createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue));
+          const options = props.options.items.map(obj =>{
+            let { firstLabel, secondLabel, imgUrl }: { firstLabel: string; secondLabel: string; imgUrl: string; } = getLabelValues(obj);
+            return createOption(firstLabel, secondLabel, imgUrl);
+          })
           setOptions(options);
         }
       }, [props.options]);
@@ -123,7 +124,6 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
             setIsLoading(true);
             try {
               if(props.contextObjLabel.status==='available'){
-                  console.log(actionMeta);
                 props.contextObjLabel.setValue(actionMeta.removedValues[0].value);
               }
               if(props.clearValue.canExecute){
@@ -138,7 +138,6 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
       };
 
       const handleFocus = () => {
-        console.log(props)
         if(props.onFocus != undefined && props.onFocus.canExecute){
           props.onFocus.execute();
         }
@@ -205,4 +204,11 @@ if(props.enableCreate){
             onFocus={handleFocus}
         />
     )
+
+  function getLabelValues(obj) {
+    let firstLabel: string = props.firstLabel != undefined ? props.firstLabel(obj).displayValue : '';
+    let secondLabel: string = props.secondLabel != undefined ? props.firstLabel(obj).displayValue : '';
+    let imgUrl: string = props.imgUrl != undefined ? props.firstLabel(obj).displayValue : '';
+    return { firstLabel, secondLabel, imgUrl };
+  }
 }

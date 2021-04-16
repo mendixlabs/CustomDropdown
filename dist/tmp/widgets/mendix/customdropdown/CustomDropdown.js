@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "066bf3b225a95dca312d";
+/******/ 	var hotCurrentHash = "8eab2d972793da83b933";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -10305,7 +10305,7 @@ function CustomDropdown(props) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return SingleSelect; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return CustomDropdownComp; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-select */ "./node_modules/react-select/dist/react-select.esm.js");
@@ -10358,7 +10358,7 @@ var __spreadArrays = (undefined && undefined.__spreadArrays) || function () {
 
 
 
-function SingleSelect(props) {
+function CustomDropdownComp(props) {
     var _this = this;
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false), isLoading = _a[0], setIsLoading = _a[1];
     var _b = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]), options = _b[0], setOptions = _b[1];
@@ -10373,10 +10373,9 @@ function SingleSelect(props) {
         try {
             if (props.defaultValue.status === 'available') {
                 var defaultValue = props.defaultValue.items.map(function (obj) {
-                    return createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue);
+                    var _a = getLabelValues(obj), firstLabel = _a.firstLabel, secondLabel = _a.secondLabel, imgUrl = _a.imgUrl;
+                    return createOption(firstLabel, secondLabel, imgUrl);
                 });
-                console.log(props.defaultValue);
-                console.log(defaultValue);
                 setValue(defaultValue[0]);
             }
         }
@@ -10387,7 +10386,8 @@ function SingleSelect(props) {
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
         if (props.options.status === 'available') {
             var options_1 = props.options.items.map(function (obj) {
-                return createOption(props.firstLabel(obj).displayValue, props.secondLabel(obj).displayValue, props.imgUrl(obj).displayValue);
+                var _a = getLabelValues(obj), firstLabel = _a.firstLabel, secondLabel = _a.secondLabel, imgUrl = _a.imgUrl;
+                return createOption(firstLabel, secondLabel, imgUrl);
             });
             setOptions(options_1);
         }
@@ -10433,7 +10433,6 @@ function SingleSelect(props) {
                 setIsLoading(true);
                 try {
                     if (props.contextObjLabel.status === 'available') {
-                        console.log(actionMeta);
                         props.contextObjLabel.setValue(actionMeta.removedValues[0].value);
                     }
                     if (props.clearValue.canExecute) {
@@ -10450,7 +10449,6 @@ function SingleSelect(props) {
         });
     }); };
     var handleFocus = function () {
-        console.log(props);
         if (props.onFocus != undefined && props.onFocus.canExecute) {
             props.onFocus.execute();
         }
@@ -10486,6 +10484,12 @@ function SingleSelect(props) {
         return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_select_creatable__WEBPACK_IMPORTED_MODULE_2__["default"], { options: options, value: value, onChange: handleChange, isLoading: isLoading, isClearable: props.enableClear, isSearchable: props.enableSearch, styles: styles, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, maxMenuHeight: props.menuHeight, onFocus: handleFocus }));
     }
     return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_select__WEBPACK_IMPORTED_MODULE_1__["default"], { options: options, value: value, onChange: handleChange, isLoading: isLoading, isClearable: props.enableClear, isSearchable: props.enableSearch, styles: styles, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, maxMenuHeight: props.menuHeight, onFocus: handleFocus }));
+    function getLabelValues(obj) {
+        var firstLabel = props.firstLabel != undefined ? props.firstLabel(obj).displayValue : '';
+        var secondLabel = props.secondLabel != undefined ? props.firstLabel(obj).displayValue : '';
+        var imgUrl = props.imgUrl != undefined ? props.firstLabel(obj).displayValue : '';
+        return { firstLabel: firstLabel, secondLabel: secondLabel, imgUrl: imgUrl };
+    }
 }
 
 
