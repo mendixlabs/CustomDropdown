@@ -48,7 +48,6 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
                 ClassNamePrefix={props.classNamePrefix}
                 EnableAvatar={props.useAvatar}
                 SecondLabel={secondaryLabel}
-                classNameCreateModal={"xxx"}
             />,
         value: label,
         secondLabel: secondaryLabel,

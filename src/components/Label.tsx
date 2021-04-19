@@ -4,18 +4,16 @@ export interface LabelProps {
   DisplayName: string;
   UrlString: string;
   ClassNamePrefix: string;
-  classNameCreateModal: string;
   EnableAvatar: boolean;
   SecondLabel: string;
 }
 
 export default function Label(props: LabelProps): ReactElement {
   const userDefinedClassname = props.ClassNamePrefix;
-  const userDefinedModalClassName = props.classNameCreateModal;
 
-  if (!document.querySelector('#single-select_css')) {
+  if (!document.querySelector('#custom-dropdown_css')) {
     let css = document.createElement('style');
-    css.id = 'single-select_css';
+    css.id = 'custom-dropdown_css';
     let styles =
       '.' +
       userDefinedClassname +
@@ -121,12 +119,6 @@ export default function Label(props: LabelProps): ReactElement {
       .' +
       userDefinedClassname +
       '__avatar--initials.color-y {background: Navy;}\
-      .' +
-      userDefinedModalClassName +
-      ' {display: none; position: fixed; top: 50%; left: 50%; width:500px; transform:translateX(-50%); tranform:translateY(-50%); background: #fff; padding: 20px; box-shadow: 0 0 15px #000; }\
-      .' +
-      userDefinedModalClassName +
-      '--active {display: block;}\
       .' +
       userDefinedClassname +
       '__avatar--initials.color-z {background: SeaGreen}';

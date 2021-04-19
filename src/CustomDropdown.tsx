@@ -3,8 +3,6 @@ import CustomDropdownComp from "./components/CustomDropdownComp";
 
 import { CustomDropdownContainerProps } from "../typings/CustomDropdownProps";
 
-import "./ui/SingleSelector.css";
-
 export default function CustomDropdown(props: CustomDropdownContainerProps): ReactElement{
     return  <CustomDropdownComp 
                 defaultValue={props.defaultValue}
