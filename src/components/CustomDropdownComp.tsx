@@ -35,7 +35,7 @@ export interface CustomDropdownComponentProps {
     className: string;
     classNamePrefix: string;
     menuHeight: number;
-    onFocus: ActionValue;
+    onFocus?: ActionValue;
 }
 
 export default function CustomDropdownComp(props: CustomDropdownComponentProps): ReactElement {
@@ -82,7 +82,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         }
     }, [props.options]);
 
-    const handleChange = async (inputValue: any, actionMeta: any) => {
+    const handleChange = (inputValue: any, actionMeta: any) => {
         switch (actionMeta.action) {
             case 'select-option': {
                 selectAction(inputValue);
