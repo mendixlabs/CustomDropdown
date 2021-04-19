@@ -1,0 +1,22 @@
+image: nexus-docker-group.rnd.mendix.com/node:lts-alpine
+
+stages:
+    - snyk_scan
+    - install
+
+snyk:
+  stage: snyk_scan
+  variables:
+    SNYK_TOKEN: $SNYK_TOKEN
+  image: nexus-docker-group.rnd.mendix.com/pipelinecomponents/snyk:latest
+  script:
+    - snyk test --severity-threshold=medium --severity-threshold=high
+    - snyk monitor
+
+install:
+    stage: install
+    script:
+        - npm install
+    artifacts:
+        paths:
+            - node_modules/
