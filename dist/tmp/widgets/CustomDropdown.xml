@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget id="mendix.customdropdown.CustomDropdown" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
+<widget id="com.mendix.customdropdown.CustomDropdown" pluginWidget="true" needsEntityContext="true" offlineCapable="true"
         supportedPlatform="Web"
         xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
@@ -30,6 +30,13 @@
                     <attributeType name="String"/>
                 </attributeTypes>
             </property>
+            <property key="objId" type="attribute" required="false" dataSource="options">
+                <caption>Object id</caption>
+                <description>Id attribute of the object.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
             <property key="imgUrl" type="attribute" required="false" dataSource="options">
                 <caption>Image URL</caption>
                 <description>The image url attribute of the selectable objects.</description>
@@ -40,6 +47,13 @@
         </propertyGroup>
 
         <propertyGroup caption="Events">
+            <property key="contextObjId" type="attribute" >
+                <caption>Context object id</caption>
+                <description>Id attribute of the context object.</description>
+                <attributeTypes>
+                    <attributeType name="String"/>
+                </attributeTypes>
+            </property>
             <property key="contextObjLabel" type="attribute" >
                 <caption>Context object label</caption>
                 <description>Label attribute of the context object.</description>
@@ -90,11 +104,11 @@
                 <caption>Placeholder</caption>
                 <description>Placeholder text for when there are no labels.</description>
             </property>
-                <property key="className" type="string" required="false">
+                <property key="className" type="string" required="false" defaultValue="CustomDropdown">
                 <caption>ClassName</caption>
                 <description>Custom class name.</description>
             </property>
-                <property key="classNamePrefix" type="string" required="false">
+                <property key="classNamePrefix" type="string" required="false" defaultValue="PrefixCustomDropdown">
                 <caption>ClassNamePrefix</caption>
                 <description>Custom Class name prefix.</description>
             </property>

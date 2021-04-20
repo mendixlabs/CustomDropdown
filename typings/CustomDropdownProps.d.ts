@@ -15,7 +15,9 @@ export interface CustomDropdownContainerProps {
     options: ListValue;
     firstLabel: ListAttributeValue<string>;
     secondLabel?: ListAttributeValue<string>;
+    objId?: ListAttributeValue<string>;
     imgUrl?: ListAttributeValue<string>;
+    contextObjId: EditableValue<string>;
     contextObjLabel: EditableValue<string>;
     selectOption?: ActionValue;
     enableCreate: boolean;
@@ -39,7 +41,9 @@ export interface CustomDropdownPreviewProps {
     options: {} | null;
     firstLabel: string;
     secondLabel: string;
+    objId: string;
     imgUrl: string;
+    contextObjId: string;
     contextObjLabel: string;
     selectOption: {} | null;
     enableCreate: boolean;

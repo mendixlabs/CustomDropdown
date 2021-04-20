@@ -8,9 +8,11 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
                 defaultValue={props.defaultValue}
                 firstLabel={props.firstLabel}
                 secondLabel={props.secondLabel}
+                objId={props.objId}
                 imgUrl={props.imgUrl}
                 options={props.options}
                 contextObjLabel={props.contextObjLabel}
+                contextObjId={props.contextObjId}
                 selectOption={props.selectOption}
                 enableCreate={props.enableCreate}
                 createValue={props.createValue}

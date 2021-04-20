@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "7e6aac3c355af8cc1cb3";
+/******/ 	var hotCurrentHash = "2e75ffd11bdd391b0786";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -9655,7 +9655,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function CustomDropdown(props) {
-    return Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_CustomDropdownComp__WEBPACK_IMPORTED_MODULE_1__["default"], { defaultValue: props.defaultValue, firstLabel: props.firstLabel, secondLabel: props.secondLabel, imgUrl: props.imgUrl, options: props.options, contextObjLabel: props.contextObjLabel, selectOption: props.selectOption, enableCreate: props.enableCreate, createValue: props.createValue, enableClear: props.enableClear, clearValue: props.clearValue, enableSearch: props.enableSearch, useAvatar: props.useAvatar, useDefaultStyle: props.useDefaultStyle, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, menuHeight: props.menuHeight, onFocus: props.onFocus });
+    return Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_components_CustomDropdownComp__WEBPACK_IMPORTED_MODULE_1__["default"], { defaultValue: props.defaultValue, firstLabel: props.firstLabel, secondLabel: props.secondLabel, objId: props.objId, imgUrl: props.imgUrl, options: props.options, contextObjLabel: props.contextObjLabel, contextObjId: props.contextObjId, selectOption: props.selectOption, enableCreate: props.enableCreate, createValue: props.createValue, enableClear: props.enableClear, clearValue: props.clearValue, enableSearch: props.enableSearch, useAvatar: props.useAvatar, useDefaultStyle: props.useDefaultStyle, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, menuHeight: props.menuHeight, onFocus: props.onFocus });
 }
 
 
@@ -9712,13 +9712,6 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-var __spreadArrays = (undefined && undefined.__spreadArrays) || function () {
-    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
-    for (var r = Array(s), k = 0, i = 0; i < il; i++)
-        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
-            r[k] = a[j];
-    return r;
-};
 
 
 
@@ -9728,9 +9721,10 @@ function CustomDropdownComp(props) {
     var _a = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(false), isLoading = _a[0], setIsLoading = _a[1];
     var _b = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])([]), options = _b[0], setOptions = _b[1];
     var _c = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(), value = _c[0], setValue = _c[1];
-    var createOption = function (label, secondaryLabel, urlstring) { return ({
+    var createOption = function (label, secondaryLabel, id, urlstring) { return ({
         label: Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(_Label__WEBPACK_IMPORTED_MODULE_3__["default"], { DisplayName: label, UrlString: urlstring, ClassNamePrefix: props.classNamePrefix, EnableAvatar: props.useAvatar, SecondLabel: secondaryLabel }),
         value: label,
+        id: id,
         secondLabel: secondaryLabel,
         url: urlstring
     }); };
@@ -9738,8 +9732,8 @@ function CustomDropdownComp(props) {
         try {
             if (props.defaultValue.status === 'available') {
                 var defaultValue = props.defaultValue.items.map(function (obj) {
-                    var _a = getLabelValues(obj), firstLabel = _a.firstLabel, secondLabel = _a.secondLabel, imgUrl = _a.imgUrl;
-                    return createOption(firstLabel, secondLabel, imgUrl);
+                    var _a = getLabelValues(obj), firstLabel = _a.firstLabel, secondLabel = _a.secondLabel, id = _a.id, imgUrl = _a.imgUrl;
+                    return createOption(firstLabel, secondLabel, id, imgUrl);
                 });
                 setValue(defaultValue[0]);
             }
@@ -9751,64 +9745,27 @@ function CustomDropdownComp(props) {
     Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(function () {
         if (props.options.status === 'available') {
             var options_1 = props.options.items.map(function (obj) {
-                var _a = getLabelValues(obj), firstLabel = _a.firstLabel, secondLabel = _a.secondLabel, imgUrl = _a.imgUrl;
-                return createOption(firstLabel, secondLabel, imgUrl);
+                var _a = getLabelValues(obj), firstLabel = _a.firstLabel, secondLabel = _a.secondLabel, id = _a.id, imgUrl = _a.imgUrl;
+                return createOption(firstLabel, secondLabel, id, imgUrl);
             });
             setOptions(options_1);
         }
     }, [props.options]);
     var handleChange = function (inputValue, actionMeta) { return __awaiter(_this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            if (actionMeta.action === 'select-option') {
-                setIsLoading(true);
-                try {
-                    if (props.contextObjLabel.status === 'available') {
-                        props.contextObjLabel.setValue(inputValue.value);
-                    }
-                    if (props.selectOption.canExecute) {
-                        props.selectOption.execute();
-                    }
-                    setValue(createOption(inputValue.value, inputValue.secondLabel, inputValue.url));
+            switch (actionMeta.action) {
+                case 'select-option': {
+                    selectAction(inputValue);
+                    break;
                 }
-                catch (err) {
-                    console.error('Failed to select a Tag: ' + err);
+                case 'create-option': {
+                    createAction(inputValue);
+                    break;
                 }
-                setIsLoading(false);
-            }
-            if (actionMeta.action === 'create-option') {
-                setIsLoading(true);
-                try {
-                    if (props.contextObjLabel.status === 'available') {
-                        props.contextObjLabel.setValue(inputValue.value);
-                    }
-                    if (props.createValue.canExecute) {
-                        props.createValue.execute();
-                    }
-                    if (!props.enableCreate) {
-                        setValue(createOption(inputValue.value, '', ''));
-                        setOptions(__spreadArrays(options, [createOption(inputValue.value, '', '')]));
-                    }
+                case 'clear': {
+                    clearAction(actionMeta);
+                    break;
                 }
-                catch (err) {
-                    console.error('Failed to create a Tag: ' + err);
-                }
-                setIsLoading(false);
-            }
-            if (actionMeta.action === 'clear') {
-                setIsLoading(true);
-                try {
-                    if (props.contextObjLabel.status === 'available') {
-                        props.contextObjLabel.setValue(actionMeta.removedValues[0].value);
-                    }
-                    if (props.clearValue.canExecute) {
-                        props.clearValue.execute();
-                    }
-                    setValue(null);
-                }
-                catch (err) {
-                    console.error('Failed to create a Tag: ' + err);
-                }
-                setIsLoading(false);
             }
             return [2 /*return*/];
         });
@@ -9849,11 +9806,62 @@ function CustomDropdownComp(props) {
         return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_select_creatable__WEBPACK_IMPORTED_MODULE_2__["default"], { options: options, value: value, onChange: handleChange, isLoading: isLoading, isClearable: props.enableClear, isSearchable: props.enableSearch, styles: styles, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, maxMenuHeight: props.menuHeight, onFocus: handleFocus }));
     }
     return (Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(react_select__WEBPACK_IMPORTED_MODULE_1__["default"], { options: options, value: value, onChange: handleChange, isLoading: isLoading, isClearable: props.enableClear, isSearchable: props.enableSearch, styles: styles, placeholder: props.placeholder, className: props.className, classNamePrefix: props.classNamePrefix, maxMenuHeight: props.menuHeight, onFocus: handleFocus }));
+    function clearAction(actionMeta) {
+        setIsLoading(true);
+        try {
+            if (props.contextObjLabel.status === 'available') {
+                props.contextObjLabel.setValue(actionMeta.removedValues[0].value);
+            }
+            if (props.clearValue.canExecute) {
+                props.clearValue.execute();
+            }
+            setValue(null);
+        }
+        catch (err) {
+            console.error('Failed to create a Tag: ' + err);
+        }
+        setIsLoading(false);
+    }
+    function createAction(inputValue) {
+        setIsLoading(true);
+        try {
+            if (props.contextObjLabel.status === 'available') {
+                props.contextObjLabel.setValue(inputValue.value);
+            }
+            if (props.createValue.canExecute) {
+                props.createValue.execute();
+            }
+        }
+        catch (err) {
+            console.error('Failed to create a Tag: ' + err);
+        }
+        setIsLoading(false);
+    }
+    function selectAction(inputValue) {
+        setIsLoading(true);
+        try {
+            if (props.contextObjLabel.status === 'available') {
+                props.contextObjLabel.setValue(inputValue.value);
+            }
+            if (props.contextObjId.status === 'available') {
+                props.contextObjId.setValue(inputValue.id);
+            }
+            if (props.selectOption.canExecute) {
+                props.selectOption.execute();
+            }
+            setValue(createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url));
+        }
+        catch (err) {
+            console.error('Failed to select a Tag: ' + err);
+        }
+        setIsLoading(false);
+    }
     function getLabelValues(obj) {
         var firstLabel = props.firstLabel != undefined ? props.firstLabel(obj).displayValue : '';
         var secondLabel = props.secondLabel != undefined ? props.secondLabel(obj).displayValue : '';
+        var id = props.objId != undefined ? props.objId(obj).displayValue : '';
         var imgUrl = props.imgUrl != undefined ? props.imgUrl(obj).displayValue : '';
-        return { firstLabel: firstLabel, secondLabel: secondLabel, imgUrl: imgUrl };
+        return { firstLabel: firstLabel, secondLabel: secondLabel, id: id, imgUrl: imgUrl };
     }
 }
 
