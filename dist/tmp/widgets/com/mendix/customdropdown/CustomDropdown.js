@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "2e75ffd11bdd391b0786";
+/******/ 	var hotCurrentHash = "29225671ce10821f6b4a";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -9812,6 +9812,9 @@ function CustomDropdownComp(props) {
             if (props.contextObjLabel.status === 'available') {
                 props.contextObjLabel.setValue(actionMeta.removedValues[0].value);
             }
+            if (props.contextObjId.status === 'available') {
+                props.contextObjId.setValue('');
+            }
             if (props.clearValue.canExecute) {
                 props.clearValue.execute();
             }
@@ -9827,6 +9830,9 @@ function CustomDropdownComp(props) {
         try {
             if (props.contextObjLabel.status === 'available') {
                 props.contextObjLabel.setValue(inputValue.value);
+            }
+            if (props.contextObjId.status === 'available') {
+                props.contextObjId.setValue('');
             }
             if (props.createValue.canExecute) {
                 props.createValue.execute();
