@@ -5,7 +5,7 @@ import { Styles } from 'react-select/src/styles';
 import { OptionTypeBase } from "react-select/src/types";
 
 import { ListValue, EditableValue, ActionValue, ListAttributeValue } from "mendix";
-import Label from './Label';
+import Label, { getStyles as getLabelStyles } from './Label';
 
 export interface Option {
     label: JSX.Element;
@@ -132,7 +132,29 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
     }
     if (props.enableCreate) {
         return (
-            <CreatableSelect
+            <div>
+                <style type="text/css" scoped>{getLabelStyles(props.classNamePrefix)}</style>
+                <CreatableSelect
+                    options={options}
+                    value={value}
+                    onChange={handleChange}
+                    isLoading={isLoading}
+                    isClearable={props.enableClear}
+                    isSearchable={props.enableSearch}
+                    styles={styles}
+                    placeholder={props.placeholder}
+                    className={props.className!}
+                    classNamePrefix={props.classNamePrefix}
+                    maxMenuHeight={props.menuHeight}
+                    onFocus={handleFocus}
+                />
+            </div>
+        )
+    }
+    return (
+        <div>
+            <style type="text/css" scoped>{getLabelStyles(props.classNamePrefix)}</style>
+            <Select
                 options={options}
                 value={value}
                 onChange={handleChange}
@@ -145,22 +167,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
                 maxMenuHeight={props.menuHeight}
                 onFocus={handleFocus}
             />
-        )
-    }
-    return (
-        <Select
-            options={options}
-            value={value}
-            onChange={handleChange}
-            isClearable={props.enableClear}
-            isSearchable={props.enableSearch}
-            styles={styles}
-            placeholder={props.placeholder}
-            className={props.className!}
-            classNamePrefix={props.classNamePrefix}
-            maxMenuHeight={props.menuHeight}
-            onFocus={handleFocus}
-        />
+        </div>
     )
 
     function clearAction(actionMeta: any) {
