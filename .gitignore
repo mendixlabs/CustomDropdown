@@ -10,3 +10,4 @@ tests/testProject/javascriptsource
 tests/testProject/CustomDropdownTestProject.mpr.lock
 *.log
 .env
+dist
