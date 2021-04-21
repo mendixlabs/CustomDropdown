@@ -181,7 +181,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
             }
             setValue(null);
         } catch (err) {
-            console.error('Failed to create a Tag: ' + err);
+            console.error('Failed to clear a Tag: ' + err);
         }
         setIsLoading(false);
     }

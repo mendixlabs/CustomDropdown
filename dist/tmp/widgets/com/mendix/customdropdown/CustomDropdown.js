@@ -73,7 +73,7 @@ return /******/ (function(modules) { // webpackBootstrap
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "29225671ce10821f6b4a";
+/******/ 	var hotCurrentHash = "5bd45718dfccae823dee";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -9821,7 +9821,7 @@ function CustomDropdownComp(props) {
             setValue(null);
         }
         catch (err) {
-            console.error('Failed to create a Tag: ' + err);
+            console.error('Failed to clear a Tag: ' + err);
         }
         setIsLoading(false);
     }
