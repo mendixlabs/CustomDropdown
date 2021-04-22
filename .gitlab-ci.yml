@@ -3,6 +3,7 @@ image: nexus-docker-group.rnd.mendix.com/node:lts-alpine
 stages:
     - snyk_scan
     - install
+    - test
 
 snyk:
   stage: snyk_scan
@@ -20,3 +21,7 @@ install:
     artifacts:
         paths:
             - node_modules/
+
+test:
+  stage: test
+  script: npm run test
