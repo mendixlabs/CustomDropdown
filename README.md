@@ -15,13 +15,13 @@ A custom dropdown selection widget for Mendix. This widget allows you to fully c
 
 ## Usage
 Having a look at the test project can be a great help to understand how the widget is setup.
-1. The widget requires a non persistent helper object to function. This object must have one string attribute to store the label of each item. In the test project I named this object DropdownContext.
+1. The widget requires a non persistent helper object to function. This object must have a string attribute to store the label of each item and a string attribute to store the id(If you want to uniquely retrieve the selected object in the selection microflow later on, an unique id is required). In the test project I named this object DropdownContext. 
 2. Before placing the widget on a page you should add a dataview containing this helper object for the widget.
 3. Place the widget inside this dataview.
 4. Fill the Default value property. Currently it is only possible to return lists in this datasource property, therefore make sure to return a list only containing the object you want to have as the default value. For options the same object type must be selected. Please use a microflow as retrieve the data.
 5. Fill the Options property. This will be all the selectable items in the dropdown menu. The same object type has to be selected as for the Default value. Please use a microflow as retrieve the data.
 6. Fill First label attribute and optionally the Second label and Image URL attributes.
-7. In the Events tab, specify the string attribute of the context object.
+7. In the Events tab, specify the label and id attributes of the context object.
 8. Create an microflow that should be triggered when an item is selected in the dropdown, and set this microflow for the Select option microflow.
 9. Determine if you want to allow for creation, clearing and searching and if so also create and specify microflows for these actions.
 10. Optionally configure a nano or microflow that will be triggerd once the dropdown gets focussed.
