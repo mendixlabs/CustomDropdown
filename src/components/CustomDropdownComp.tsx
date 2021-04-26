@@ -64,7 +64,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
                     let { firstLabel, secondLabel, id, imgUrl }: { firstLabel: string; secondLabel: string; id: string; imgUrl: string; } = getLabelValues(obj);
                     return createOption(firstLabel, secondLabel, id, imgUrl);
                 })
-                if (defaultValue[0]==undefined){
+                if (defaultValue[0]===undefined){
                     setValue(null)
                 } else {
                     setValue(defaultValue[0]);
