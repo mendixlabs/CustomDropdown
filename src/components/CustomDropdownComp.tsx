@@ -13,7 +13,7 @@ export interface Option {
     secondLabel: string;
     url: string;
 }
-
+// REFACTOR: check if is loading property is available for mendix components
 export interface CustomDropdownComponentProps {
     defaultValue: ListValue;
     firstLabel: ListAttributeValue<string>;
@@ -39,7 +39,6 @@ export interface CustomDropdownComponentProps {
 }
 
 export default function CustomDropdownComp(props: CustomDropdownComponentProps): ReactElement {
-    const [isLoading, setIsLoading] = useState(false);
     const [options, setOptions] = useState<Option[]>([]);
     const [value, setValue] = useState<Option>();
 
@@ -58,21 +57,16 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
     });
 
     useEffect(() => {
-        try {
-            if (props.defaultValue.status === 'available') {
-                const defaultValue = props.defaultValue.items.map(obj => {
-                    let { firstLabel, secondLabel, id, imgUrl }: { firstLabel: string; secondLabel: string; id: string; imgUrl: string; } = getLabelValues(obj);
-                    return createOption(firstLabel, secondLabel, id, imgUrl);
-                })
-                if (defaultValue[0]===undefined){
-                    setValue(null)
-                } else {
-                    setValue(defaultValue[0]);
-                }
+        if (props.defaultValue.status === 'available') {
+            const defaultValue = props.defaultValue.items.map(obj => {
+                let { firstLabel, secondLabel, id, imgUrl }: { firstLabel: string; secondLabel: string; id: string; imgUrl: string; } = getLabelValues(obj);
+                return createOption(firstLabel, secondLabel, id, imgUrl);
+            })
+            if (defaultValue[0] === undefined) {
+                setValue(null)
+            } else {
+                setValue(defaultValue[0]);
             }
-        }
-        catch {
-            setValue(null);
         }
     }, [props.defaultValue]);
 
@@ -142,7 +136,6 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
                 options={options}
                 value={value}
                 onChange={handleChange}
-                isLoading={isLoading}
                 isClearable={props.enableClear}
                 isSearchable={props.enableSearch}
                 styles={styles}
@@ -159,7 +152,6 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
             options={options}
             value={value}
             onChange={handleChange}
-            isLoading={isLoading}
             isClearable={props.enableClear}
             isSearchable={props.enableSearch}
             styles={styles}
@@ -172,59 +164,43 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
     )
 
     function clearAction(actionMeta: any) {
-        setIsLoading(true);
-        try {
-            if (props.contextObjLabel.status === 'available') {
-                props.contextObjLabel.setValue(actionMeta.removedValues[0].value);
-            }
-            if (props.contextObjId.status === 'available') {
-                props.contextObjId.setValue('');
-            }
-            if (props.clearValue.canExecute) {
-                props.clearValue.execute();
-            }
-            setValue(null);
-        } catch (err) {
-            console.error('Failed to clear a Tag: ' + err);
+
+        if (props.contextObjLabel.status === 'available') {
+            props.contextObjLabel.setValue(actionMeta.removedValues[0].value);
         }
-        setIsLoading(false);
+        if (props.contextObjId.status === 'available') {
+            props.contextObjId.setValue('');
+        }
+        if (props.clearValue.canExecute) {
+            props.clearValue.execute();
+        }
+        setValue(null);
     }
 
+
     function createAction(inputValue: any) {
-        setIsLoading(true);
-        try {
-            if (props.contextObjLabel.status === 'available') {
-                props.contextObjLabel.setValue(inputValue.value);
-            }
-            if (props.contextObjId.status === 'available') {
-                props.contextObjId.setValue('');
-            }
-            if (props.createValue.canExecute) {
-                props.createValue.execute();
-            }
-        } catch (err) {
-            console.error('Failed to create a Tag: ' + err);
+        if (props.contextObjLabel.status === 'available') {
+            props.contextObjLabel.setValue(inputValue.value);
         }
-        setIsLoading(false);
+        if (props.contextObjId.status === 'available') {
+            props.contextObjId.setValue('');
+        }
+        if (props.createValue.canExecute) {
+            props.createValue.execute();
+        }
     }
 
     function selectAction(inputValue: any) {
-        setIsLoading(true);
-        try {
-            if (props.contextObjLabel.status === 'available') {
-                props.contextObjLabel.setValue(inputValue.value);
-            }
-            if (props.contextObjId.status === 'available') {
-                props.contextObjId.setValue(inputValue.id);
-            }
-            if (props.selectOption.canExecute) {
-                props.selectOption.execute();
-            }
-            setValue(createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url));
-        } catch (err) {
-            console.error('Failed to select a Tag: ' + err);
+        if (props.contextObjLabel.status === 'available') {
+            props.contextObjLabel.setValue(inputValue.value);
         }
-        setIsLoading(false);
+        if (props.contextObjId.status === 'available') {
+            props.contextObjId.setValue(inputValue.id);
+        }
+        if (props.selectOption.canExecute) {
+            props.selectOption.execute();
+        }
+        setValue(createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url));
     }
 
     function getLabelValues(obj) {
@@ -237,9 +213,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
 }
 
 function getImgUrl(props: CustomDropdownComponentProps, obj: any): string {
-    console.log('image status', props.imgUrl(obj).status);
-
-    if(props.imgUrl(obj).status === 'available'){
+    if (props.imgUrl(obj).status === 'available') {
         return props.imgUrl(obj).displayValue;
     }
 }
