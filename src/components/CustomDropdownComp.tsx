@@ -138,7 +138,6 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
                     options={options}
                     value={value}
                     onChange={handleChange}
-                    isLoading={isLoading}
                     isClearable={props.enableClear}
                     isSearchable={props.enableSearch}
                     styles={styles}
