@@ -172,7 +172,7 @@ export default function Label(props: LabelProps): ReactElement {
       </React.Fragment>
     );
   }
-  if (props.EnableAvatar) {
+  if (props.EnableAvatar && props.UrlString) {
     return (
       <React.Fragment>
         <div

@@ -64,9 +64,9 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
                     let { firstLabel, secondLabel, id, imgUrl }: { firstLabel: string; secondLabel: string; id: string; imgUrl: string; } = getLabelValues(obj);
                     return createOption(firstLabel, secondLabel, id, imgUrl);
                 })
-                if(defaultValue[0]==undefined){
+                if (!defaultValue.length && defaultValue[0]){
                     setValue(null)
-                }else{
+                } else {
                     setValue(defaultValue[0]);
                 }
             }
@@ -104,7 +104,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
     };
 
     const handleFocus = () => {
-        if (props.onFocus != undefined && props.onFocus.canExecute) {
+        if (props.onFocus && props.onFocus.canExecute) {
             props.onFocus.execute();
         }
     }
@@ -228,10 +228,18 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
     }
 
     function getLabelValues(obj) {
-        let firstLabel: string = props.firstLabel != undefined ? props.firstLabel(obj).displayValue : '';
-        let secondLabel: string = props.secondLabel != undefined ? props.secondLabel(obj).displayValue : '';
-        let id: string = props.objId != undefined ? props.objId(obj).displayValue : '';
-        let imgUrl: string = props.imgUrl != undefined ? props.imgUrl(obj).displayValue : '';
+        let firstLabel: string = props.firstLabel && props.firstLabel(obj).displayValue;
+        let secondLabel: string = props.secondLabel && props.secondLabel(obj).displayValue;
+        let id: string = props.objId && props.objId(obj).displayValue;
+        let imgUrl: string = props.imgUrl && getImgUrl(props, obj);
         return { firstLabel, secondLabel, id, imgUrl };
+    }
+}
+
+function getImgUrl(props: CustomDropdownComponentProps, obj: any): string {
+    console.log('image status', props.imgUrl(obj).status);
+
+    if(props.imgUrl(obj).status === 'available'){
+        return props.imgUrl(obj).displayValue;
     }
 }
