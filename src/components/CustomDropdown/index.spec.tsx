@@ -2,7 +2,7 @@ import { createElement } from "react";
 import { render, fireEvent } from "@testing-library/react";
 import { ValueStatus } from "mendix";
 
-import CustomDropdown from "../CustomDropdownComp";
+import CustomDropdown from "./index";
 
 interface Value {
     status: ValueStatus;
