@@ -1,4 +1,5 @@
 import { useState, createElement, ReactElement, useEffect } from "react";
+import { ValueStatus } from "mendix";
 import Select from "react-select";
 import { ValueStatus } from "mendix";
 import CreatableSelect from "react-select/creatable";
@@ -178,6 +179,10 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
         };
     }
 
+    const isLoading =
+        props.options.status === ValueStatus.Loading ||
+        (props.defaultValue && props.defaultValue.status === ValueStatus.Loading);
+
     if (props.enableCreate) {
         return (
             <div>
@@ -190,6 +195,7 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
                     onChange={handleChange}
                     isClearable={props.enableClear}
                     isSearchable={props.enableSearch}
+                    isLoading={isLoading}
                     styles={styles}
                     placeholder={props.placeholder}
                     className={props.className!}
@@ -212,6 +218,7 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
                 onChange={handleChange}
                 isClearable={props.enableClear}
                 isSearchable={props.enableSearch}
+                isLoading={isLoading}
                 styles={styles}
                 placeholder={props.placeholder}
                 className={props.className!}

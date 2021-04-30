@@ -89,7 +89,7 @@ const renderComponent = (override = {}) => {
 };
 
 describe("Custom dropdown component", () => {
-    describe("and menu is shown", () => {
+    describe("when menu is shown", () => {
         let container;
 
         beforeEach(() => {
@@ -107,7 +107,7 @@ describe("Custom dropdown component", () => {
 
         it("- should render menu", () => {
             const menu = container.querySelector("div.test__menu");
-            expect(menu).toBeDefined();
+            expect(menu).not.toBeNull();
         });
 
         it("- should render menu items", () => {
@@ -129,7 +129,7 @@ describe("Custom dropdown component", () => {
         });
     });
 
-    describe("and clear button is pressed", () => {
+    describe("when clear button is pressed", () => {
         let component;
         const clearValue = jest.fn();
         const contextObjLabelSetValue = jest.fn();
@@ -252,6 +252,44 @@ describe("Custom dropdown component", () => {
 
             fireEvent.keyDown(createOption, { key: "Enter", code: "Enter" });
             expect(selectOption).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    describe("when options are loading", () => {
+        let container;
+
+        beforeEach(() => {
+            const component = renderComponent({
+                options: {
+                    status: ValueStatus.Loading,
+                    items: []
+                }
+            });
+            container = component.container;
+        });
+
+        it("- should show loading icon", () => {
+            const indicator = container.querySelector("div.test__loading-indicator");
+            expect(indicator).not.toBeNull();
+        });
+    });
+
+    describe("when default item is loading", () => {
+        let container;
+
+        beforeEach(() => {
+            const component = renderComponent({
+                defaultValue: {
+                    status: ValueStatus.Loading,
+                    items: []
+                }
+            });
+            container = component.container;
+        });
+
+        it("- should show loading icon", () => {
+            const indicator = container.querySelector("div.test__loading-indicator");
+            expect(indicator).not.toBeNull();
         });
     });
 });
