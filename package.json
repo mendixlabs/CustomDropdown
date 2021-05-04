@@ -10,7 +10,7 @@
     "mendixHost": "http://localhost:8080",
     "developmentPort": "3000"
   },
-  "packagePath": "com.mendix",
+  "packagePath": "mendix",
   "scripts": {
     "start": "pluggable-widgets-tools start:server --open",
     "dev": "pluggable-widgets-tools start:web",
