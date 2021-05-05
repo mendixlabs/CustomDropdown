@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<widget id="com.mendix.customdropdown.CustomDropdown" pluginWidget="true" needsEntityContext="true" offlineCapable="false"
+<widget id="mendix.customdropdown.CustomDropdown" pluginWidget="true" needsEntityContext="true" offlineCapable="false"
         supportedPlatform="Web"
         xmlns="http://www.mendix.com/widget/1.0/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.mendix.com/widget/1.0/ ../node_modules/mendix/custom_widget.xsd">
@@ -22,7 +22,7 @@
                 <attributeTypes>
                     <attributeType name="String"/>
                 </attributeTypes>
-            </property> 
+            </property>
             <property key="secondLabel" type="attribute" required="false" dataSource="options">
                 <caption>Second label</caption>
                 <description>The second label attribute of the selectable objects.</description>
