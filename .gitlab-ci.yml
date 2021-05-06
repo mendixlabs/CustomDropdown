@@ -24,4 +24,4 @@ install:
 
 test:
   stage: test
-  script: npm run test
+  script: npm run test:unit
