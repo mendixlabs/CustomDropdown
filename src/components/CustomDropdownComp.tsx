@@ -213,13 +213,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         let firstLabel: string = props.firstLabel && props.firstLabel(obj).displayValue;
         let secondLabel: string = props.secondLabel && props.secondLabel(obj).displayValue;
         let id: string = props.objId && props.objId(obj).displayValue;
-        let imgUrl: string = props.imgUrl && getImgUrl(props, obj);
+        let imgUrl: string = props.imgUrl && props.imgUrl(obj).displayValue;
         return { firstLabel, secondLabel, id, imgUrl };
-    }
-}
-
-function getImgUrl(props: CustomDropdownComponentProps, obj: any): string {
-    if (props.imgUrl(obj).status === 'available') {
-        return props.imgUrl(obj).displayValue;
     }
 }
