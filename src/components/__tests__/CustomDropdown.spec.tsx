@@ -140,4 +140,91 @@ describe('Custom dropdown component', () => {
             expect(clearValue).toHaveBeenCalledTimes(1);
         });
     });
+
+    describe('New entry is created', () => {
+        let component;
+        const createValue = jest.fn();
+        const contextObjLabelSetValue = jest.fn();
+        const contextObjIdSetValue = jest.fn();
+
+        beforeEach(() => {
+            component = renderComponent({
+                createValue: {
+                    canExecute: true,
+                    execute: createValue
+                },
+                contextObjLabel: {
+                    status: ValueStatus.Available,
+                    value: null,
+                    setValue: contextObjLabelSetValue
+                },
+                contextObjId: {
+                    status: ValueStatus.Available,
+                    value: null,
+                    setValue: contextObjIdSetValue
+                },
+            });
+
+            const inputValue = component.container.querySelector('div.test__input > input');
+            fireEvent.change(inputValue , { target: { value: 'This is a new value' } });
+
+            
+        })
+
+        it('- should show option to create value', () => {
+            expect(component.container.querySelector('div.test__menu-list > div.test__option')!.textContent).toBe(
+                'Create "This is a new value"');
+        });
+
+        it('- should create a value', () => {
+            const createOption = component.container.querySelector('div.test__menu-list > div.test__option')
+
+            fireEvent.keyDown(createOption, { key: 'Enter', code: 'Enter'})
+            expect(createValue).toHaveBeenCalledTimes(1);
+        });
+    });
+
+    
+    describe('Selection is changed', () => {
+        let component;
+        const selectOption = jest.fn();
+        const contextObjLabelSetValue = jest.fn();
+        const contextObjIdSetValue = jest.fn();
+
+        beforeEach(() => {
+            component = renderComponent({
+                selectOption: {
+                    canExecute: true,
+                    execute: selectOption
+                },
+                contextObjLabel: {
+                    status: ValueStatus.Available,
+                    value: null,
+                    setValue: contextObjLabelSetValue
+                },
+                contextObjId: {
+                    status: ValueStatus.Available,
+                    value: null,
+                    setValue: contextObjIdSetValue
+                },
+            });
+
+            const inputValue = component.container.querySelector('div.test__input > input');
+            fireEvent.change(inputValue , { target: { value: 'label3' } });
+
+            
+        })
+
+        it('- should show value in menu', () => {
+            expect(component.container.querySelector('div.test__menu-list > div.test__option')!.textContent).toBe(
+                'label3secondLabel3');
+        });
+
+        it('- should select the value', () => {
+            const createOption = component.container.querySelector('div.test__menu-list > div.test__option')
+
+            fireEvent.keyDown(createOption, { key: 'Enter', code: 'Enter'})
+            expect(selectOption).toHaveBeenCalledTimes(1);
+        });
+    });
 });
