@@ -4,36 +4,41 @@ import { ValueStatus } from "mendix";
 
 import CustomDropdown from "../CustomDropdownComp";
 
+const items = [
+    {
+        firstLabel: { displayValue: "label1" },
+        secondLabel: { displayValue: "secondLabel1" },
+        imgUrl: {
+            status: ValueStatus.Available,
+            displayValue: "url1"
+        }
+    },
+    {
+        firstLabel: { displayValue: "label2" },
+        secondLabel: { displayValue: "secondLabel2" },
+        imgUrl: {
+            status: ValueStatus.Available,
+            displayValue: "url2"
+        }
+    },
+    {
+        firstLabel: { displayValue: "label3" },
+        secondLabel: { displayValue: "secondLabel3" },
+        imgUrl: {
+            status: ValueStatus.Available,
+            displayValue: "url3"
+        }
+    }
+];
+
 const defaultValue = () => ({
     status: ValueStatus.Available,
-    items: [
-        {
-            firstLabel: { displayValue: "label1" },
-            secondLabel: { displayValue: "secondLabel1" },
-            imgUrl: { displayValue: "url1" }
-        }
-    ]
+    items: items.slice(0, 1)
 });
 
 const options = {
     status: ValueStatus.Available,
-    items: [
-        {
-            firstLabel: { displayValue: "label1" },
-            secondLabel: { displayValue: "secondLabel1" },
-            imgUrl: { displayValue: "url1" }
-        },
-        {
-            firstLabel: { displayValue: "label2" },
-            secondLabel: { displayValue: "secondLabel2" },
-            imgUrl: { displayValue: "url2" }
-        },
-        {
-            firstLabel: { displayValue: "label3" },
-            secondLabel: { displayValue: "secondLabel3" },
-            imgUrl: { displayValue: "url3" }
-        }
-    ]
+    items
 };
 
 const renderComponent = (override = {}) => {
