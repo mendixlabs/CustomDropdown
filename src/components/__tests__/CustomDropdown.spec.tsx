@@ -175,12 +175,16 @@ describe("Custom dropdown component", () => {
             );
         });
 
-        it("- should create a value", () => {
-            const createOption = component.container.querySelector("div.test__menu-list > div.test__option");
-
-            fireEvent.keyDown(createOption, { key: "Enter", code: "Enter" });
-            expect(createValue).toHaveBeenCalledTimes(1);
-        });
+        describe("and Enter key down", () => {
+            beforeEach(() => {
+                const createOption = component.container.querySelector("div.test__menu-list > div.test__option");
+                fireEvent.keyDown(createOption, { key: "Enter", code: "Enter" });
+            });
+            
+            it("- should create a value", () => {                
+                expect(createValue).toHaveBeenCalledTimes(1);
+            });
+        })
     });
 
     describe("Selection is changed", () => {
