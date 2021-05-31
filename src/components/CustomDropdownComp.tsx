@@ -1,11 +1,11 @@
 import { useState, createElement, ReactElement, useEffect } from "react";
-import Select from 'react-select'
-import CreatableSelect from 'react-select/creatable';
-import { Styles } from 'react-select/src/styles';
+import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
+import { Styles } from "react-select/src/styles";
 import { OptionTypeBase } from "react-select/src/types";
 
 import { ListValue, EditableValue, ActionValue, ListAttributeValue } from "mendix";
-import Label, { getStyles as getLabelStyles } from './Label';
+import Label, { getStyles as getLabelStyles } from "./Label";
 
 export interface Option {
     label: JSX.Element;
@@ -16,11 +16,15 @@ export interface Option {
 // REFACTOR: check if is loading property is available for mendix components
 export interface CustomDropdownComponentProps {
     defaultValue: ListValue;
-    firstLabel: ListAttributeValue<string>;
-    secondLabel: ListAttributeValue<string>;
-    objId: ListAttributeValue<string | BigJs.Big>;
-    imgUrl: ListAttributeValue<string>;
+    firstLabelDefaultValue: ListAttributeValue<string>;
+    secondLabelDefaultValue: ListAttributeValue<string>;
+    objIdDefaultValue: ListAttributeValue<string | BigJs.Big>;
+    imgUrlDefaultValue: ListAttributeValue<string>;
     options: ListValue;
+    firstLabelOptions: ListAttributeValue<string>;
+    secondLabelOptions: ListAttributeValue<string>;
+    objIdOptions: ListAttributeValue<string | BigJs.Big>;
+    imgUrlOptions: ListAttributeValue<string>;
     contextObjLabel: EditableValue<string>;
     contextObjId: EditableValue<string | BigJs.Big>;
     selectOption?: ActionValue;
@@ -43,27 +47,45 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
     const [value, setValue] = useState<Option>();
 
     const createOption = (label: string, secondaryLabel: string, id: string, urlstring: string) => ({
-        label: <Label
-            DisplayName={label}
-            UrlString={urlstring}
-            ClassNamePrefix={props.classNamePrefix}
-            EnableAvatar={props.useAvatar}
-            SecondLabel={secondaryLabel}
-        />,
+        label: (
+            <Label
+                DisplayName={label}
+                UrlString={urlstring}
+                ClassNamePrefix={props.classNamePrefix}
+                EnableAvatar={props.useAvatar}
+                SecondLabel={secondaryLabel}
+            />
+        ),
         value: label,
+        // eslint-disable-next-line object-shorthand
         id: id,
         secondLabel: secondaryLabel,
         url: urlstring
     });
 
     useEffect(() => {
-        if (props.defaultValue.status === 'available') {
+        if (props.defaultValue.status === "available") {
             const defaultValue = props.defaultValue.items.map(obj => {
-                let { firstLabel, secondLabel, id, imgUrl }: { firstLabel: string; secondLabel: string; id: string; imgUrl: string; } = getLabelValues(obj);
-                return createOption(firstLabel, secondLabel, id, imgUrl);
-            })
+                const {
+                    firstLabelDefaultValue,
+                    secondLabelDefaultValue,
+                    objIdDefaultValue,
+                    imgUrlDefaultValue
+                }: {
+                    firstLabelDefaultValue: string;
+                    secondLabelDefaultValue: string;
+                    objIdDefaultValue: string;
+                    imgUrlDefaultValue: string;
+                } = getLabelValuesDefault(obj);
+                return createOption(
+                    firstLabelDefaultValue,
+                    secondLabelDefaultValue,
+                    objIdDefaultValue,
+                    imgUrlDefaultValue
+                );
+            });
             if (defaultValue[0] === undefined) {
-                setValue(null)
+                setValue(null);
             } else {
                 setValue(defaultValue[0]);
             }
@@ -71,26 +93,36 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
     }, [props.defaultValue]);
 
     useEffect(() => {
-        if (props.options.status === 'available') {
+        if (props.options.status === "available") {
             const options = props.options.items.map(obj => {
-                let { firstLabel, secondLabel, id, imgUrl }: { firstLabel: string; secondLabel: string; id: string; imgUrl: string; } = getLabelValues(obj);
-                return createOption(firstLabel, secondLabel, id, imgUrl);
-            })
+                const {
+                    firstLabelOptions,
+                    secondLabelOptions,
+                    objIdOptions,
+                    imgUrlOptions
+                }: {
+                    firstLabelOptions: string;
+                    secondLabelOptions: string;
+                    objIdOptions: string;
+                    imgUrlOptions: string;
+                } = getLabelValuesOption(obj);
+                return createOption(firstLabelOptions, secondLabelOptions, objIdOptions, imgUrlOptions);
+            });
             setOptions(options);
         }
     }, [props.options]);
 
     const handleChange = (inputValue: any, actionMeta: any) => {
         switch (actionMeta.action) {
-            case 'select-option': {
+            case "select-option": {
                 selectAction(inputValue);
                 break;
             }
-            case 'create-option': {
+            case "create-option": {
                 createAction(inputValue);
                 break;
             }
-            case 'clear': {
+            case "clear": {
                 clearAction(actionMeta);
                 break;
             }
@@ -101,7 +133,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         if (props.onFocus && props.onFocus.canExecute) {
             props.onFocus.execute();
         }
-    }
+    };
 
     let styles: Styles<OptionTypeBase, true> = {};
     if (!props.useDefaultStyle) {
@@ -127,13 +159,15 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
             option: () => ({}),
             placeholder: () => ({}),
             singleValue: () => ({}),
-            valueContainer: () => ({}),
+            valueContainer: () => ({})
         };
     }
     if (props.enableCreate) {
         return (
             <div>
-                <style type="text/css" scoped>{getLabelStyles(props.classNamePrefix)}</style>
+                <style type="text/css" scoped>
+                    {getLabelStyles(props.classNamePrefix)}
+                </style>
                 <CreatableSelect
                     options={options}
                     value={value}
@@ -148,11 +182,13 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
                     onFocus={handleFocus}
                 />
             </div>
-        )
+        );
     }
     return (
         <div>
-            <style type="text/css" scoped>{getLabelStyles(props.classNamePrefix)}</style>
+            <style type="text/css" scoped>
+                {getLabelStyles(props.classNamePrefix)}
+            </style>
             <Select
                 options={options}
                 value={value}
@@ -167,15 +203,14 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
                 onFocus={handleFocus}
             />
         </div>
-    )
+    );
 
     function clearAction(actionMeta: any) {
-
-        if (props.contextObjLabel.status === 'available') {
+        if (props.contextObjLabel.status === "available") {
             props.contextObjLabel.setValue(actionMeta.removedValues[0].value);
         }
-        if (props.contextObjId.status === 'available') {
-            props.contextObjId.setValue('');
+        if (props.contextObjId.status === "available") {
+            props.contextObjId.setValue("");
         }
         if (props.clearValue.canExecute) {
             props.clearValue.execute();
@@ -183,13 +218,12 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         setValue(null);
     }
 
-
     function createAction(inputValue: any) {
-        if (props.contextObjLabel.status === 'available') {
+        if (props.contextObjLabel.status === "available") {
             props.contextObjLabel.setValue(inputValue.value);
         }
-        if (props.contextObjId.status === 'available') {
-            props.contextObjId.setValue('');
+        if (props.contextObjId.status === "available") {
+            props.contextObjId.setValue("");
         }
         if (props.createValue.canExecute) {
             props.createValue.execute();
@@ -197,10 +231,10 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
     }
 
     function selectAction(inputValue: any) {
-        if (props.contextObjLabel.status === 'available') {
+        if (props.contextObjLabel.status === "available") {
             props.contextObjLabel.setValue(inputValue.value);
         }
-        if (props.contextObjId.status === 'available') {
+        if (props.contextObjId.status === "available") {
             props.contextObjId.setValue(inputValue.id);
         }
         if (props.selectOption.canExecute) {
@@ -209,11 +243,23 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         setValue(createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url));
     }
 
-    function getLabelValues(obj) {
-        let firstLabel: string = props.firstLabel && props.firstLabel(obj).displayValue;
-        let secondLabel: string = props.secondLabel && props.secondLabel(obj).displayValue;
-        let id: string = props.objId && props.objId(obj).displayValue;
-        let imgUrl: string = props.imgUrl && props.imgUrl(obj).displayValue;
-        return { firstLabel, secondLabel, id, imgUrl };
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    function getLabelValuesOption(obj) {
+        const firstLabelOptions: string = props.firstLabelOptions && props.firstLabelOptions(obj).displayValue;
+        const secondLabelOptions: string = props.secondLabelOptions && props.secondLabelOptions(obj).displayValue;
+        const objIdOptions: string = props.objIdOptions && props.objIdOptions(obj).displayValue;
+        const imgUrlOptions: string = props.imgUrlOptions && props.imgUrlOptions(obj).displayValue;
+        return { firstLabelOptions, secondLabelOptions, objIdOptions, imgUrlOptions };
+    }
+
+    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
+    function getLabelValuesDefault(obj) {
+        const firstLabelDefaultValue: string =
+            props.firstLabelDefaultValue && props.firstLabelDefaultValue(obj).displayValue;
+        const secondLabelDefaultValue: string =
+            props.secondLabelDefaultValue && props.secondLabelDefaultValue(obj).displayValue;
+        const objIdDefaultValue: string = props.objIdDefaultValue && props.objIdDefaultValue(obj).displayValue;
+        const imgUrlDefaultValue: string = props.imgUrlDefaultValue && props.imgUrlDefaultValue(obj).displayValue;
+        return { firstLabelDefaultValue, secondLabelDefaultValue, objIdDefaultValue, imgUrlDefaultValue };
     }
 }
