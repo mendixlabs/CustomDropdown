@@ -235,8 +235,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         setValue(createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url));
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    function getLabelValuesOption(obj) {
+    function getLabelValuesOption(obj): LabelValues {
         const firstLabel: string = props.firstLabelOptions && props.firstLabelOptions(obj).displayValue;
         const secondLabel: string = props.secondLabelOptions && props.secondLabelOptions(obj).displayValue;
         const objId: string = props.objIdOptions && props.objIdOptions(obj).displayValue;
@@ -244,8 +243,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         return { firstLabel, secondLabel, objId, imgUrl };
     }
 
-    // eslint-disable-next-line @typescript-eslint/explicit-function-return-type
-    function getLabelValuesDefault(obj) {
+    function getLabelValuesDefault(obj): LabelValues {
         const firstLabel: string = props.firstLabelDefaultValue && props.firstLabelDefaultValue(obj).displayValue;
         const secondLabel: string = props.secondLabelDefaultValue && props.secondLabelDefaultValue(obj).displayValue;
         const objId: string = props.objIdDefaultValue && props.objIdDefaultValue(obj).displayValue;
