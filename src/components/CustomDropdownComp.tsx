@@ -104,7 +104,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         }
     }, [props.options]);
 
-    const handleChange = (inputValue: any, actionMeta: any) => {
+    const handleChange = (inputValue: any, actionMeta: any): void => {
         switch (actionMeta.action) {
             case Actions.Select: {
                 selectAction(inputValue);
@@ -121,7 +121,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         }
     };
 
-    const handleFocus = () => {
+    const handleFocus = (): void => {
         if (props.onFocus && props.onFocus.canExecute) {
             props.onFocus.execute();
         }
@@ -197,7 +197,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         </div>
     );
 
-    function clearAction(actionMeta: any) {
+    function clearAction(actionMeta: any): void {
         if (props.contextObjLabel.status === ValueStatus.Available) {
             props.contextObjLabel.setValue(actionMeta.removedValues[0].value);
         }
@@ -210,7 +210,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         setValue(null);
     }
 
-    function createAction(inputValue: any) {
+    function createAction(inputValue: any): void {
         if (props.contextObjLabel.status === ValueStatus.Available) {
             props.contextObjLabel.setValue(inputValue.value);
         }
@@ -222,7 +222,7 @@ export default function CustomDropdownComp(props: CustomDropdownComponentProps):
         }
     }
 
-    function selectAction(inputValue: any) {
+    function selectAction(inputValue: any): void {
         if (props.contextObjLabel.status === ValueStatus.Available) {
             props.contextObjLabel.setValue(inputValue.value);
         }
