@@ -4,6 +4,24 @@ import { ValueStatus } from "mendix";
 
 import CustomDropdown from "../CustomDropdownComp";
 
+interface Value {
+    status: ValueStatus;
+    items: Item[];
+}
+
+interface Item {
+    firstLabel: {
+        displayValue: string;
+    };
+    secondLabel: {
+        displayValue: string;
+    };
+    imgUrl: {
+        status: ValueStatus;
+        displayValue: string;
+    };
+}
+
 const items = [
     {
         firstLabel: { displayValue: "label1" },
@@ -31,7 +49,7 @@ const items = [
     }
 ];
 
-const defaultValue = () => ({
+const defaultValue = (): Value => ({
     status: ValueStatus.Available,
     items: items.slice(0, 1)
 });
@@ -44,10 +62,13 @@ const options = {
 const renderComponent = (override = {}) => {
     const props = {
         defaultValue: defaultValue(),
-        firstLabel: item => item.firstLabel,
-        secondLabel: item => item.secondLabel,
-        imgUrl: item => item.imgUrl,
+        firstLabelDefaultValue: item => item.firstLabel,
+        secondLabelDefaultValue: item => item.secondLabel,
+        imgUrlDefaultValue: item => item.imgUrl,
         options,
+        firstLabelOptions: item => item.firstLabel,
+        secondLabelOptions: item => item.secondLabel,
+        imgUrlOptions: item => item.imgUrl,
         contextObjLabel: {
             status: ValueStatus.Available,
             value: null
@@ -185,11 +206,11 @@ describe("Custom dropdown component", () => {
                 const createOption = component.container.querySelector("div.test__menu-list > div.test__option");
                 fireEvent.keyDown(createOption, { key: "Enter", code: "Enter" });
             });
-            
-            it("- should create a value", () => {                
+
+            it("- should create a value", () => {
                 expect(createValue).toHaveBeenCalledTimes(1);
             });
-        })
+        });
     });
 
     describe("Selection is changed", () => {
