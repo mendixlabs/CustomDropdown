@@ -4,7 +4,7 @@
   "version": "2.0.0",
   "description": "Widget to make a selection in a dropdown menu.",
   "copyright": "2021 Mendix Technology BV",
-  "author": "Nick",
+  "author": "Nick Jansen",
   "config": {
     "projectPath": "./tests/testProject/",
     "mendixHost": "http://localhost:8080",
