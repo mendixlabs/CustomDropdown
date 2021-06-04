@@ -1,5 +1,4 @@
 import { useState, createElement, ReactElement, useEffect } from "react";
-import { ValueStatus } from "mendix";
 import Select from "react-select";
 import { ValueStatus } from "mendix";
 import CreatableSelect from "react-select/creatable";
