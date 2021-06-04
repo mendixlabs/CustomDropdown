@@ -43,6 +43,6 @@
     "@testing-library/react-hooks": "3.2.1"
   },
   "dependencies": {
-    "react-select": "^4.3.0"
+    "react-select": "^4.3.1"
   }
 }
