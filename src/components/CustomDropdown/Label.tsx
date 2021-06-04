@@ -1,4 +1,4 @@
-import React, { createElement, ReactElement } from 'react';
+import React, { createElement, ReactElement } from "react";
 
 export interface LabelProps {
     DisplayName: string;
@@ -10,7 +10,7 @@ export interface LabelProps {
 
 // classnames like 'single-value', 'option', 'menu-list' are within React select component and are prefixed with customer prefix
 // therefore, styles are injected as scoped styles for the component
-export const getStyles = (prefix: string) => `
+export const getStyles = (prefix: string): string => `
     .${prefix}__avatar {flex: 0 0 24px; width: 24px; height: 24px; margin-right: 8px;border-radius: 50%; background-position: 50% 50%; background-size: 24px;}
     .${prefix}__avatar---initials {font-size: 9px;}
     .${prefix}__single-value {display: flex;align-items: center;}
@@ -47,20 +47,19 @@ export const getStyles = (prefix: string) => `
     .${prefix}__avatar--initials.color-y {background: Navy;}
     .${prefix}__avatar--initials.color-z {background: SeaGreen}`;
 
-export default function Label({ ClassNamePrefix: prefix, EnableAvatar, DisplayName, UrlString, SecondLabel }: LabelProps): ReactElement {    
-
+export default function Label({
+    ClassNamePrefix: prefix,
+    EnableAvatar,
+    DisplayName,
+    UrlString,
+    SecondLabel
+}: LabelProps): ReactElement {
     let avatar: ReactElement;
     if (EnableAvatar) {
         if (UrlString) {
-            avatar = (
-                <div
-                    className={`${prefix}__avatar`}
-                    style={{ backgroundImage: `url(${UrlString})` }}
-                ></div>
-            );
-        }
-        else {
-            const nameSplit = DisplayName.split(' ');
+            avatar = <div className={`${prefix}__avatar`} style={{ backgroundImage: `url(${UrlString})` }}></div>;
+        } else {
+            const nameSplit = DisplayName.split(" ");
             const names = nameSplit.length;
             let initials = nameSplit[0].charAt(0).toUpperCase();
             const colorClass = `color-${initials.toLowerCase()}`;
@@ -69,26 +68,18 @@ export default function Label({ ClassNamePrefix: prefix, EnableAvatar, DisplayNa
                 initials = initials + nameSplit[names - 1].charAt(0).toUpperCase();
             }
 
-            avatar = (
-                <div className={`${prefix}__avatar ${prefix}__avatar--initials ${colorClass}`}>
-                    {initials}
-                </div>
-            )
+            avatar = <div className={`${prefix}__avatar ${prefix}__avatar--initials ${colorClass}`}>{initials}</div>;
         }
     }
 
     return (
         <React.Fragment>
             {avatar}
-            <div className={`${prefix}__name`}>
-                {DisplayName}
-            </div>
+            <div className={`${prefix}__name`}>{DisplayName}</div>
             {!!SecondLabel && (
                 <React.Fragment>
                     <div className={`${prefix}__divider`}></div>
-                    <div className={`${prefix}__name ${prefix}--name2`}>
-                        {SecondLabel}
-                    </div>
+                    <div className={`${prefix}__name ${prefix}--name2`}>{SecondLabel}</div>
                 </React.Fragment>
             )}
         </React.Fragment>

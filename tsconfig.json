@@ -1,9 +1,8 @@
 {
-  "extends": "./node_modules/@mendix/pluggable-widgets-tools/configs/tsconfig.base.json",
-
-  "compilerOptions": {
-    "noUnusedLocals": false,
-    "noUnusedParameters": false,
-    "strict": false,
-},
+    "extends": "./node_modules/@mendix/pluggable-widgets-tools/configs/tsconfig.base.json",
+    "compilerOptions": {
+        "noUnusedLocals": false,
+        "noUnusedParameters": false,
+        "strict": false,
+    },
 }
