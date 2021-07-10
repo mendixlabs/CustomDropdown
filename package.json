@@ -1,48 +1,48 @@
 {
-  "name": "customdropdown",
-  "widgetName": "CustomDropdown",
-  "version": "2.1.0",
-  "description": "Widget to make a selection in a dropdown menu.",
-  "copyright": "2021 Mendix Technology BV",
-  "author": "Nick Jansen",
-  "config": {
-    "projectPath": "./tests/testProject/",
-    "mendixHost": "http://localhost:8080",
-    "developmentPort": "3000"
-  },
-  "packagePath": "mendix",
-  "scripts": {
-    "start": "pluggable-widgets-tools start:server --open",
-    "dev": "pluggable-widgets-tools start:web",
-    "build": "pluggable-widgets-tools build:web",
-    "lint": "pluggable-widgets-tools lint",
-    "lint:fix": "pluggable-widgets-tools lint:fix",
-    "test": "pluggable-widgets-tools test:unit:web --no-cache --ci && npm run test:e2e",
-    "test:unit": "pluggable-widgets-tools test:unit:web --coverage",
-    "test:e2e": "pluggable-widgets-tools test:e2e --url \"https://badge.mxapps.io\"",
-    "test:e2e:dev": "pluggable-widgets-tools test:e2e --debug",
-    "prerelease": "npm run lint",
-    "release": "pluggable-widgets-tools release:web"
-  },
-  "license": "Apache-2.0",
-  "devDependencies": {
-    "@mendix/pluggable-widgets-tools": "^8.14.0",
-    "@types/big.js": "^4.0.5",
-    "@types/classnames": "^2.2.4",
-    "@types/enzyme": "^3.1.10",
-    "@types/enzyme-adapter-react-16": "^1.0.2",
-    "@types/jasmine": "^3.4.0",
-    "@types/jest": "^24.0.0",
-    "@types/react": "~16.9.0",
-    "@types/react-dom": "~16.9.0",
-    "@types/react-select": "^4.0.13",
-    "@types/react-test-renderer": "~16.9.0",
-    "@types/webdriverio": "^4.13.0",
-    "@testing-library/jest-dom": "5.9.0",
-    "@testing-library/react": "11.2.5",
-    "@testing-library/react-hooks": "3.2.1"
-  },
-  "dependencies": {
-    "react-select": "^4.3.1"
-  }
+    "name": "customdropdown",
+    "widgetName": "CustomDropdown",
+    "version": "2.2.0",
+    "description": "Widget to make a selection in a dropdown menu.",
+    "copyright": "2021 Mendix Technology BV",
+    "author": "Nick Jansen",
+    "config": {
+        "projectPath": "./tests/testProject/",
+        "mendixHost": "http://localhost:8080",
+        "developmentPort": "3000"
+    },
+    "packagePath": "mendix",
+    "scripts": {
+        "start": "pluggable-widgets-tools start:server --open",
+        "dev": "pluggable-widgets-tools start:web",
+        "build": "pluggable-widgets-tools build:web",
+        "lint": "pluggable-widgets-tools lint",
+        "lint:fix": "pluggable-widgets-tools lint:fix",
+        "test": "pluggable-widgets-tools test:unit:web --no-cache --ci && npm run test:e2e",
+        "test:unit": "pluggable-widgets-tools test:unit:web --coverage",
+        "test:e2e": "pluggable-widgets-tools test:e2e --url \"https://badge.mxapps.io\"",
+        "test:e2e:dev": "pluggable-widgets-tools test:e2e --debug",
+        "prerelease": "npm run lint",
+        "release": "pluggable-widgets-tools release:web"
+    },
+    "license": "Apache-2.0",
+    "devDependencies": {
+        "@mendix/pluggable-widgets-tools": "8.18.2",
+        "@types/big.js": "^4.0.5",
+        "@types/classnames": "^2.2.4",
+        "@types/enzyme": "^3.1.10",
+        "@types/enzyme-adapter-react-16": "^1.0.2",
+        "@types/jasmine": "^3.4.0",
+        "@types/jest": "^24.0.0",
+        "@types/react": "~16.9.0",
+        "@types/react-dom": "~16.9.0",
+        "@types/react-select": "^4.0.13",
+        "@types/react-test-renderer": "~16.9.0",
+        "@types/webdriverio": "^4.13.0",
+        "@testing-library/jest-dom": "5.9.0",
+        "@testing-library/react": "11.2.5",
+        "@testing-library/react-hooks": "3.2.1"
+    },
+    "dependencies": {
+        "react-select": "^4.3.1"
+    }
 }
