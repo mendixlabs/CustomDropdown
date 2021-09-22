@@ -43,6 +43,8 @@
         "@testing-library/react-hooks": "3.2.1"
     },
     "dependencies": {
-        "react-select": "^4.3.1"
+        "react": "^17.0.2",
+        "react-select": "^4.3.1",
+        "react-select-async-paginate": "^0.5.3"
     }
 }
