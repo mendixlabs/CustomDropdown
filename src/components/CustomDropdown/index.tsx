@@ -7,6 +7,7 @@ import { OptionTypeBase } from "react-select/src/types";
 
 import { CustomDropdownContainerProps } from "../../../typings/CustomDropdownProps";
 import Label, { getStyles as getLabelStyles } from "./Label";
+import { AsyncPaginate } from "react-select-async-paginate";
 
 export interface Option {
     id: string;
@@ -30,9 +31,29 @@ interface LabelValues {
 }
 
 export default function CustomDropdown(props: CustomDropdownContainerProps): ReactElement {
+    props.options.setLimit(2);
+    const current = props.options.offset;
+    //const [options, setOptions] = useState<Option[]>([]);
     const [options, setOptions] = useState<Option[]>([]);
     const [value, setValue] = useState<Option>();
+    const loadOptions = async (searchQuery:any, loadedOptions:any, { page }:any) => {
 
+        // const response = await fetch(
+        //   `https://www.anapioficeandfire.com/api/houses?region=${regionName}&page=${page}&pageSize=5`
+        // );
+        // const responseJSON = await response.json();
+        
+        props.options.setOffset(page*2);
+        console.log('Additional page ',page);
+        return {
+          options: options,
+          hasMore: props.options.hasMoreItems,
+          additional: {
+            page:  searchQuery ? 2 : page + 1,
+          },
+        };
+      };
+    console.log('banani ac2')
     const createOption = (label: string, secondLabel: string, id: string, imageUrl: string): Option => ({
         label: (
             <Label
@@ -149,6 +170,7 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
             setOptions(options);
         }
     }, [props.options]);
+    
 
     let styles: Styles<OptionTypeBase, true> = {};
     if (!props.useDefaultStyle) {
@@ -181,17 +203,18 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
     const isLoading =
         props.options.status === ValueStatus.Loading ||
         (props.defaultValue && props.defaultValue.status === ValueStatus.Loading);
-
-    if (props.enableCreate) {
+        console.log('bananiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
+    if (props.enableCreate) {  
         return (
             <div>
                 <style type="text/css" scoped>
                     {getLabelStyles(props.classNamePrefix)}
                 </style>
-                <CreatableSelect
-                    options={options}
+                <AsyncPaginate
+                    loadOptions={loadOptions}
+                    //options={options}
                     value={value}
-                    onChange={handleChange}
+                    //onChange={handleChange}
                     isClearable={props.enableClear}
                     isSearchable={props.enableSearch}
                     isLoading={isLoading}
@@ -199,6 +222,9 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
                     placeholder={props.placeholder}
                     className={props.className!}
                     classNamePrefix={props.classNamePrefix}
+                    additional={{
+                        page: 1,
+                      }}
                     maxMenuHeight={props.menuHeight}
                     onFocus={handleFocus}
                 />
@@ -211,10 +237,11 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
             <style type="text/css" scoped>
                 {getLabelStyles(props.classNamePrefix)}
             </style>
-            <Select
-                options={options}
+            <AsyncPaginate
+                loadOptions={loadOptions}
+                //options={options}
                 value={value}
-                onChange={handleChange}
+                //onChange={handleChange}
                 isClearable={props.enableClear}
                 isSearchable={props.enableSearch}
                 isLoading={isLoading}
@@ -222,6 +249,9 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
                 placeholder={props.placeholder}
                 className={props.className!}
                 classNamePrefix={props.classNamePrefix}
+                additional={{
+                    page: 1,
+                  }}
                 maxMenuHeight={props.menuHeight}
                 onFocus={handleFocus}
             />
