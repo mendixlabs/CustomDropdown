@@ -1,12 +1,14 @@
-import { useState, createElement, ReactElement, useEffect } from "react";
+import { useState, createElement, ReactElement, useEffect, useRef } from "react";
 import Select from "react-select";
 import { ValueStatus } from "mendix";
+import { contains } from "mendix/filters/builders";
 import CreatableSelect from "react-select/creatable";
 import { Styles } from "react-select/src/styles";
 import { OptionTypeBase } from "react-select/src/types";
 
 import { CustomDropdownContainerProps } from "../../../typings/CustomDropdownProps";
 import Label, { getStyles as getLabelStyles } from "./Label";
+import { AsyncPaginate, withAsyncPaginate } from "react-select-async-paginate";
 
 export interface Option {
     id: string;
@@ -30,8 +32,14 @@ interface LabelValues {
 }
 
 export default function CustomDropdown(props: CustomDropdownContainerProps): ReactElement {
-    const [options, setOptions] = useState<Option[]>([]);
     const [value, setValue] = useState<Option>();
+    const [options, setOptions] = useState<Option[]>([]);
+    const pageSize = 10;
+
+    useEffect(() => {
+        props.options.setLimit(pageSize * 3);
+        props.options.setOffset(0);
+    }, []);
 
     const createOption = (label: string, secondLabel: string, id: string, imageUrl: string): Option => ({
         label: (
@@ -126,6 +134,43 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
         }
     };
 
+    const getOptions = (): Option[] => {
+        if (!props.options || props.options.status !== ValueStatus.Available) {
+            return [];
+        }
+
+        return props.options.items.map(obj => {
+            const { firstLabel, secondLabel, objId, imgUrl }: LabelValues = getLabelValuesOption(obj);
+            return createOption(firstLabel, secondLabel, objId, imgUrl);
+        });
+    };
+
+    const loadOptions = async (searchQuery: any, loadedOptions: Option[], { page }: any) => {
+        const { offset, limit } = props.options;
+        console.log("loadOptions:", loadedOptions.length, page, offset, limit);
+        props.options.setLimit(loadedOptions.length + pageSize * 3);
+
+        // if (searchQuery) {
+        //     props.options.setFilter(contains(searchQuery));
+        // }
+
+        const nextPage = options.slice(loadedOptions.length, loadedOptions.length + 10);
+
+        return {
+            options: nextPage,
+            hasMore: options.length > loadedOptions.length + pageSize,
+            additional: {
+                page: searchQuery ? 2 : page + 1
+            }
+        };
+    };
+
+    useEffect(() => {
+        const newOptions = getOptions();
+        console.log("new options:", newOptions);
+        setOptions(newOptions);
+    }, [props.options]);
+
     useEffect(() => {
         if (props.defaultValue.status === ValueStatus.Available) {
             const defaultValue = props.defaultValue.items.map(obj => {
@@ -139,16 +184,6 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
             }
         }
     }, [props.defaultValue]);
-
-    useEffect(() => {
-        if (props.options.status === ValueStatus.Available) {
-            const options = props.options.items.map(obj => {
-                const { firstLabel, secondLabel, objId, imgUrl }: LabelValues = getLabelValuesOption(obj);
-                return createOption(firstLabel, secondLabel, objId, imgUrl);
-            });
-            setOptions(options);
-        }
-    }, [props.options]);
 
     let styles: Styles<OptionTypeBase, true> = {};
     if (!props.useDefaultStyle) {
@@ -182,14 +217,21 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
         props.options.status === ValueStatus.Loading ||
         (props.defaultValue && props.defaultValue.status === ValueStatus.Loading);
 
+    const initialOptions = options.slice(0, pageSize);
+    const CreatablePaginate = withAsyncPaginate(CreatableSelect);
+    const SelectPaginate = withAsyncPaginate(Select);
+
     if (props.enableCreate) {
         return (
             <div>
                 <style type="text/css" scoped>
                     {getLabelStyles(props.classNamePrefix)}
                 </style>
-                <CreatableSelect
-                    options={options}
+                <AsyncPaginate
+                    /*
+                    // @ts-ignore */
+                    loadOptions={loadOptions}
+                    options={initialOptions}
                     value={value}
                     onChange={handleChange}
                     isClearable={props.enableClear}
@@ -199,6 +241,9 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
                     placeholder={props.placeholder}
                     className={props.className!}
                     classNamePrefix={props.classNamePrefix}
+                    additional={{
+                        page: 1
+                    }}
                     maxMenuHeight={props.menuHeight}
                     onFocus={handleFocus}
                 />
@@ -211,8 +256,11 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
             <style type="text/css" scoped>
                 {getLabelStyles(props.classNamePrefix)}
             </style>
-            <Select
-                options={options}
+            <AsyncPaginate
+                /*
+                // @ts-ignore */
+                loadOptions={loadOptions}
+                options={initialOptions}
                 value={value}
                 onChange={handleChange}
                 isClearable={props.enableClear}
@@ -222,6 +270,9 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
                 placeholder={props.placeholder}
                 className={props.className!}
                 classNamePrefix={props.classNamePrefix}
+                additional={{
+                    page: 1
+                }}
                 maxMenuHeight={props.menuHeight}
                 onFocus={handleFocus}
             />
