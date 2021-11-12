@@ -9,6 +9,8 @@ import { OptionTypeBase } from "react-select/src/types";
 import { CustomDropdownContainerProps } from "../../../typings/CustomDropdownProps";
 import Label, { getStyles as getLabelStyles } from "./Label";
 import { AsyncPaginate, withAsyncPaginate } from "react-select-async-paginate";
+import { attribute, literal, startsWith } from "mendix/filters/builders";
+import Creatable from "react-select/creatable";
 
 export interface Option {
     id: string;
@@ -149,13 +151,30 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
         const { offset, limit } = props.options;
         console.log("loadOptions:", loadedOptions.length, page, offset, limit);
         props.options.setLimit(loadedOptions.length + pageSize * 3);
-
-        // if (searchQuery) {
-        //     props.options.setFilter(contains(searchQuery));
-        // }
-
+        if (searchQuery) {
+            console.log("search query 11:", searchQuery );
+            //console.log('attribute',attribute(this.props.loadedOptions.label));
+            // @ts-ignore
+            const filterCond = contains(attribute("Name"), literal(searchQuery));
+            // const filterCond = this.props.options.filter(({ entry  }: any) =>
+            //     contains(attribute(entry.label), searchQuery)
+            // );
+            this.props.options.setFilter(filterCond);
+         }else {
+            console.log("Attribute is not filterable");
+         }
         const nextPage = options.slice(loadedOptions.length, loadedOptions.length + 10);
-
+        // let filteredOptions;
+        // if (!searchQuery) {
+        //     filteredOptions = nextPage;
+        //     console.log("no search query:");
+        //   } else {
+        //     const searchLower = searchQuery.toLowerCase();
+        //     console.log("search query is :", searchQuery, searchLower);
+        //     filteredOptions = nextPage.filter(({ attribute  }: any) =>         
+        //         attribute.label.toLowerCase().includes(searchLower)       
+        //     );
+        //   }
         return {
             options: nextPage,
             hasMore: options.length > loadedOptions.length + pageSize,
@@ -222,6 +241,7 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
     const SelectPaginate = withAsyncPaginate(Select);
 
     if (props.enableCreate) {
+        console.log('enable create ..................',props.enableCreate)
         return (
             <div>
                 <style type="text/css" scoped>
@@ -230,6 +250,7 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
                 <AsyncPaginate
                     /*
                     // @ts-ignore */
+                    SelectComponent={Creatable}
                     loadOptions={loadOptions}
                     options={initialOptions}
                     value={value}
