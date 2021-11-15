@@ -1,16 +1,12 @@
-import { useState, createElement, ReactElement, useEffect, useRef } from "react";
-import Select from "react-select";
+import { useState, createElement, ReactElement, useEffect } from "react";
 import { ValueStatus } from "mendix";
-import { contains } from "mendix/filters/builders";
-import CreatableSelect from "react-select/creatable";
 import { Styles } from "react-select/src/styles";
 import { OptionTypeBase } from "react-select/src/types";
-
 import { CustomDropdownContainerProps } from "../../../typings/CustomDropdownProps";
 import Label, { getStyles as getLabelStyles } from "./Label";
-import { AsyncPaginate, withAsyncPaginate } from "react-select-async-paginate";
-import { attribute, literal, startsWith } from "mendix/filters/builders";
-import Creatable from "react-select/creatable";
+import { AsyncPaginate } from "react-select-async-paginate";
+import { attribute, literal, or ,contains } from "mendix/filters/builders";
+
 
 export interface Option {
     id: string;
@@ -151,42 +147,30 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
         const { offset, limit } = props.options;
         console.log("loadOptions:", loadedOptions.length, page, offset, limit);
         props.options.setLimit(loadedOptions.length + pageSize * 3);
-        if (searchQuery) {
-            console.log("search query 11:", searchQuery );
-            //console.log('attribute',attribute(this.props.loadedOptions.label));
-            // @ts-ignore
-            const filterCond = contains(attribute("Name"), literal(searchQuery));
-            // const filterCond = this.props.options.filter(({ entry  }: any) =>
-            //     contains(attribute(entry.label), searchQuery)
-            // );
-            this.props.options.setFilter(filterCond);
-         }else {
+
+        if (searchQuery && props.firstLabelOptions.filterable) {
+            const filterCond = or(
+                contains(attribute(props.firstLabelOptions.id), literal(searchQuery)),
+                contains(attribute(props.secondLabelOptions.id), literal(searchQuery))
+            );
+            props.options.setFilter(filterCond);
+        } else {
             console.log("Attribute is not filterable");
-         }
+        }
         const nextPage = options.slice(loadedOptions.length, loadedOptions.length + 10);
-        // let filteredOptions;
-        // if (!searchQuery) {
-        //     filteredOptions = nextPage;
-        //     console.log("no search query:");
-        //   } else {
-        //     const searchLower = searchQuery.toLowerCase();
-        //     console.log("search query is :", searchQuery, searchLower);
-        //     filteredOptions = nextPage.filter(({ attribute  }: any) =>         
-        //         attribute.label.toLowerCase().includes(searchLower)       
-        //     );
-        //   }
+        const hasMore = options.length > loadedOptions.length + pageSize;
+
         return {
             options: nextPage,
-            hasMore: options.length > loadedOptions.length + pageSize,
+            hasMore,
             additional: {
-                page: searchQuery ? 2 : page + 1
+                page: loadedOptions.length > 0 ? loadedOptions.length / pageSize + 1 : 1
             }
         };
     };
 
     useEffect(() => {
         const newOptions = getOptions();
-        console.log("new options:", newOptions);
         setOptions(newOptions);
     }, [props.options]);
 
@@ -237,11 +221,8 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
         (props.defaultValue && props.defaultValue.status === ValueStatus.Loading);
 
     const initialOptions = options.slice(0, pageSize);
-    const CreatablePaginate = withAsyncPaginate(CreatableSelect);
-    const SelectPaginate = withAsyncPaginate(Select);
 
     if (props.enableCreate) {
-        console.log('enable create ..................',props.enableCreate)
         return (
             <div>
                 <style type="text/css" scoped>
@@ -250,7 +231,6 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
                 <AsyncPaginate
                     /*
                     // @ts-ignore */
-                    SelectComponent={Creatable}
                     loadOptions={loadOptions}
                     options={initialOptions}
                     value={value}
