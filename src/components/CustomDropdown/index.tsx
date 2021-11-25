@@ -105,11 +105,6 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
             props.imgUrlOptions && "get" in props.imgUrlOptions
                 ? props.imgUrlOptions.get(obj).displayValue
                 : props.imgUrlOptions(obj).displayValue;
-
-        // const firstLabel2: string = props.firstLabelOptions && props.firstLabelOptions(obj).displayValue;
-        // const secondLabel2: string = props.secondLabelOptions && props.secondLabelOptions(obj).displayValue;
-        // const objId2: string = props.objIdOptions && props.objIdOptions(obj).displayValue;
-        // const imgUrl2: string = props.imgUrlOptions && props.imgUrlOptions(obj).displayValue;
         return { firstLabel, secondLabel, objId, imgUrl };
     };
 
@@ -131,11 +126,6 @@ export default function CustomDropdown(props: CustomDropdownContainerProps): Rea
             props.imgUrlDefaultValue && "get" in props.imgUrlDefaultValue
                 ? props.imgUrlDefaultValue.get(obj).displayValue
                 : props.imgUrlDefaultValue(obj).displayValue;
-
-        // const firstLabel2: string = props.firstLabelDefaultValue && props.firstLabelDefaultValue(obj).displayValue;
-        // const secondLabel2: string = props.secondLabelDefaultValue && props.secondLabelDefaultValue(obj).displayValue;
-        // const objId2: string = props.objIdDefaultValue && props.objIdDefaultValue(obj).displayValue;
-        // const imgUrl2: string = props.imgUrlDefaultValue && props.imgUrlDefaultValue(obj).displayValue;
         return { firstLabel, secondLabel, objId, imgUrl };
     };
 
