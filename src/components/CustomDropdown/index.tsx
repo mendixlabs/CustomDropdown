@@ -36,7 +36,7 @@ interface State {
     value: Option;
 }
 
-const pageSize = 10;
+//const pageSize = 10;
 
 const CreatablePaginate = withAsyncPaginate(Creatable);
 const SelectPaginate = withAsyncPaginate(Select);
@@ -45,7 +45,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
     constructor(props: CustomDropdownContainerProps) {
         super(props);
 
-        props.options.setLimit(pageSize);
+        props.options.setLimit(this.props.pageSize);
         props.options.setOffset(0);
 
         this.state = {
@@ -219,7 +219,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     }
                 }
 
-                this.props.options.setLimit(page * pageSize);
+                this.props.options.setLimit(page * this.props.pageSize);
                 timeout = setTimeout(() => resolve(this.getOptions()), 1000);
             });
 

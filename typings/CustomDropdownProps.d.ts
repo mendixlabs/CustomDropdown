@@ -21,6 +21,7 @@ export interface CustomDropdownContainerProps {
     firstLabelOptions: ListAttributeValue<string>;
     secondLabelOptions?: ListAttributeValue<string>;
     imgUrlOptions?: ListAttributeValue<string>;
+    pageSize: number;
     contextObjId: EditableValue<string>;
     contextObjLabel: EditableValue<string>;
     selectOption?: ActionValue;
@@ -51,6 +52,7 @@ export interface CustomDropdownPreviewProps {
     firstLabelOptions: string;
     secondLabelOptions: string;
     imgUrlOptions: string;
+    pageSize: number | null;
     contextObjId: string;
     contextObjLabel: string;
     selectOption: {} | null;

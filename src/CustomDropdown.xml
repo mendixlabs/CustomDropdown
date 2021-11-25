@@ -71,6 +71,10 @@
                 <attributeTypes>
                     <attributeType name="String"/>
                 </attributeTypes>
+            </property>
+            <property key="pageSize" type="integer" required="true" defaultValue="10" >
+                <caption>Page size for pagination</caption>
+                <description>Number of records retrived per page</description>
             </property> 
         </propertyGroup>
 
