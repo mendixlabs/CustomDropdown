@@ -36,7 +36,6 @@ interface State {
     value: Option;
 }
 
-//const pageSize = 10;
 
 const CreatablePaginate = withAsyncPaginate(Creatable);
 const SelectPaginate = withAsyncPaginate(Select);
