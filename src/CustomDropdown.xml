@@ -72,10 +72,14 @@
                     <attributeType name="String"/>
                 </attributeTypes>
             </property>
+            <property key="paginate" type="boolean" required="true" defaultValue="true" >
+                <caption>pagination</caption>
+                <description>Retrieves the dropdown values in smaller set</description>
+            </property>
             <property key="pageSize" type="integer" required="true" defaultValue="10" >
                 <caption>Page size for pagination</caption>
-                <description>Number of records retrived per page</description>
-            </property> 
+                <description>Number of records retrived per page(not used if "Paginate" is set to false)</description>
+            </property>
         </propertyGroup>
 
         <propertyGroup caption="Events">

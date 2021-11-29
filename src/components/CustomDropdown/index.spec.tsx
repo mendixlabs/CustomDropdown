@@ -56,7 +56,9 @@ const defaultValue = (): Value => ({
 
 const options = {
     status: ValueStatus.Available,
-    items
+    items,
+    setOffset : jest.fn(),
+    setLimit : jest.fn()
 };
 
 const renderComponent = (override = {}) => {
@@ -134,6 +136,7 @@ describe("Custom dropdown component", () => {
         const clearValue = jest.fn();
         const contextObjLabelSetValue = jest.fn();
         const contextObjIdSetValue = jest.fn();
+        
 
         beforeEach(() => {
             component = renderComponent({
@@ -262,7 +265,9 @@ describe("Custom dropdown component", () => {
             const component = renderComponent({
                 options: {
                     status: ValueStatus.Loading,
-                    items: []
+                    items: [],
+                    setOffset: jest.fn(),
+                    setLimit: jest.fn()
                 }
             });
             container = component.container;
