@@ -36,18 +36,13 @@ interface State {
     value: Option;
 }
 
-
 const CreatablePaginate = withAsyncPaginate(Creatable);
 const SelectPaginate = withAsyncPaginate(Select);
-var pageSize = 1000;
+
 export default class CustomDropdown extends Component<CustomDropdownContainerProps, State> {
-    
     constructor(props: CustomDropdownContainerProps) {
-        super(props); 
-        if(this.props.paginate == true && this.props.pageSize != null){
-            pageSize =  this.props.pageSize;
-        }
-        props.options.setLimit(pageSize);
+        super(props);
+        props.options.setLimit(this.pageSize());
         props.options.setOffset(0);
 
         this.state = {
@@ -55,23 +50,23 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         };
     }
 
+    pageSize = (): number => (this.props.paginate && this.props.pageSize) || 1000;
+
     _resolveLoadOptions: (options: Option[]) => void;
     _waitAnotherPropsUpdate: boolean;
+
+    componentDidMount(): void {
+        if (this.props.defaultValue.status === ValueStatus.Available && this.props.defaultValue.items?.length) {
+            this.setValue(this.getDefaultValue());
+        }
+    }
 
     componentDidUpdate(prevProps: CustomDropdownContainerProps): void {
         if (
             prevProps.defaultValue !== this.props.defaultValue &&
             this.props.defaultValue.status === ValueStatus.Available
         ) {
-            const defaultValue = this.props.defaultValue.items.map(obj => {
-                const { firstLabel, secondLabel, objId, imgUrl }: LabelValues = this.getLabelValuesDefault(obj);
-                return this.createOption(firstLabel, secondLabel, objId, imgUrl);
-            });
-            if (defaultValue[0] === undefined) {
-                this.setValue(null);
-            } else {
-                this.setValue(defaultValue[0]);
-            }
+            this.setValue(this.getDefaultValue());
         }
     }
 
@@ -195,14 +190,23 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         });
     };
 
+    getDefaultValue = (): Option => {
+        const defaultValue = this.props.defaultValue.items.map(obj => {
+            const { firstLabel, secondLabel, objId, imgUrl }: LabelValues = this.getLabelValuesDefault(obj);
+            return this.createOption(firstLabel, secondLabel, objId, imgUrl);
+        });
+
+        return defaultValue[0] || null;
+    };
+
     loadOptions = async (searchQuery: string, loadedOptions: Option[], { page }: any) => {
         try {
             const { offset, limit, hasMoreItems: hasMore, filter } = this.props.options;
-            console.log("loadOptions:", loadedOptions.length, page, offset, limit, hasMore);
+            console.debug("loadOptions:", loadedOptions.length, page, offset, limit, hasMore);
 
             let timeout: NodeJS.Timeout;
 
-            const newOptions: Option[] = await new Promise(resolve => {
+            const newOptions: Option[] = await new Promise((resolve, reject) => {
                 this._resolveLoadOptions = resolve;
 
                 // filtering
@@ -213,17 +217,15 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     );
 
                     this._waitAnotherPropsUpdate = true;
-                    this.props.options.setFilter(filterCond);
-                } else {
-                    if (filter) {
-                        this._waitAnotherPropsUpdate = true;
-                        this.props.options.setFilter(undefined);
-                    }
-                }
-                console.log('what is the page size herer-----------------------------------------', pageSize);
 
-                this.props.options.setLimit(page * pageSize);
-                timeout = setTimeout(() => resolve(this.getOptions()), 1000);
+                    this.props.options.setFilter(filterCond);
+                } else if (filter && this.props.firstLabelOptions.filterable) {
+                    this._waitAnotherPropsUpdate = true;
+                    this.props.options.setFilter(undefined);
+                }
+
+                this.props.options.setLimit(page * this.pageSize());
+                timeout = setTimeout(() => reject("This should not have happened"), 1000);
             });
 
             clearTimeout(timeout);
@@ -269,9 +271,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
             };
         }
 
-        const isLoading =
-            this.props.options.status === ValueStatus.Loading ||
-            (this.props.defaultValue && this.props.defaultValue.status === ValueStatus.Loading);
+        const isLoading = this.props.defaultValue?.status === ValueStatus.Loading;
 
         if (this.props.enableCreate) {
             return (
@@ -286,9 +286,8 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                         onChange={this.handleChange}
                         isClearable={this.props.enableClear}
                         isSearchable={this.props.enableSearch}
-                        isLoading={isLoading}
                         styles={styles}
-                        placeholder={this.props.placeholder}
+                        placeholder={isLoading ? "Loading..." : this.props.placeholder}
                         className={this.props.className!}
                         classNamePrefix={this.props.classNamePrefix}
                         additional={{
@@ -313,9 +312,8 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     onChange={this.handleChange}
                     isClearable={this.props.enableClear}
                     isSearchable={this.props.enableSearch}
-                    isLoading={isLoading}
                     styles={styles}
-                    placeholder={this.props.placeholder}
+                    placeholder={isLoading ? "Loading..." : this.props.placeholder}
                     className={this.props.className!}
                     classNamePrefix={this.props.classNamePrefix}
                     additional={{
