@@ -70,6 +70,9 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         }
     }
 
+    // https://reactjs.org/docs/react-component.html#unsafe_componentwillreceiveprops
+    // will work in version 17.
+    // eventually this has to be migrated to memoization helper with useMemo.
     UNSAFE_componentWillReceiveProps(nextProps: CustomDropdownContainerProps): void {
         if (this._waitAnotherPropsUpdate) {
             this._waitAnotherPropsUpdate = false;
@@ -210,6 +213,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                 this._resolveLoadOptions = resolve;
 
                 // filtering
+                // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-filtering
                 if (searchQuery && this.props.firstLabelOptions.filterable) {
                     const filterCond = or(
                         contains(attribute(this.props.firstLabelOptions.id), literal(searchQuery)),
@@ -224,6 +228,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     this.props.options.setFilter(undefined);
                 }
 
+                // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-pagination
                 this.props.options.setLimit(page * this.pageSize());
                 timeout = setTimeout(() => reject("This should not have happened"), 1000);
             });

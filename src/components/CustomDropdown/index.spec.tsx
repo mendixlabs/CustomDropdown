@@ -124,6 +124,7 @@ describe("Custom dropdown component", () => {
             };
             const component = renderComponent(override);
             container = component.container;
+            // https://testing-library.com/docs/example-update-props/
             rerender = component.rerender;
 
             const downButton = container.querySelector("div.test__dropdown-indicator");
