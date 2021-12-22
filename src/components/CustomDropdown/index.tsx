@@ -3,7 +3,7 @@ import Select from "react-select";
 import Creatable from "react-select/creatable";
 import { Styles } from "react-select/src/styles";
 import { OptionTypeBase } from "react-select/src/types";
-import { withAsyncPaginate } from "react-select-async-paginate";
+import { withAsyncPaginate, ShouldLoadMore } from "react-select-async-paginate";
 
 import { ValueStatus } from "mendix";
 import { contains, attribute, literal, or } from "mendix/filters/builders";
@@ -42,15 +42,13 @@ const SelectPaginate = withAsyncPaginate(Select);
 export default class CustomDropdown extends Component<CustomDropdownContainerProps, State> {
     constructor(props: CustomDropdownContainerProps) {
         super(props);
-        props.options.setLimit(this.pageSize());
+        props.options.setLimit(this.props.pageSize);
         props.options.setOffset(0);
 
         this.state = {
             value: null
         };
     }
-
-    pageSize = (): number => (this.props.paginate && this.props.pageSize) || 1000;
 
     _resolveLoadOptions: (options: Option[]) => void;
     _waitAnotherPropsUpdate: boolean;
@@ -209,7 +207,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
 
             let timeout: NodeJS.Timeout;
 
-            const newOptions: Option[] = await new Promise((resolve, reject) => {
+            const newOptions: Option[] = await new Promise(resolve => {
                 this._resolveLoadOptions = resolve;
 
                 // filtering
@@ -229,8 +227,8 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                 }
 
                 // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-pagination
-                this.props.options.setLimit(page * this.pageSize());
-                timeout = setTimeout(() => reject("This should not have happened"), 1000);
+                this.props.options.setLimit(page * this.props.pageSize);
+                timeout = setTimeout(() => resolve(this.getOptions()), 5000);
             });
 
             clearTimeout(timeout);
@@ -248,8 +246,9 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
     };
 
     render(): ReactElement {
+        const { paginate, useDefaultStyle, defaultValue } = this.props;
         let styles: Styles<OptionTypeBase, true> = {};
-        if (!this.props.useDefaultStyle) {
+        if (!useDefaultStyle) {
             styles = {
                 clearIndicator: () => ({}),
                 container: () => ({}),
@@ -276,7 +275,12 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
             };
         }
 
-        const isLoading = this.props.defaultValue?.status === ValueStatus.Loading;
+        const isLoading = defaultValue?.status === ValueStatus.Loading;
+        const propsOverride: { shouldLoadMore?: ShouldLoadMore } = paginate
+            ? {}
+            : {
+                  shouldLoadMore: () => false
+              };
 
         if (this.props.enableCreate) {
             return (
@@ -301,6 +305,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                         reduceOptions={(_, loaded) => loaded}
                         maxMenuHeight={this.props.menuHeight}
                         onFocus={this.handleFocus}
+                        {...propsOverride}
                     />
                 </div>
             );
@@ -327,6 +332,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     reduceOptions={(_, loaded) => loaded}
                     maxMenuHeight={this.props.menuHeight}
                     onFocus={this.handleFocus}
+                    {...propsOverride}
                 />
             </div>
         );
