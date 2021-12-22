@@ -30,33 +30,17 @@ interface Item {
         displayValue: string;
     };
 }
+const items =  Array.from(Array(10).keys()).map(i => (
+                { 
+                    firstLabel: { displayValue: `label${i+1}`},
+                    secondLabel: { displayValue: `secondLabel${i+1}` },
+                    imgUrl: {
+                        status: ValueStatus.Available,
+                        displayValue: `url${i+1}`
+                    }
+                }
+                ));
 
-const items = [
-    {
-        firstLabel: { displayValue: "label1" },
-        secondLabel: { displayValue: "secondLabel1" },
-        imgUrl: {
-            status: ValueStatus.Available,
-            displayValue: "url1"
-        }
-    },
-    {
-        firstLabel: { displayValue: "label2" },
-        secondLabel: { displayValue: "secondLabel2" },
-        imgUrl: {
-            status: ValueStatus.Available,
-            displayValue: "url2"
-        }
-    },
-    {
-        firstLabel: { displayValue: "label3" },
-        secondLabel: { displayValue: "secondLabel3" },
-        imgUrl: {
-            status: ValueStatus.Available,
-            displayValue: "url3"
-        }
-    }
-];
 
 const defaultValue = (): Value => ({
     status: ValueStatus.Available,
@@ -65,13 +49,15 @@ const defaultValue = (): Value => ({
 
 const defaultOptions = {
     status: ValueStatus.Available,
-    items,
+    items : items.slice(0,3),
     setOffset: jest.fn(),
     setLimit: jest.fn(),
     offset: 0,
     limit: 1000,
     filter: null,
-    hasMoreItems: false
+    hasMoreItems: false,
+    paginate: false,
+    pageSize: 10,
 };
 
 const defaultProps = {
@@ -95,7 +81,10 @@ const defaultProps = {
     placeholder: "placeholder",
     className: "custom-dropdown",
     classNamePrefix: "test",
-    menuHeight: 0
+    menuHeight: 0,
+    paginate: false,
+    pageSize: 10,
+
 };
 
 const renderComponent = (override = {}, rerender = null) => {
@@ -385,4 +374,110 @@ describe("Custom dropdown component", () => {
             expect(indicator).not.toBeNull();
         });
     });
+    describe('When user scrolls down', () => {
+        describe('if pagination is enabled', () => {
+
+                let container;
+                let rerender;
+                let menu;
+                beforeEach(async () => {
+                    const override = {
+                        enableCreate: true,
+                        options: {
+                            ...defaultOptions,
+                            setLimit: jest.fn(limit => setInterval(() => renderComponent({ ...override, options: { ...override.options, items: items.slice(0, limit), hasMoreItems: true } }, rerender), 0)),
+                            items: items.slice(0, 3),
+                            limit: 3,
+                        },
+                        paginate: true,
+                        pageSize: 3
+                    };
+                    const component = renderComponent(override);
+                    container = component.container;
+                    // https://testing-library.com/docs/example-update-props/
+                    rerender = component.rerender;
+        
+                    const downButton = container.querySelector("div.test__dropdown-indicator");
+        
+                    fireEvent.mouseDown(downButton, { button: 1 });
+                
+                    await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+                    menu = container.querySelector("div.test__menu");
+                    const menuList = container.querySelector("div.test__menu-list");
+                    menuList.addEventListener('scroll', () => { console.log('scrolling.......') });
+
+                    fireEvent.scroll(menuList, { target: { scrollY: 1000 } })
+        
+                    // for printing the HTML
+                     const { debug } = component;
+                     debug();
+                });
+
+            it("- should render items", () => {
+                expect(menu).not.toBeNull();
+            });
+            it("- should render other  menu items", () => {
+                const allAvatars = container.querySelectorAll("div.test__option > div.test__avatar");
+    
+                expect(allAvatars).toHaveLength(6);
+                expect(allAvatars[0].style["background-image"]).toContain("url1");
+                expect(allAvatars[1].style["background-image"]).toContain("url2");
+                expect(allAvatars[2].style["background-image"]).toContain("url3");
+                expect(allAvatars[0].style["background-image"]).toContain("url4");
+                expect(allAvatars[1].style["background-image"]).toContain("url5");
+                expect(allAvatars[2].style["background-image"]).toContain("url6");
+               /* const allNames = container.querySelectorAll("div.test__option > div.test__name");
+                expect(allNames).toHaveLength(6);
+                expect(allNames[0].innerHTML).toBe("label4");
+                expect(allNames[1].innerHTML).toBe("secondLabel4");
+                expect(allNames[2].innerHTML).toBe("label5");
+                expect(allNames[3].innerHTML).toBe("secondLabel5");
+                expect(allNames[4].innerHTML).toBe("label6");
+                expect(allNames[5].innerHTML).toBe("secondLabel6");*/
+            });
+    
+        });
+
+        describe('if pagination is disabled', () => {
+
+            let container;
+            let rerender;
+            let menu;
+            beforeEach(async () => {
+                const override = {
+                    enableCreate: true,
+                    options: {
+                        ...defaultOptions,
+                        setLimit: jest.fn(() => setInterval(() => renderComponent(override, rerender), 0)),
+                        items: items,
+                    }
+                };
+                const component = renderComponent(override);
+                container = component.container;
+                // https://testing-library.com/docs/example-update-props/
+                rerender = component.rerender;
+    
+                const downButton = container.querySelector("div.test__dropdown-indicator");
+    
+                fireEvent.mouseDown(downButton, { button: 1 });
+            
+                await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
+
+                menu = container.querySelector("div.test__menu");
+
+                fireEvent.scroll(menu, { target: { scrollY: 100 } })
+    
+                // for printing the HTML
+                // const { debug } = component;
+                // debug();
+            });
+        it("- should render all  menu items", () => {
+            const allAvatars = container.querySelectorAll("div.test__option > div.test__avatar");
+            expect(allAvatars).toHaveLength(10);
+         
+        });
+
+    });
+     });
 });
