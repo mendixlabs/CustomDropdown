@@ -5,6 +5,7 @@ class HomePage {
      */
 
     public open(): void {
+        //@ts-ignore
         browser.url("/");
     }
 }

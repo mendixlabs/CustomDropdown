@@ -1,8 +1,17 @@
 import { createElement } from "react";
-import { render, fireEvent } from "@testing-library/react";
+import { render, fireEvent, screen, waitForElementToBeRemoved, queryByText } from "@testing-library/react";
 import { ValueStatus } from "mendix";
 
 import CustomDropdown from "./index";
+
+jest.mock("mendix/filters/builders", () => {
+    return {
+        contains: jest.fn().mockReturnValue("filter"),
+        attribute: jest.fn().mockReturnValue("filter"),
+        literal: jest.fn().mockReturnValue("filter"),
+        or: jest.fn().mockReturnValue("filter")
+    };
+});
 
 interface Value {
     status: ValueStatus;
@@ -21,84 +30,97 @@ interface Item {
         displayValue: string;
     };
 }
+const items =  Array.from(Array(10).keys()).map(i => (
+                { 
+                    firstLabel: { displayValue: `label${i+1}`},
+                    secondLabel: { displayValue: `secondLabel${i+1}` },
+                    imgUrl: {
+                        status: ValueStatus.Available,
+                        displayValue: `url${i+1}`
+                    }
+                }
+                ));
 
-const items = [
-    {
-        firstLabel: { displayValue: "label1" },
-        secondLabel: { displayValue: "secondLabel1" },
-        imgUrl: {
-            status: ValueStatus.Available,
-            displayValue: "url1"
-        }
-    },
-    {
-        firstLabel: { displayValue: "label2" },
-        secondLabel: { displayValue: "secondLabel2" },
-        imgUrl: {
-            status: ValueStatus.Available,
-            displayValue: "url2"
-        }
-    },
-    {
-        firstLabel: { displayValue: "label3" },
-        secondLabel: { displayValue: "secondLabel3" },
-        imgUrl: {
-            status: ValueStatus.Available,
-            displayValue: "url3"
-        }
-    }
-];
 
 const defaultValue = (): Value => ({
     status: ValueStatus.Available,
     items: items.slice(0, 1)
 });
 
-const options = {
+const defaultOptions = {
     status: ValueStatus.Available,
-    items
+    items : items.slice(0,3),
+    setOffset: jest.fn(),
+    setLimit: jest.fn(),
+    offset: 0,
+    limit: 1000,
+    filter: null,
+    hasMoreItems: false,
+    paginate: false,
+    pageSize: 10,
 };
 
-const renderComponent = (override = {}) => {
+const defaultProps = {
+    defaultValue: defaultValue(),
+    firstLabelDefaultValue: { get: item => item.firstLabel },
+    secondLabelDefaultValue: { get: item => item.secondLabel },
+    imgUrlDefaultValue: { get: item => item.imgUrl },
+    options: defaultOptions,
+    firstLabelOptions: { get: item => item.firstLabel, filterable: true, id: "attr_hnj_21" },
+    secondLabelOptions: { get: item => item.secondLabel, filterable: true, id: "attr_hnj_22" },
+    imgUrlOptions: { get: item => item.imgUrl },
+    contextObjLabel: {
+        status: ValueStatus.Available,
+        value: null
+    },
+    enableCreate: true,
+    enableClear: true,
+    enableSearch: true,
+    useAvatar: true,
+    useDefaultStyle: true,
+    placeholder: "placeholder",
+    className: "custom-dropdown",
+    classNamePrefix: "test",
+    menuHeight: 0,
+    paginate: false,
+    pageSize: 10,
+
+};
+
+const renderComponent = (override = {}, rerender = null) => {
     const props = {
-        defaultValue: defaultValue(),
-        firstLabelDefaultValue: item => item.firstLabel,
-        secondLabelDefaultValue: item => item.secondLabel,
-        imgUrlDefaultValue: item => item.imgUrl,
-        options,
-        firstLabelOptions: item => item.firstLabel,
-        secondLabelOptions: item => item.secondLabel,
-        imgUrlOptions: item => item.imgUrl,
-        contextObjLabel: {
-            status: ValueStatus.Available,
-            value: null
-        },
-        enableCreate: true,
-        enableClear: true,
-        enableSearch: true,
-        useAvatar: true,
-        useDefaultStyle: true,
-        placeholder: "placeholder",
-        className: "custom-dropdown",
-        classNamePrefix: "test",
-        menuHeight: 0,
+        ...defaultProps,
         ...override
     };
+
+    const renderFn = rerender || render;
     // @ts-ignore
-    return render(<CustomDropdown {...props} />);
+    return renderFn(<CustomDropdown {...props} />);
 };
 
 describe("Custom dropdown component", () => {
     describe("when menu is shown", () => {
         let container;
+        let rerender;
 
-        beforeEach(() => {
-            const component = renderComponent({ enableCreate: true });
+        beforeEach(async () => {
+            const override = {
+                enableCreate: true,
+                options: {
+                    ...defaultOptions,
+                    setLimit: jest.fn(() => setInterval(() => renderComponent(override, rerender), 0))
+                }
+            };
+            const component = renderComponent(override);
             container = component.container;
+            // https://testing-library.com/docs/example-update-props/
+            rerender = component.rerender;
 
             const downButton = container.querySelector("div.test__dropdown-indicator");
 
             fireEvent.mouseDown(downButton, { button: 1 });
+
+            await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
 
             // for printing the HTML
             // const { debug } = component;
@@ -169,12 +191,15 @@ describe("Custom dropdown component", () => {
 
     describe("New entry is created", () => {
         let component;
+        let rerender;
         const createValue = jest.fn();
         const contextObjLabelSetValue = jest.fn();
         const contextObjIdSetValue = jest.fn();
 
-        beforeEach(() => {
-            component = renderComponent({
+        beforeEach(async () => {
+            let optionItems = items;
+            let filter = null;
+            const override = {
                 createValue: {
                     canExecute: true,
                     execute: createValue
@@ -188,11 +213,37 @@ describe("Custom dropdown component", () => {
                     status: ValueStatus.Available,
                     value: null,
                     setValue: contextObjIdSetValue
+                },
+                options: {
+                    ...defaultOptions,
+                    filter,
+                    setLimit: jest.fn(() => {
+                        setInterval(() => {
+                            renderComponent(
+                                { ...override, options: { ...override.options, items: optionItems } },
+                                rerender
+                            );
+                        }, 0);
+                    }),
+                    setFilter: jest.fn(cond => {
+                        optionItems = cond ? [] : items;
+                        filter = cond;
+                        setInterval(() => {
+                            renderComponent(
+                                { ...override, options: { ...override.options, items: optionItems } },
+                                rerender
+                            );
+                        }, 0);
+                    })
                 }
-            });
+            };
+            component = renderComponent(override);
+            rerender = component.rerender;
 
             const inputValue = component.container.querySelector("div.test__input > input");
             fireEvent.change(inputValue, { target: { value: "This is a new value" } });
+
+            await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
         });
 
         it("- should show option to create value", () => {
@@ -215,12 +266,15 @@ describe("Custom dropdown component", () => {
 
     describe("Selection is changed", () => {
         let component;
+        let rerender;
         const selectOption = jest.fn();
         const contextObjLabelSetValue = jest.fn();
         const contextObjIdSetValue = jest.fn();
 
-        beforeEach(() => {
-            component = renderComponent({
+        beforeEach(async () => {
+            let optionItems = items;
+            let filter = null;
+            const override = {
                 selectOption: {
                     canExecute: true,
                     execute: selectOption
@@ -234,11 +288,37 @@ describe("Custom dropdown component", () => {
                     status: ValueStatus.Available,
                     value: null,
                     setValue: contextObjIdSetValue
+                },
+                options: {
+                    ...defaultOptions,
+                    filter,
+                    setLimit: jest.fn(() => {
+                        setInterval(() => {
+                            renderComponent(
+                                { ...override, options: { ...override.options, items: optionItems } },
+                                rerender
+                            );
+                        }, 0);
+                    }),
+                    setFilter: jest.fn(cond => {
+                        optionItems = cond ? [items.find(item => item.firstLabel.displayValue === "label3")] : items;
+                        filter = cond;
+                        setInterval(() => {
+                            renderComponent(
+                                { ...override, options: { ...override.options, items: optionItems } },
+                                rerender
+                            );
+                        }, 0);
+                    })
                 }
-            });
+            };
+            component = renderComponent(override);
+            rerender = component.rerender;
 
             const inputValue = component.container.querySelector("div.test__input > input");
             fireEvent.change(inputValue, { target: { value: "label3" } });
+
+            await waitForElementToBeRemoved(() => screen.queryByText("Loading..."));
         });
 
         it("- should show value in menu", () => {
@@ -261,11 +341,16 @@ describe("Custom dropdown component", () => {
         beforeEach(() => {
             const component = renderComponent({
                 options: {
+                    ...defaultOptions,
                     status: ValueStatus.Loading,
                     items: []
                 }
             });
             container = component.container;
+
+            const downButton = container.querySelector("div.test__dropdown-indicator");
+
+            fireEvent.mouseDown(downButton, { button: 1 });
         });
 
         it("- should show loading icon", () => {
@@ -275,20 +360,17 @@ describe("Custom dropdown component", () => {
     });
 
     describe("when default item is loading", () => {
-        let container;
-
         beforeEach(() => {
-            const component = renderComponent({
+            renderComponent({
                 defaultValue: {
                     status: ValueStatus.Loading,
                     items: []
                 }
             });
-            container = component.container;
         });
 
-        it("- should show loading icon", () => {
-            const indicator = container.querySelector("div.test__loading-indicator");
+        it("- should show loading placeholder", () => {
+            const indicator = screen.getByText("Loading...");
             expect(indicator).not.toBeNull();
         });
     });

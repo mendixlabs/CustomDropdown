@@ -13,7 +13,7 @@ export interface CustomDropdownContainerProps {
     tabIndex?: number;
     defaultValue?: ListValue;
     objIdDefaultValue?: ListAttributeValue<string>;
-    firstLabelDefaultValue: ListAttributeValue<string>;
+    firstLabelDefaultValue?: ListAttributeValue<string>;
     secondLabelDefaultValue?: ListAttributeValue<string>;
     imgUrlDefaultValue?: ListAttributeValue<string>;
     options: ListValue;
@@ -21,6 +21,8 @@ export interface CustomDropdownContainerProps {
     firstLabelOptions: ListAttributeValue<string>;
     secondLabelOptions?: ListAttributeValue<string>;
     imgUrlOptions?: ListAttributeValue<string>;
+    paginate: boolean;
+    pageSize: number;
     contextObjId: EditableValue<string>;
     contextObjLabel: EditableValue<string>;
     selectOption?: ActionValue;
@@ -41,16 +43,18 @@ export interface CustomDropdownContainerProps {
 export interface CustomDropdownPreviewProps {
     class: string;
     style: string;
-    defaultValue: {} | null;
+    defaultValue: {} | { type: string } | null;
     objIdDefaultValue: string;
     firstLabelDefaultValue: string;
     secondLabelDefaultValue: string;
     imgUrlDefaultValue: string;
-    options: {} | null;
+    options: {} | { type: string } | null;
     objIdOptions: string;
     firstLabelOptions: string;
     secondLabelOptions: string;
     imgUrlOptions: string;
+    paginate: boolean;
+    pageSize: number | null;
     contextObjId: string;
     contextObjLabel: string;
     selectOption: {} | null;
