@@ -139,21 +139,44 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
     };
 
     getLabelValuesOption = (obj): LabelValues => {
-        const firstLabel: string = this.props.firstLabelOptions && this.props.firstLabelOptions.get(obj).displayValue;
+        //Accessing an attribute from the list item directly is deprecated since mx9, but the get() function doesn't yet exist yet in mx8. Thats why we have this check, to have the widget work in both versions.
+        const firstLabel: string =
+            this.props.firstLabelOptions && "get" in this.props.firstLabelOptions
+                ? this.props.firstLabelOptions.get(obj).displayValue
+                : this.props.firstLabelOptions(obj).displayValue;
         const secondLabel: string =
-            this.props.secondLabelOptions && this.props.secondLabelOptions.get(obj).displayValue;
-        const objId: string = this.props.objIdOptions && this.props.objIdOptions.get(obj).displayValue;
-        const imgUrl: string = this.props.imgUrlOptions && this.props.imgUrlOptions.get(obj).displayValue;
+            this.props.secondLabelOptions && "get" in this.props.secondLabelOptions
+                ? this.props.secondLabelOptions.get(obj).displayValue
+                : this.props.secondLabelOptions(obj).displayValue;
+        const objId: string =
+            this.props.objIdOptions && "get" in this.props.objIdOptions
+                ? this.props.objIdOptions.get(obj).displayValue
+                : this.props.objIdOptions(obj).displayValue;
+        const imgUrl: string =
+            this.props.imgUrlOptions && "get" in this.props.imgUrlOptions
+                ? this.props.imgUrlOptions.get(obj).displayValue
+                : this.props.imgUrlOptions(obj).displayValue;
         return { firstLabel, secondLabel, objId, imgUrl };
     };
 
     getLabelValuesDefault = (obj): LabelValues => {
+        //Accessing an attribute from the list item directly is deprecated since mx9, but the get() function doesn't yet exist yet in mx8. Thats why we have this check, to have the widget work in both versions.
         const firstLabel: string =
-            this.props.firstLabelDefaultValue && this.props.firstLabelDefaultValue.get(obj).displayValue;
+            this.props.firstLabelDefaultValue && "get" in this.props.firstLabelDefaultValue
+                ? this.props.firstLabelDefaultValue.get(obj).displayValue
+                : this.props.firstLabelDefaultValue(obj).displayValue;
         const secondLabel: string =
-            this.props.secondLabelDefaultValue && this.props.secondLabelDefaultValue.get(obj).displayValue;
-        const objId: string = this.props.objIdDefaultValue && this.props.objIdDefaultValue.get(obj).displayValue;
-        const imgUrl: string = this.props.imgUrlDefaultValue && this.props.imgUrlDefaultValue.get(obj).displayValue;
+            this.props.secondLabelDefaultValue && "get" in this.props.secondLabelDefaultValue
+                ? this.props.secondLabelDefaultValue.get(obj).displayValue
+                : this.props.secondLabelDefaultValue(obj).displayValue;
+        const objId: string =
+            this.props.objIdDefaultValue && "get" in this.props.objIdDefaultValue
+                ? this.props.objIdDefaultValue.get(obj).displayValue
+                : this.props.objIdDefaultValue(obj).displayValue;
+        const imgUrl: string =
+            this.props.imgUrlDefaultValue && "get" in this.props.imgUrlDefaultValue
+                ? this.props.imgUrlDefaultValue.get(obj).displayValue
+                : this.props.imgUrlDefaultValue(obj).displayValue;
         return { firstLabel, secondLabel, objId, imgUrl };
     };
 
