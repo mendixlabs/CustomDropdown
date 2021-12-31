@@ -56,7 +56,7 @@ const defaultOptions = {
     limit: 1000,
     filter: null,
     hasMoreItems: false,
-    paginate: false,
+    paginate: true,
     pageSize: 10,
 };
 
@@ -82,7 +82,7 @@ const defaultProps = {
     className: "custom-dropdown",
     classNamePrefix: "test",
     menuHeight: 0,
-    paginate: false,
+    paginate: true,
     pageSize: 10,
 
 };
