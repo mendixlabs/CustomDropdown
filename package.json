@@ -43,6 +43,6 @@
     },
     "dependencies": {
         "react-select": "4.3.1",
-        "react-select-async-paginate": "^0.6.0"
+        "react-select-async-paginate": "^0.6.1"
     }
 }
