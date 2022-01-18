@@ -30,17 +30,14 @@ interface Item {
         displayValue: string;
     };
 }
-const items =  Array.from(Array(10).keys()).map(i => (
-                { 
-                    firstLabel: { displayValue: `label${i+1}`},
-                    secondLabel: { displayValue: `secondLabel${i+1}` },
-                    imgUrl: {
-                        status: ValueStatus.Available,
-                        displayValue: `url${i+1}`
-                    }
-                }
-                ));
-
+const items = Array.from(Array(10).keys()).map(i => ({
+    firstLabel: { displayValue: `label${i + 1}` },
+    secondLabel: { displayValue: `secondLabel${i+1}` },
+    imgUrl: {
+        status: ValueStatus.Available,
+        displayValue: `url${i + 1}`
+    }
+}));
 
 const defaultValue = (): Value => ({
     status: ValueStatus.Available,
@@ -49,7 +46,7 @@ const defaultValue = (): Value => ({
 
 const defaultOptions = {
     status: ValueStatus.Available,
-    items : items.slice(0,3),
+    items: items.slice(0, 3),
     setOffset: jest.fn(),
     setLimit: jest.fn(),
     offset: 0,
@@ -57,7 +54,7 @@ const defaultOptions = {
     filter: null,
     hasMoreItems: false,
     paginate: true,
-    pageSize: 10,
+    pageSize: 10
 };
 
 const defaultProps = {
@@ -372,6 +369,27 @@ describe("Custom dropdown component", () => {
         it("- should show loading placeholder", () => {
             const indicator = screen.getByText("Loading...");
             expect(indicator).not.toBeNull();
+        });
+    });
+
+    describe("When pagination is false", () => {
+        const setLimit = jest.fn();
+        beforeEach(async () => {
+            const override = {
+                options: {
+                    ...defaultOptions,
+                    paginate: false,
+                    setLimit
+                },
+                paginate: false,
+            };
+            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+            // @ts-ignore
+            const component = renderComponent(override);
+        });
+
+        it("- should not set the limit", () => {
+            expect(setLimit).toBeCalledTimes(0);
         });
     });
 });

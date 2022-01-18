@@ -42,8 +42,8 @@ const SelectPaginate = withAsyncPaginate(Select);
 export default class CustomDropdown extends Component<CustomDropdownContainerProps, State> {
     constructor(props: CustomDropdownContainerProps) {
         super(props);
-        
-        if(props.paginate){
+
+        if (props.paginate) {
             props.options.setLimit(this.props.pageSize);
         }
         props.options.setOffset(0);
@@ -230,8 +230,8 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                 }
 
                 // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-pagination
-                if(this.props.paginate){
-                 this.props.options.setLimit(page * this.props.pageSize);
+                if (this.props.paginate) {
+                    this.props.options.setLimit(page * this.props.pageSize);
                 }
                 timeout = setTimeout(() => resolve(this.getOptions()), 5000);
             });
@@ -284,8 +284,8 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         const propsOverride: { shouldLoadMore?: ShouldLoadMore } = paginate
             ? {}
             : {
-                  shouldLoadMore: () => false,
-              }
+                  shouldLoadMore: () => false
+              };
 
         if (this.props.enableCreate) {
             return (
