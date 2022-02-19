@@ -5,7 +5,7 @@ import { Styles } from "react-select/src/styles";
 import { OptionTypeBase } from "react-select/src/types";
 import { withAsyncPaginate, ShouldLoadMore } from "react-select-async-paginate";
 
-import { ValueStatus } from "mendix";
+import { ValueStatus, ListAttributeValue, ObjectItem } from "mendix";
 import { contains, attribute, literal, or } from "mendix/filters/builders";
 
 import { CustomDropdownContainerProps } from "../../../typings/CustomDropdownProps";
@@ -141,47 +141,27 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         this.setValue(this.createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url));
     };
 
-    getLabelValuesOption = (obj): LabelValues => {
-        //Accessing an attribute from the list item directly is deprecated since mx9, but the get() function doesn't yet exist yet in mx8. Thats why we have this check, to have the widget work in both versions.
-        const firstLabel: string =
-            this.props.firstLabelOptions && "get" in this.props.firstLabelOptions
-                ? this.props.firstLabelOptions.get(obj).displayValue
-                : this.props.firstLabelOptions(obj).displayValue;
-        const secondLabel: string =
-            this.props.secondLabelOptions && "get" in this.props.secondLabelOptions
-                ? this.props.secondLabelOptions.get(obj).displayValue
-                : this.props.secondLabelOptions(obj).displayValue;
-        const objId: string =
-            this.props.objIdOptions && "get" in this.props.objIdOptions
-                ? this.props.objIdOptions.get(obj).displayValue
-                : this.props.objIdOptions(obj).displayValue;
-        const imgUrl: string =
-            this.props.imgUrlOptions && "get" in this.props.imgUrlOptions
-                ? this.props.imgUrlOptions.get(obj).displayValue
-                : this.props.imgUrlOptions(obj).displayValue;
+    getLabelValuesOption = (obj: ObjectItem): LabelValues => {
+        const firstLabel: string = this.getAttributeValue(this.props.firstLabelOptions, obj);
+        const secondLabel: string = this.getAttributeValue(this.props.secondLabelOptions, obj);
+        const objId: string = this.getAttributeValue(this.props.objIdOptions, obj);
+        const imgUrl: string = this.getAttributeValue(this.props.imgUrlOptions, obj);
         return { firstLabel, secondLabel, objId, imgUrl };
     };
 
-    getLabelValuesDefault = (obj): LabelValues => {
-        //Accessing an attribute from the list item directly is deprecated since mx9, but the get() function doesn't yet exist yet in mx8. Thats why we have this check, to have the widget work in both versions.
-        const firstLabel: string =
-            this.props.firstLabelDefaultValue && "get" in this.props.firstLabelDefaultValue
-                ? this.props.firstLabelDefaultValue.get(obj).displayValue
-                : this.props.firstLabelDefaultValue(obj).displayValue;
-        const secondLabel: string =
-            this.props.secondLabelDefaultValue && "get" in this.props.secondLabelDefaultValue
-                ? this.props.secondLabelDefaultValue.get(obj).displayValue
-                : this.props.secondLabelDefaultValue(obj).displayValue;
-        const objId: string =
-            this.props.objIdDefaultValue && "get" in this.props.objIdDefaultValue
-                ? this.props.objIdDefaultValue.get(obj).displayValue
-                : this.props.objIdDefaultValue(obj).displayValue;
-        const imgUrl: string =
-            this.props.imgUrlDefaultValue && "get" in this.props.imgUrlDefaultValue
-                ? this.props.imgUrlDefaultValue.get(obj).displayValue
-                : this.props.imgUrlDefaultValue(obj).displayValue;
+    getLabelValuesDefault = (obj: ObjectItem): LabelValues => {
+        const firstLabel: string = this.getAttributeValue(this.props.firstLabelDefaultValue, obj);
+        const secondLabel: string = this.getAttributeValue(this.props.secondLabelDefaultValue, obj);
+        const objId: string = this.getAttributeValue(this.props.objIdDefaultValue, obj);
+        const imgUrl: string = this.getAttributeValue(this.props.imgUrlDefaultValue, obj);
         return { firstLabel, secondLabel, objId, imgUrl };
     };
+
+    getAttributeValue = (attribute: ListAttributeValue<string>, obj: ObjectItem): string =>
+        // Accessing an attribute from the list item directly is deprecated since mx9,
+        // but the get() function doesn't yet exist yet in mx8. Thats why we have this check,
+        // to have the widget work in both versions.
+        attribute && (("get" in attribute && attribute.get(obj).displayValue) || attribute(obj).displayValue);
 
     handleChange = (inputValue: any, actionMeta: any): void => {
         switch (actionMeta.action) {
