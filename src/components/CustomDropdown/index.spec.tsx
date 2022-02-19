@@ -32,7 +32,7 @@ interface Item {
 }
 const items = Array.from(Array(10).keys()).map(i => ({
     firstLabel: { displayValue: `label${i + 1}` },
-    secondLabel: { displayValue: `secondLabel${i+1}` },
+    secondLabel: { displayValue: `secondLabel${i + 1}` },
     imgUrl: {
         status: ValueStatus.Available,
         displayValue: `url${i + 1}`
@@ -80,8 +80,7 @@ const defaultProps = {
     classNamePrefix: "test",
     menuHeight: 0,
     paginate: true,
-    pageSize: 10,
-
+    pageSize: 10
 };
 
 const renderComponent = (override = {}, rerender = null) => {
