@@ -161,7 +161,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         // Accessing an attribute from the list item directly is deprecated since mx9,
         // but the get() function doesn't yet exist yet in mx8. Thats why we have this check,
         // to have the widget work in both versions.
-        attribute && (("get" in attribute && attribute.get(obj).displayValue) || attribute(obj).displayValue);
+        attribute && ("get" in attribute ? attribute.get(obj).displayValue : attribute(obj).displayValue);
 
     handleChange = (inputValue: any, actionMeta: any): void => {
         switch (actionMeta.action) {
