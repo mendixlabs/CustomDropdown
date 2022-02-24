@@ -74,6 +74,7 @@ const defaultProps = {
     enableClear: true,
     enableSearch: true,
     useAvatar: true,
+    editable: true,
     useDefaultStyle: true,
     placeholder: "placeholder",
     className: "custom-dropdown",
@@ -380,7 +381,7 @@ describe("Custom dropdown component", () => {
                     paginate: false,
                     setLimit
                 },
-                paginate: false,
+                paginate: false
             };
             // eslint-disable-next-line @typescript-eslint/ban-ts-comment
             // @ts-ignore

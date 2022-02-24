@@ -11,6 +11,7 @@ export interface CustomDropdownContainerProps {
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
+    editable: boolean;
     defaultValue?: ListValue;
     objIdDefaultValue?: ListAttributeValue<string>;
     firstLabelDefaultValue?: ListAttributeValue<string>;
@@ -43,6 +44,7 @@ export interface CustomDropdownContainerProps {
 export interface CustomDropdownPreviewProps {
     class: string;
     style: string;
+    editable: boolean;
     defaultValue: {} | { type: string } | null;
     objIdDefaultValue: string;
     firstLabelDefaultValue: string;
