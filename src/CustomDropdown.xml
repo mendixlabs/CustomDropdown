@@ -7,6 +7,13 @@
     <description>Widget to make a selection in a dropdown menu.</description>
     <icon/>
     <properties>
+        <propertyGroup caption="General">
+            <property key="editable" type="boolean" required="true" defaultValue="true" >
+                <caption>Editable</caption>
+                <description>The widget doesn't listen to the editability setting of the containing dataview, but you can set it's editability here</description>
+            </property>
+        </propertyGroup>
+
         <propertyGroup caption="Data source">
             <property key="defaultValue" type="datasource" isList="true" required="false" >
                 <caption>Default value</caption>
