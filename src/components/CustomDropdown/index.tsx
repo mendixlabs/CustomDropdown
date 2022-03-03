@@ -143,7 +143,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         if (this.props.selectOption.canExecute) {
             this.props.selectOption.execute();
         }
-        this.setValue(this.createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url, inputValue.dyn));
+        this.setValue(this.createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url, inputValue.dynamicClass));
     };
 
     getLabelValuesOption = (obj: ObjectItem): LabelValues => {
@@ -160,7 +160,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         const secondLabel: string = this.getAttributeValue(this.props.secondLabelDefaultValue, obj);
         const objId: string = this.getAttributeValue(this.props.objIdDefaultValue, obj);
         const imgUrl: string = this.getAttributeValue(this.props.imgUrlDefaultValue, obj);
-        const dynamicClass: string = this.getListExpressionValue(this.props.classDefault, obj);
+        const dynamicClass: string = this.getListExpressionValue(this.props.dynamicClassDefault, obj);
         return { firstLabel, secondLabel, objId, imgUrl, dynamicClass };
     };
 
@@ -171,7 +171,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         attribute && ("get" in attribute ? attribute.get(obj).displayValue : attribute(obj).displayValue);
 
     getListExpressionValue = (attribute: ListExpressionValue<string>, obj: ObjectItem) : string => 
-        attribute && ("get" in attribute ? attribute.get(obj).value : '');
+        attribute && ("get" in attribute ? attribute.get(obj).value : attribute(obj).value);
 
     handleChange = (inputValue: any, actionMeta: any): void => {
         switch (actionMeta.action) {
@@ -269,7 +269,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     if (this.props.paginate) {
                         this.props.options.setLimit(page * this.props.pageSize);
                     }
-                    timeout = setTimeout(() => resolve(this.getOptions()), 5000);
+                    this.getOptions();
                 });
 
                 clearTimeout(timeout);

@@ -65,7 +65,7 @@
                         <attributeType name="String"/>
                     </attributeTypes>
                 </property>
-                <property key="classDefault" type="textTemplate" required="false" dataSource="defaultValue">
+                <property key="dynamicClassDefault" type="textTemplate" required="false" dataSource="defaultValue">
                     <caption>Dynamic class default value</caption>
                     <description>The dynamic class string of the default object.</description>
                 </property>
