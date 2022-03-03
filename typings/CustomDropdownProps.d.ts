@@ -4,33 +4,36 @@
  * @author Mendix UI Content Team
  */
 import { CSSProperties } from "react";
-import { ActionValue, EditableValue, ListValue, ListAttributeValue } from "mendix";
+import { ActionValue, EditableValue, ListValue, ListAttributeValue, ListExpressionValue } from "mendix";
 
 export interface CustomDropdownContainerProps {
     name: string;
     class: string;
     style?: CSSProperties;
     tabIndex?: number;
-    defaultValue?: ListValue;
-    objIdDefaultValue?: ListAttributeValue<string>;
-    firstLabelDefaultValue?: ListAttributeValue<string>;
+    contextObjId: EditableValue<string>;
+    contextObjLabel: EditableValue<string>;
+    paginate: boolean;
+    pageSize: number;
+    defaultValue: ListValue;
+    objIdDefaultValue: ListAttributeValue<string>;
+    firstLabelDefaultValue: ListAttributeValue<string>;
     secondLabelDefaultValue?: ListAttributeValue<string>;
     imgUrlDefaultValue?: ListAttributeValue<string>;
+    classDefault?: ListExpressionValue<string>;
     options: ListValue;
     objIdOptions?: ListAttributeValue<string>;
     firstLabelOptions: ListAttributeValue<string>;
     secondLabelOptions?: ListAttributeValue<string>;
     imgUrlOptions?: ListAttributeValue<string>;
-    paginate: boolean;
-    pageSize: number;
-    contextObjId: EditableValue<string>;
-    contextObjLabel: EditableValue<string>;
+    classOptions?: ListExpressionValue<string>;
     selectOption?: ActionValue;
     enableCreate: boolean;
     createValue?: ActionValue;
     enableClear: boolean;
     clearValue?: ActionValue;
     enableSearch: boolean;
+    refreshDatasource: boolean;
     onFocus?: ActionValue;
     useDefaultStyle: boolean;
     useAvatar: boolean;
@@ -43,26 +46,29 @@ export interface CustomDropdownContainerProps {
 export interface CustomDropdownPreviewProps {
     class: string;
     style: string;
+    contextObjId: string;
+    contextObjLabel: string;
+    paginate: boolean;
+    pageSize: number | null;
     defaultValue: {} | { type: string } | null;
     objIdDefaultValue: string;
     firstLabelDefaultValue: string;
     secondLabelDefaultValue: string;
     imgUrlDefaultValue: string;
+    classDefault: string;
     options: {} | { type: string } | null;
     objIdOptions: string;
     firstLabelOptions: string;
     secondLabelOptions: string;
     imgUrlOptions: string;
-    paginate: boolean;
-    pageSize: number | null;
-    contextObjId: string;
-    contextObjLabel: string;
+    classOptions: string;
     selectOption: {} | null;
     enableCreate: boolean;
     createValue: {} | null;
     enableClear: boolean;
     clearValue: {} | null;
     enableSearch: boolean;
+    refreshDatasource: boolean;
     onFocus: {} | null;
     useDefaultStyle: boolean;
     useAvatar: boolean;

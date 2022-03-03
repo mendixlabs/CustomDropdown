@@ -5,7 +5,7 @@ import { Styles } from "react-select/src/styles";
 import { OptionTypeBase } from "react-select/src/types";
 import { withAsyncPaginate, ShouldLoadMore } from "react-select-async-paginate";
 
-import { ValueStatus, ListAttributeValue, ObjectItem } from "mendix";
+import { ValueStatus, ListAttributeValue, ListExpressionValue, ObjectItem } from "mendix";
 import { contains, attribute, literal, or } from "mendix/filters/builders";
 
 import { CustomDropdownContainerProps } from "../../../typings/CustomDropdownProps";
@@ -17,6 +17,7 @@ export interface Option {
     value?: string;
     secondLabel: string;
     url: string;
+    dynamicClass: string;
 }
 
 enum Actions {
@@ -30,6 +31,7 @@ interface LabelValues {
     secondLabel: string;
     objId: string;
     imgUrl: string;
+    dynamicClass: string;
 }
 
 interface State {
@@ -85,7 +87,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         this._resolveLoadOptions = null;
     }
 
-    createOption = (label: string, secondLabel: string, id: string, imageUrl: string): Option => ({
+    createOption = (label: string, secondLabel: string, id: string, imageUrl: string, dynamicClass: string): Option => ({
         label: (
             <Label
                 DisplayName={label}
@@ -93,18 +95,20 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                 ClassNamePrefix={this.props.classNamePrefix}
                 EnableAvatar={this.props.useAvatar}
                 SecondLabel={secondLabel}
+                DynamicClass={dynamicClass}
             />
         ),
         value: label,
         id,
         secondLabel,
-        url: imageUrl
+        url: imageUrl,
+        dynamicClass: dynamicClass,
     });
 
     setValue = (value: Option): void => this.setState({ value });
 
     clearAction = (actionMeta: any): void => {
-        if (this.props.contextObjLabel.status === ValueStatus.Available) {
+        if (this.props.contextObjLabel.status === ValueStatus.Available && actionMeta.removedValues[0]) {
             this.props.contextObjLabel.setValue(actionMeta.removedValues[0].value);
         }
         if (this.props.contextObjId.status === ValueStatus.Available) {
@@ -114,6 +118,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
             this.props.clearValue.execute();
         }
         this.setValue(null);
+        this.render();
     };
 
     createAction = (inputValue: any): void => {
@@ -138,7 +143,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         if (this.props.selectOption.canExecute) {
             this.props.selectOption.execute();
         }
-        this.setValue(this.createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url));
+        this.setValue(this.createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url, inputValue.dyn));
     };
 
     getLabelValuesOption = (obj: ObjectItem): LabelValues => {
@@ -146,7 +151,8 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         const secondLabel: string = this.getAttributeValue(this.props.secondLabelOptions, obj);
         const objId: string = this.getAttributeValue(this.props.objIdOptions, obj);
         const imgUrl: string = this.getAttributeValue(this.props.imgUrlOptions, obj);
-        return { firstLabel, secondLabel, objId, imgUrl };
+        const dynamicClass: string = this.getListExpressionValue(this.props.classOptions, obj);
+        return { firstLabel, secondLabel, objId, imgUrl, dynamicClass };
     };
 
     getLabelValuesDefault = (obj: ObjectItem): LabelValues => {
@@ -154,7 +160,8 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         const secondLabel: string = this.getAttributeValue(this.props.secondLabelDefaultValue, obj);
         const objId: string = this.getAttributeValue(this.props.objIdDefaultValue, obj);
         const imgUrl: string = this.getAttributeValue(this.props.imgUrlDefaultValue, obj);
-        return { firstLabel, secondLabel, objId, imgUrl };
+        const dynamicClass: string = this.getListExpressionValue(this.props.classDefault, obj);
+        return { firstLabel, secondLabel, objId, imgUrl, dynamicClass };
     };
 
     getAttributeValue = (attribute: ListAttributeValue<string>, obj: ObjectItem): string =>
@@ -162,6 +169,9 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         // but the get() function doesn't yet exist yet in mx8. Thats why we have this check,
         // to have the widget work in both versions.
         attribute && ("get" in attribute ? attribute.get(obj).displayValue : attribute(obj).displayValue);
+
+    getListExpressionValue = (attribute: ListExpressionValue<string>, obj: ObjectItem) : string => 
+        attribute && ("get" in attribute ? attribute.get(obj).value : '');
 
     handleChange = (inputValue: any, actionMeta: any): void => {
         switch (actionMeta.action) {
@@ -192,15 +202,15 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         }
 
         return props.options.items.map(obj => {
-            const { firstLabel, secondLabel, objId, imgUrl }: LabelValues = this.getLabelValuesOption(obj);
-            return this.createOption(firstLabel, secondLabel, objId, imgUrl);
+            const { firstLabel, secondLabel, objId, imgUrl, dynamicClass }: LabelValues = this.getLabelValuesOption(obj);
+            return this.createOption(firstLabel, secondLabel, objId, imgUrl, dynamicClass);
         });
     };
 
     getDefaultValue = (): Option => {
         const defaultValue = this.props.defaultValue.items.map(obj => {
-            const { firstLabel, secondLabel, objId, imgUrl }: LabelValues = this.getLabelValuesDefault(obj);
-            return this.createOption(firstLabel, secondLabel, objId, imgUrl);
+            const { firstLabel, secondLabel, objId, imgUrl, dynamicClass }: LabelValues = this.getLabelValuesDefault(obj);
+            return this.createOption(firstLabel, secondLabel, objId, imgUrl, dynamicClass);
         });
 
         return defaultValue[0] || null;
@@ -211,43 +221,67 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
             const { offset, limit, hasMoreItems: hasMore, filter } = this.props.options;
             console.debug("loadOptions:", loadedOptions.length, page, offset, limit, hasMore);
 
-            let timeout: NodeJS.Timeout;
+            if (this.props.refreshDatasource) {
+                this.props.contextObjLabel.setValue(searchQuery);
+                this.props.options.reload();
 
-            const newOptions: Option[] = await new Promise(resolve => {
-                this._resolveLoadOptions = resolve;
+                const newOptions: Option[] = await new Promise(resolve => {
+                    this._resolveLoadOptions = resolve;
 
-                // filtering
-                // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-filtering
-                if (searchQuery && this.props.firstLabelOptions.filterable) {
-                    const filterCond = or(
-                        contains(attribute(this.props.firstLabelOptions.id), literal(searchQuery)),
-                        contains(attribute(this.props.secondLabelOptions.id), literal(searchQuery))
-                    );
+                    // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-pagination
+                    if (this.props.paginate) {
+                        this.props.options.setLimit(page * this.props.pageSize);
+                    }
+                    this.getOptions();
+                });
 
-                    this._waitAnotherPropsUpdate = true;
-
-                    this.props.options.setFilter(filterCond);
-                } else if (filter && this.props.firstLabelOptions.filterable) {
-                    this._waitAnotherPropsUpdate = true;
-                    this.props.options.setFilter(undefined);
+                return {
+                    options: newOptions,
+                    hasMore,
+                    additional: {
+                        page: searchQuery ? 1 : page + 1
+                    }
                 }
+            }
+            else {
+                let timeout: NodeJS.Timeout;
 
-                // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-pagination
-                if (this.props.paginate) {
-                    this.props.options.setLimit(page * this.props.pageSize);
-                }
-                timeout = setTimeout(() => resolve(this.getOptions()), 5000);
-            });
+                const newOptions: Option[] = await new Promise(resolve => {
+                    this._resolveLoadOptions = resolve;
 
-            clearTimeout(timeout);
+                    // filtering
+                    // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-filtering
+                    if (searchQuery && this.props.firstLabelOptions.filterable) {
+                        const filterCond = or(
+                            contains(attribute(this.props.firstLabelOptions.id), literal(searchQuery)),
+                            contains(attribute(this.props.secondLabelOptions.id), literal(searchQuery))
+                        );
 
-            return {
-                options: newOptions,
-                hasMore,
-                additional: {
-                    page: searchQuery ? 1 : page + 1
-                }
-            };
+                        this._waitAnotherPropsUpdate = true;
+
+                        this.props.options.setFilter(filterCond);
+                    } else if (filter && this.props.firstLabelOptions.filterable) {
+                        this._waitAnotherPropsUpdate = true;
+                        this.props.options.setFilter(undefined);
+                    }
+
+                    // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-pagination
+                    if (this.props.paginate) {
+                        this.props.options.setLimit(page * this.props.pageSize);
+                    }
+                    timeout = setTimeout(() => resolve(this.getOptions()), 5000);
+                });
+
+                clearTimeout(timeout);
+
+                return {
+                    options: newOptions,
+                    hasMore,
+                    additional: {
+                        page: searchQuery ? 1 : page + 1
+                    }
+                };   
+            }            
         } catch (error) {
             console.error("Failed to load new options", error);
         }

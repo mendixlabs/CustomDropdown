@@ -6,11 +6,13 @@ export interface LabelProps {
     ClassNamePrefix: string;
     EnableAvatar: boolean;
     SecondLabel: string;
+    DynamicClass: string;
 }
 
 // classnames like 'single-value', 'option', 'menu-list' are within React select component and are prefixed with customer prefix
 // therefore, styles are injected as scoped styles for the component
 export const getStyles = (prefix: string): string => `
+    .${prefix}__container {display: flex; align-items: center; justify-content: center;}
     .${prefix}__avatar {flex: 0 0 24px; width: 24px; height: 24px; margin-right: 8px;border-radius: 50%; background-position: 50% 50%; background-size: 24px;}
     .${prefix}__avatar---initials {font-size: 9px;}
     .${prefix}__single-value {display: flex;align-items: center;}
@@ -52,7 +54,8 @@ export default function Label({
     EnableAvatar,
     DisplayName,
     UrlString,
-    SecondLabel
+    SecondLabel,
+    DynamicClass
 }: LabelProps): ReactElement {
     let avatar: ReactElement;
     if (EnableAvatar) {
@@ -67,21 +70,27 @@ export default function Label({
             if (names > 1) {
                 initials = initials + nameSplit[names - 1].charAt(0).toUpperCase();
             }
+            else if (names === 1 && nameSplit[0].charAt(1)) {
+                initials = initials + nameSplit[0].charAt(1).toUpperCase();
+            }
 
             avatar = <div className={`${prefix}__avatar ${prefix}__avatar--initials ${colorClass}`}>{initials}</div>;
         }
     }
 
     return (
-        <React.Fragment>
-            {avatar}
-            <div className={`${prefix}__name`}>{DisplayName}</div>
-            {!!SecondLabel && (
-                <React.Fragment>
-                    <div className={`${prefix}__divider`}></div>
-                    <div className={`${prefix}__name ${prefix}--name2`}>{SecondLabel}</div>
-                </React.Fragment>
-            )}
-        </React.Fragment>
+        <div className={`${prefix}__container ${DynamicClass}`}>
+            <React.Fragment>
+                {avatar}
+                <div className={`${prefix}__name`}>{DisplayName}</div>
+                {!!SecondLabel && (
+                    <React.Fragment>
+                        <div className={`${prefix}__divider`}></div>
+                        <div className={`${prefix}__name ${prefix}--name2`}>{SecondLabel}</div>
+                    </React.Fragment>
+                )}
+            </React.Fragment>
+        </div>
+        
     );
 }
