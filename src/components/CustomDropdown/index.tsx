@@ -269,7 +269,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     if (this.props.paginate) {
                         this.props.options.setLimit(page * this.props.pageSize);
                     }
-                    this.getOptions();
+                    timeout = setTimeout(() => resolve(this.getOptions()), 5000);
                 });
 
                 clearTimeout(timeout);
