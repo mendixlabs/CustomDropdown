@@ -118,7 +118,6 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
             this.props.clearValue.execute();
         }
         this.setValue(null);
-        this.render();
     };
 
     createAction = (inputValue: any): void => {
@@ -220,35 +219,34 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         try {
             const { offset, limit, hasMoreItems: hasMore, filter } = this.props.options;
             console.debug("loadOptions:", loadedOptions.length, page, offset, limit, hasMore);
+            let timeout: NodeJS.Timeout;
 
             if (this.props.refreshDatasource) {
                 this.props.contextObjLabel.setValue(searchQuery);
                 this._waitAnotherPropsUpdate = true;
-                try {
-                    this.props.options.reload();
-                }
-                finally {
-                    const newOptions: Option[] = await new Promise(resolve => {
-                        this._resolveLoadOptions = resolve;
-    
-                        // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-pagination
-                        if (this.props.paginate) {
-                            this.props.options.setLimit(page * this.props.pageSize);
-                        }
-                        this.getOptions();
-                    });
-    
-                    return {
-                        options: newOptions,
-                        hasMore,
-                        additional: {
-                            page: searchQuery ? 1 : page + 1
-                        }
-                    } 
-                }                               
+                this.props.options.reload();
+                const newOptions: Option[] = await new Promise(resolve => {
+                    this._resolveLoadOptions = resolve;
+
+                    // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-pagination
+                    if (this.props.paginate) {
+                        this.props.options.setLimit(page * this.props.pageSize);
+                    }
+                    timeout = setTimeout(() => resolve(this.getOptions()), 500);
+                });
+
+                clearTimeout(timeout);
+
+                return {
+                    options: newOptions,
+                    hasMore,
+                    additional: {
+                        page: searchQuery ? 1 : page + 1
+                    }
+                } 
+                                            
             }
             else {
-                let timeout: NodeJS.Timeout;
 
                 const newOptions: Option[] = await new Promise(resolve => {
                     this._resolveLoadOptions = resolve;
