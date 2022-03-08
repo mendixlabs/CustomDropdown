@@ -223,25 +223,29 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
 
             if (this.props.refreshDatasource) {
                 this.props.contextObjLabel.setValue(searchQuery);
-                this.props.options.reload();
-
-                const newOptions: Option[] = await new Promise(resolve => {
-                    this._resolveLoadOptions = resolve;
-
-                    // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-pagination
-                    if (this.props.paginate) {
-                        this.props.options.setLimit(page * this.props.pageSize);
-                    }
-                    this.getOptions();
-                });
-
-                return {
-                    options: newOptions,
-                    hasMore,
-                    additional: {
-                        page: searchQuery ? 1 : page + 1
-                    }
+                this._waitAnotherPropsUpdate = true;
+                try {
+                    this.props.options.reload();
                 }
+                finally {
+                    const newOptions: Option[] = await new Promise(resolve => {
+                        this._resolveLoadOptions = resolve;
+    
+                        // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-pagination
+                        if (this.props.paginate) {
+                            this.props.options.setLimit(page * this.props.pageSize);
+                        }
+                        this.getOptions();
+                    });
+    
+                    return {
+                        options: newOptions,
+                        hasMore,
+                        additional: {
+                            page: searchQuery ? 1 : page + 1
+                        }
+                    } 
+                }                               
             }
             else {
                 let timeout: NodeJS.Timeout;
@@ -269,7 +273,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     if (this.props.paginate) {
                         this.props.options.setLimit(page * this.props.pageSize);
                     }
-                    timeout = setTimeout(() => resolve(this.getOptions()), 5000);
+                    timeout = setTimeout(() => resolve(this.getOptions()), 500);
                 });
 
                 clearTimeout(timeout);
