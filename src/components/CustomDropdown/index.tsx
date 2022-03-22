@@ -7,6 +7,7 @@ import { withAsyncPaginate, ShouldLoadMore } from "react-select-async-paginate";
 
 import { ValueStatus, ListAttributeValue, ListExpressionValue, ObjectItem } from "mendix";
 import { contains, attribute, literal, or } from "mendix/filters/builders";
+import { FilterCondition } from "mendix/filters/index";
 
 import { CustomDropdownContainerProps } from "../../../typings/CustomDropdownProps";
 import Label, { getStyles as getLabelStyles } from "./Label";
@@ -254,10 +255,16 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     // filtering
                     // https://docs.mendix.com/apidocs-mxsdk/apidocs/pluggable-widgets-client-apis-list-values#listvalue-filtering
                     if (searchQuery && this.props.firstLabelOptions.filterable) {
-                        const filterCond = or(
-                            contains(attribute(this.props.firstLabelOptions.id), literal(searchQuery)),
-                            contains(attribute(this.props.secondLabelOptions.id), literal(searchQuery))
-                        );
+                        let filterCond;
+                        if (this.props.secondLabelOptions) {
+                            filterCond = or(
+                                contains(attribute(this.props.firstLabelOptions.id), literal(searchQuery)),
+                                contains(attribute(this.props.secondLabelOptions.id), literal(searchQuery))
+                            );
+                        }
+                        else {
+                            filterCond = contains(attribute(this.props.firstLabelOptions.id), literal(searchQuery));
+                        }
 
                         this._waitAnotherPropsUpdate = true;
 
