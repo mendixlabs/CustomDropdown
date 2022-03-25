@@ -7,7 +7,6 @@ import { withAsyncPaginate, ShouldLoadMore } from "react-select-async-paginate";
 
 import { ValueStatus, ListAttributeValue, ListExpressionValue, ObjectItem } from "mendix";
 import { contains, attribute, literal, or } from "mendix/filters/builders";
-import { FilterCondition } from "mendix/filters/index";
 
 import { CustomDropdownContainerProps } from "../../../typings/CustomDropdownProps";
 import Label, { getStyles as getLabelStyles } from "./Label";
@@ -224,8 +223,8 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
 
             if (this.props.refreshDatasource) {
                 this.props.contextObjLabel.setValue(searchQuery);
-                this._waitAnotherPropsUpdate = true;
                 this.props.options.reload();
+                this._waitAnotherPropsUpdate = true;
                 const newOptions: Option[] = await new Promise(resolve => {
                     this._resolveLoadOptions = resolve;
 
@@ -244,8 +243,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     additional: {
                         page: searchQuery ? 1 : page + 1
                     }
-                } 
-                                            
+                }                      
             }
             else {
 
