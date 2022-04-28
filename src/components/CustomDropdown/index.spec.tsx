@@ -129,14 +129,14 @@ describe("Custom dropdown component", () => {
         });
 
         it("- should render menu items", () => {
-            const allAvatars = container.querySelectorAll("div.test__option > div.test__avatar");
+            const allAvatars = container.querySelectorAll("div.test__option > div.test__container > div.test__avatar");
 
             expect(allAvatars).toHaveLength(3);
             expect(allAvatars[0].style["background-image"]).toContain("url1");
             expect(allAvatars[1].style["background-image"]).toContain("url2");
             expect(allAvatars[2].style["background-image"]).toContain("url3");
 
-            const allNames = container.querySelectorAll("div.test__option > div.test__name");
+            const allNames = container.querySelectorAll("div.test__option > div.test__container > div.test__name");
             expect(allNames).toHaveLength(6);
             expect(allNames[0].innerHTML).toBe("label1");
             expect(allNames[1].innerHTML).toBe("secondLabel1");

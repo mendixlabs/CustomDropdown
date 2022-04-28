@@ -7,82 +7,7 @@
     <description>Widget to make a selection in a dropdown menu.</description>
     <icon/>
     <properties>
-        <propertyGroup caption="Data source">
-            <property key="defaultValue" type="datasource" isList="true" required="false" >
-                <caption>Default value</caption>
-                <description>Please use a microflow to retrieve. Get the default value that has to be set. Currently it is only possible to return lists in this datasource property, therefore make sure to return a list only containing the object you want to have as the default value. For options the same object type must be selected.</description>
-            </property>
-            <property key="objIdDefaultValue" type="attribute" required="false" dataSource="defaultValue">
-                <caption>Object id default value</caption>
-                <description>Id attribute of the object.</description>
-                <attributeTypes>
-                    <attributeType name="String"/>
-                </attributeTypes>
-            </property>
-            <property key="firstLabelDefaultValue" type="attribute" required="true" dataSource="defaultValue">
-                <caption>First label default value</caption>
-                <description>The first label attribute of the selectable objects.</description>
-                <attributeTypes>
-                    <attributeType name="String"/>
-                </attributeTypes>
-            </property>
-            <property key="secondLabelDefaultValue" type="attribute" required="false" dataSource="defaultValue">
-                <caption>Second label default value</caption>
-                <description>The second label attribute of the selectable objects.</description>
-                <attributeTypes>
-                    <attributeType name="String"/>
-                </attributeTypes>
-            </property>
-            <property key="imgUrlDefaultValue" type="attribute" required="false" dataSource="defaultValue">
-                <caption>Image URL default value</caption>
-                <description>The image url attribute of the selectable objects.</description>
-                <attributeTypes>
-                    <attributeType name="String"/>
-                </attributeTypes>
-            </property>
-            <property key="options" type="datasource" isList="true" >
-                <caption>Options</caption>
-                <description>Please use a microflow to retrieve. Get all the objects you want to suggest as options. The same object type as for the default value must be selected.</description>
-            </property> 
-            <property key="objIdOptions" type="attribute" required="false" dataSource="options">
-                <caption>Object id options</caption>
-                <description>Id attribute of the object.</description>
-                <attributeTypes>
-                    <attributeType name="String"/>
-                </attributeTypes>
-            </property>
-            <property key="firstLabelOptions" type="attribute" required="true" dataSource="options">
-                <caption>First label options</caption>
-                <description>The first label attribute of the selectable objects.</description>
-                <attributeTypes>
-                    <attributeType name="String"/>
-                </attributeTypes>
-            </property>
-            <property key="secondLabelOptions" type="attribute" required="false" dataSource="options">
-                <caption>Second label options</caption>
-                <description>The second label attribute of the selectable objects.</description>
-                <attributeTypes>
-                    <attributeType name="String"/>
-                </attributeTypes>
-            </property>
-            <property key="imgUrlOptions" type="attribute" required="false" dataSource="options">
-                <caption>Image URL options</caption>
-                <description>The image url attribute of the selectable objects.</description>
-                <attributeTypes>
-                    <attributeType name="String"/>
-                </attributeTypes>
-            </property>
-            <property key="paginate" type="boolean" required="true" defaultValue="true" >
-                <caption>Enable pagination</caption>
-                <description>Retrieves the dropdown values in smaller set</description>
-            </property>
-            <property key="pageSize" type="integer" required="true" defaultValue="10" >
-                <caption>Page size for pagination</caption>
-                <description>Number of records retrived per page(not used if "Enable pagination" is set to false)</description>
-            </property>
-        </propertyGroup>
-
-        <propertyGroup caption="Events">
+        <propertyGroup caption="General">
             <property key="contextObjId" type="attribute" >
                 <caption>Context object id</caption>
                 <description>Id attribute of the context object.</description>
@@ -97,6 +22,94 @@
                     <attributeType name="String"/>
                 </attributeTypes>
             </property>
+            <property key="paginate" type="boolean" required="true" defaultValue="true" >
+                <caption>Enable pagination</caption>
+                <description>Retrieves the dropdown values in smaller set</description>
+            </property>
+            <property key="pageSize" type="integer" required="true" defaultValue="10" >
+                <caption>Page size for pagination</caption>
+                <description>Number of records retrived per page(not used if "Enable pagination" is set to false)</description>
+            </property>
+        </propertyGroup>
+        <propertyGroup caption="Data source">
+            <propertyGroup caption="Default value">
+                <property key="defaultValue" type="datasource" isList="true" required="true">
+                    <caption>Data source</caption>
+                    <description>Please use a microflow to retrieve. Get the default value that has to be set. Currently it is only possible to return lists in this datasource property, therefore make sure to return a list only containing the object you want to have as the default value. For options the same object type must be selected.</description>
+                </property>
+                <property key="objIdDefaultValue" type="attribute" required="true" dataSource="defaultValue">
+                    <caption>Object id default value</caption>
+                    <description>Id attribute of the object.</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="firstLabelDefaultValue" type="attribute" required="true" dataSource="defaultValue">
+                    <caption>First label default value</caption>
+                    <description>The first label attribute of the selectable objects.</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="secondLabelDefaultValue" type="attribute" required="false" dataSource="defaultValue">
+                    <caption>Second label default value</caption>
+                    <description>The second label attribute of the selectable objects.</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="imgUrlDefaultValue" type="attribute" required="false" dataSource="defaultValue">
+                    <caption>Image URL default value</caption>
+                    <description>The image url attribute of the selectable objects.</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="dynamicClassDefault" type="textTemplate" required="false" dataSource="defaultValue">
+                    <caption>Dynamic class default value</caption>
+                    <description>The dynamic class string of the default object.</description>
+                </property>
+            </propertyGroup>
+            <propertyGroup caption="Options">
+                <property key="options" type="datasource" isList="true" >
+                    <caption>Data source</caption>
+                    <description>Please use a microflow to retrieve. Get all the objects you want to suggest as options. The same object type as for the default value must be selected.</description>
+                </property> 
+                <property key="objIdOptions" type="attribute" required="false" dataSource="options">
+                    <caption>Object id options</caption>
+                    <description>Id attribute of the object.</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="firstLabelOptions" type="attribute" required="true" dataSource="options">
+                    <caption>First label options</caption>
+                    <description>The first label attribute of the selectable objects.</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="secondLabelOptions" type="attribute" required="false" dataSource="options">
+                    <caption>Second label options</caption>
+                    <description>The second label attribute of the selectable objects.</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="imgUrlOptions" type="attribute" required="false" dataSource="options">
+                    <caption>Image URL options</caption>
+                    <description>The image url attribute of the selectable objects.</description>
+                    <attributeTypes>
+                        <attributeType name="String"/>
+                    </attributeTypes>
+                </property>
+                <property key="classOptions" type="textTemplate" required="false" dataSource="options">
+                    <caption>Dynamic class options</caption>
+                    <description>The dynamic class string of the selectable object.</description>
+                </property>
+            </propertyGroup>          
+        </propertyGroup>
+        <propertyGroup caption="Events">
             <property key="selectOption" type="action" >
                 <caption>Select option microflow</caption>
                 <description>Microflow to be executed when a option is selected.</description>
@@ -121,12 +134,15 @@
                 <caption>Enable searching</caption>
                 <description>Enable the Custom Dropdown to search for options.</description>
             </property>
+            <property key="refreshDatasource" type="boolean" defaultValue="false">
+                <caption>Refresh datasource</caption>
+                <description>Refresh the datasource when filtering. Enabled this option only if there is a filter action in the datasource. (not used if "Enable searching" is set to false)</description>
+            </property>
             <property key="onFocus" type="action" >
                 <caption>On focus action</caption>
                 <description>Action to be executed when the widget element is focussed.</description>
             </property>
         </propertyGroup>
-
         <propertyGroup caption="Styling">
             <property key="useDefaultStyle" type="boolean" defaultValue="true">
                 <caption>useDefaultStyle</caption>
