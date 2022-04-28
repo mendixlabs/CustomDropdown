@@ -44,8 +44,10 @@ export interface CustomDropdownContainerProps {
 }
 
 export interface CustomDropdownPreviewProps {
-    class: string;
+    className: string;
     style: string;
+    styleObject?: CSSProperties;
+    readOnly: boolean;
     contextObjId: string;
     contextObjLabel: string;
     paginate: boolean;
