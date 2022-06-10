@@ -15,7 +15,6 @@ export interface CustomDropdownContainerProps {
     contextObjLabel: EditableValue<string>;
     paginate: boolean;
     pageSize: number;
-    refreshOnContextChange: boolean;
     defaultValue: ListValue;
     objIdDefaultValue: ListAttributeValue<string>;
     firstLabelDefaultValue: ListAttributeValue<string>;
@@ -24,6 +23,7 @@ export interface CustomDropdownContainerProps {
     dynamicClassDefault?: ListExpressionValue<string>;
     options: ListValue;
     objIdOptions?: ListAttributeValue<string>;
+    refreshOnContextChange: boolean;
     firstLabelOptions: ListAttributeValue<string>;
     secondLabelOptions?: ListAttributeValue<string>;
     imgUrlOptions?: ListAttributeValue<string>;
@@ -53,7 +53,6 @@ export interface CustomDropdownPreviewProps {
     contextObjLabel: string;
     paginate: boolean;
     pageSize: number | null;
-    refreshOnContextChange: boolean;
     defaultValue: {} | { type: string } | null;
     objIdDefaultValue: string;
     firstLabelDefaultValue: string;
@@ -62,6 +61,7 @@ export interface CustomDropdownPreviewProps {
     dynamicClassDefault: string;
     options: {} | { type: string } | null;
     objIdOptions: string;
+    refreshOnContextChange: boolean;
     firstLabelOptions: string;
     secondLabelOptions: string;
     imgUrlOptions: string;
