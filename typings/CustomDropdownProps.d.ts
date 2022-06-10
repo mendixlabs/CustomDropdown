@@ -23,6 +23,7 @@ export interface CustomDropdownContainerProps {
     dynamicClassDefault?: ListExpressionValue<string>;
     options: ListValue;
     objIdOptions?: ListAttributeValue<string>;
+    refreshOnContextChange: boolean;
     firstLabelOptions: ListAttributeValue<string>;
     secondLabelOptions?: ListAttributeValue<string>;
     imgUrlOptions?: ListAttributeValue<string>;
@@ -60,6 +61,7 @@ export interface CustomDropdownPreviewProps {
     dynamicClassDefault: string;
     options: {} | { type: string } | null;
     objIdOptions: string;
+    refreshOnContextChange: boolean;
     firstLabelOptions: string;
     secondLabelOptions: string;
     imgUrlOptions: string;

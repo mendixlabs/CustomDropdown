@@ -54,7 +54,8 @@ const defaultOptions = {
     filter: null,
     hasMoreItems: false,
     paginate: true,
-    pageSize: 10
+    pageSize: 10,
+    refreshOnContextChange: false
 };
 
 const defaultProps = {
@@ -80,7 +81,8 @@ const defaultProps = {
     classNamePrefix: "test",
     menuHeight: 0,
     paginate: true,
-    pageSize: 10
+    pageSize: 10,
+    refreshOnContextChange: false
 };
 
 const renderComponent = (override = {}, rerender = null) => {

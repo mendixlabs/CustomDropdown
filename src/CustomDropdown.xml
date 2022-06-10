@@ -82,6 +82,10 @@
                         <attributeType name="String"/>
                     </attributeTypes>
                 </property>
+                <property key="refreshOnContextChange" type="boolean" required="true" defaultValue="false" >
+                <caption>Refresh on context change</caption>
+                <description>Forces a refresh of the data source when the context object is changed. This way you can refresh your default options.</description>
+                </property>
                 <property key="firstLabelOptions" type="attribute" required="true" dataSource="options">
                     <caption>First label options</caption>
                     <description>The first label attribute of the selectable objects.</description>
