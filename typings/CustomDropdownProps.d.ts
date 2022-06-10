@@ -15,6 +15,7 @@ export interface CustomDropdownContainerProps {
     contextObjLabel: EditableValue<string>;
     paginate: boolean;
     pageSize: number;
+    refreshOnContextChange: boolean;
     defaultValue: ListValue;
     objIdDefaultValue: ListAttributeValue<string>;
     firstLabelDefaultValue: ListAttributeValue<string>;
@@ -52,6 +53,7 @@ export interface CustomDropdownPreviewProps {
     contextObjLabel: string;
     paginate: boolean;
     pageSize: number | null;
+    refreshOnContextChange: boolean;
     defaultValue: {} | { type: string } | null;
     objIdDefaultValue: string;
     firstLabelDefaultValue: string;

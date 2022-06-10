@@ -331,6 +331,12 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                   shouldLoadMore: () => false
               };
 
+        let refreshOnContextChangeKey = null;
+        if (this.props.refreshOnContextChange) {
+            refreshOnContextChangeKey = JSON.stringify(this.props.contextObjId);
+        }
+
+
         if (this.props.enableCreate) {
             return (
                 <div>
@@ -339,6 +345,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     </style>
                     <CreatablePaginate
                         SelectComponent={Creatable}
+                        key={refreshOnContextChangeKey}
                         loadOptions={this.loadOptions}
                         value={this.state.value}
                         onChange={this.handleChange}
@@ -366,6 +373,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     {getLabelStyles(this.props.classNamePrefix)}
                 </style>
                 <SelectPaginate
+                    key={refreshOnContextChangeKey}
                     loadOptions={this.loadOptions}
                     value={this.state.value}
                     onChange={this.handleChange}

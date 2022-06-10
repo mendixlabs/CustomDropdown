@@ -30,6 +30,10 @@
                 <caption>Page size for pagination</caption>
                 <description>Number of records retrived per page(not used if "Enable pagination" is set to false)</description>
             </property>
+            <property key="refreshOnContextChange" type="boolean" required="true" defaultValue="false" >
+                <caption>Refresh on context change</caption>
+                <description>Forces a refresh of the data source when the context object is changed</description>
+            </property>
         </propertyGroup>
         <propertyGroup caption="Data source">
             <propertyGroup caption="Default value">
