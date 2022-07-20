@@ -58,9 +58,13 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
     _resolveLoadOptions: (options: Option[]) => void;
     _waitAnotherPropsUpdate: boolean;
 
-    componentDidMount(): void {
-        if (this.props.defaultValue.status === ValueStatus.Available && this.props.defaultValue.items?.length) {
-            this.setValue(this.getDefaultValue());
+    async componentDidMount(): Promise<void> {
+        try {
+            if (this.props.defaultValue.status === ValueStatus.Available && this.props.defaultValue.items?.length) {
+                this.setValue(this.getDefaultValue());
+            }
+        } catch (e) {
+            console.error(e);
         }
     }
 
@@ -76,18 +80,24 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
     // https://reactjs.org/docs/react-component.html#unsafe_componentwillreceiveprops
     // will work in version 17.
     // eventually this has to be migrated to memoization helper with useMemo.
-    UNSAFE_componentWillReceiveProps(nextProps: CustomDropdownContainerProps): void {
+    async UNSAFE_componentWillReceiveProps(nextProps: CustomDropdownContainerProps): Promise<void> {
         if (this._waitAnotherPropsUpdate) {
             this._waitAnotherPropsUpdate = false;
             return;
         }
 
         const options = this.getOptions(nextProps);
-        this._resolveLoadOptions && this._resolveLoadOptions(options);
+        this._resolveLoadOptions && this._resolveLoadOptions(await options);
         this._resolveLoadOptions = null;
     }
 
-    createOption = (label: string, secondLabel: string, id: string, imageUrl: string, dynamicClass: string): Option => ({
+    createOption = (
+        label: string,
+        secondLabel: string,
+        id: string,
+        imageUrl: string,
+        dynamicClass: string
+    ): Option => ({
         label: (
             <Label
                 DisplayName={label}
@@ -102,7 +112,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         id,
         secondLabel,
         url: imageUrl,
-        dynamicClass: dynamicClass,
+        dynamicClass: dynamicClass
     });
 
     setValue = (value: Option): void => this.setState({ value });
@@ -142,7 +152,15 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         if (this.props.selectOption.canExecute) {
             this.props.selectOption.execute();
         }
-        this.setValue(this.createOption(inputValue.value, inputValue.secondLabel, inputValue.id, inputValue.url, inputValue.dynamicClass));
+        this.setValue(
+            this.createOption(
+                inputValue.value,
+                inputValue.secondLabel,
+                inputValue.id,
+                inputValue.url,
+                inputValue.dynamicClass
+            )
+        );
     };
 
     getLabelValuesOption = (obj: ObjectItem): LabelValues => {
@@ -169,7 +187,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         // to have the widget work in both versions.
         attribute && ("get" in attribute ? attribute.get(obj).displayValue : attribute(obj).displayValue);
 
-    getListExpressionValue = (attribute: ListExpressionValue<string>, obj: ObjectItem) : string => 
+    getListExpressionValue = (attribute: ListExpressionValue<string>, obj: ObjectItem): string =>
         attribute && ("get" in attribute ? attribute.get(obj).value : attribute(obj).value);
 
     handleChange = (inputValue: any, actionMeta: any): void => {
@@ -195,7 +213,21 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         }
     };
 
-    getOptions = (props: CustomDropdownContainerProps = this.props): Option[] => {
+    waitUntil = condition => {
+        return new Promise<void>(resolve => {
+            const interval = setInterval(() => {
+                if (!condition()) {
+                    return;
+                }
+                clearInterval(interval);
+                resolve();
+            }, 100);
+        });
+    };
+
+    getOptions = async (props: CustomDropdownContainerProps = this.props): Promise<Option[]> => {
+        const startTime = Date.now();
+        await this.waitUntil(() => props.options.status !== ValueStatus.Loading || Date.now() > startTime + 500);
         if (!props.options || props.options.status !== ValueStatus.Available) {
             return [];
         }
@@ -236,17 +268,14 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                 });
 
                 clearTimeout(timeout);
-
                 return {
                     options: newOptions,
                     hasMore,
                     additional: {
                         page: searchQuery ? 1 : page + 1
                     }
-                }                      
-            }
-            else {
-
+                };
+            } else {
                 const newOptions: Option[] = await new Promise(resolve => {
                     this._resolveLoadOptions = resolve;
 
@@ -259,8 +288,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                                 contains(attribute(this.props.firstLabelOptions.id), literal(searchQuery)),
                                 contains(attribute(this.props.secondLabelOptions.id), literal(searchQuery))
                             );
-                        }
-                        else {
+                        } else {
                             filterCond = contains(attribute(this.props.firstLabelOptions.id), literal(searchQuery));
                         }
 
@@ -280,15 +308,14 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                 });
 
                 clearTimeout(timeout);
-
                 return {
                     options: newOptions,
                     hasMore,
                     additional: {
                         page: searchQuery ? 1 : page + 1
                     }
-                };   
-            }            
+                };
+            }
         } catch (error) {
             console.error("Failed to load new options", error);
         }
@@ -335,7 +362,6 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
         if (this.props.refreshOnContextChange) {
             refreshOnContextChangeKey = JSON.stringify(this.props.contextObjId);
         }
-
 
         if (this.props.enableCreate) {
             return (
