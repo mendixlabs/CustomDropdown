@@ -377,6 +377,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                         onChange={this.handleChange}
                         isClearable={this.props.enableClear}
                         isSearchable={this.props.enableSearch}
+                        loadOptionsOnMenuOpen={true}
                         styles={styles}
                         placeholder={isLoading ? "Loading..." : this.props.placeholder}
                         className={this.props.className!}
@@ -402,6 +403,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     key={refreshOnContextChangeKey}
                     loadOptions={this.loadOptions}
                     value={this.state.value}
+                    loadOptionsOnMenuOpen={true}
                     onChange={this.handleChange}
                     isClearable={this.props.enableClear}
                     isSearchable={this.props.enableSearch}
