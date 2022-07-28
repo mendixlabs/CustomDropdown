@@ -58,13 +58,9 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
     _resolveLoadOptions: (options: Option[]) => void;
     _waitAnotherPropsUpdate: boolean;
 
-    async componentDidMount(): Promise<void> {
-        try {
-            if (this.props.defaultValue.status === ValueStatus.Available && this.props.defaultValue.items?.length) {
-                this.setValue(this.getDefaultValue());
-            }
-        } catch (e) {
-            console.error(e);
+    componentDidMount(): void {
+        if (this.props.defaultValue.status === ValueStatus.Available && this.props.defaultValue.items?.length) {
+            this.setValue(this.getDefaultValue());
         }
     }
 
