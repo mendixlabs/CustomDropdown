@@ -1,4 +1,4 @@
-image: nexus-docker-group.rnd.mendix.com/node:lts-alpine
+image: registry.rnd.mendix.com/platformcore/mirrored-customdropdown/node-canvas
 
 stages:
     - snyk_scan
