@@ -172,6 +172,23 @@
                 <caption>Menu height</caption>
                 <description>Max dropdown menu height in pixels</description>
             </property>
+            <property key="menuPlacement" type="enumeration" defaultValue="auto">
+                <caption>Menu placement</caption>
+                <description>Default placement of the menu in relation to the control. 'auto' will flip when there isn't enough space below the control.</description>
+                <enumerationValues>
+                    <enumerationValue key="bottom">Bottom</enumerationValue>
+                    <enumerationValue key="auto">Auto</enumerationValue>
+                    <enumerationValue key="top">Top</enumerationValue>
+                </enumerationValues>
+            </property>
+            <property key="menuPosition" type="enumeration" defaultValue="absolute">
+                <caption>Menu position</caption>
+                <description>The CSS position value of the menu, when "fixed" extra layout management is required.</description>
+                <enumerationValues>
+                    <enumerationValue key="absolute">Absolute</enumerationValue>
+                    <enumerationValue key="fixed">Fixed</enumerationValue>
+                </enumerationValues>
+            </property>
         </propertyGroup> 
     </properties>
 </widget>
