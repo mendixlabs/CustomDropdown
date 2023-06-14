@@ -6,6 +6,9 @@
 import { CSSProperties } from "react";
 import { ActionValue, EditableValue, ListValue, ListAttributeValue, ListExpressionValue } from "mendix";
 
+export type MenuPlacementEnum = "bottom" | "auto" | "top";
+export type MenuPositionEnum = "absolute" | "fixed";
+
 export interface CustomDropdownContainerProps {
     name: string;
     class: string;
@@ -42,13 +45,13 @@ export interface CustomDropdownContainerProps {
     className: string;
     classNamePrefix: string;
     menuHeight: number;
+    menuPlacement: MenuPlacementEnum;
+    menuPosition: MenuPositionEnum;
 }
 
 export interface CustomDropdownPreviewProps {
-    className: string;
+    class: string;
     style: string;
-    styleObject?: CSSProperties;
-    readOnly: boolean;
     contextObjId: string;
     contextObjLabel: string;
     paginate: boolean;
@@ -80,4 +83,6 @@ export interface CustomDropdownPreviewProps {
     className: string;
     classNamePrefix: string;
     menuHeight: number | null;
+    menuPlacement: MenuPlacementEnum;
+    menuPosition: MenuPositionEnum;
 }

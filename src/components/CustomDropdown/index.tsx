@@ -1,5 +1,6 @@
 import { createElement, ReactElement, Component } from "react";
 import Select from "react-select";
+import { MenuPlacement } from "react-select";
 import Creatable from "react-select/creatable";
 import { Styles } from "react-select/src/styles";
 import { OptionTypeBase } from "react-select/src/types";
@@ -383,6 +384,8 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                         }}
                         reduceOptions={(_, loaded) => loaded}
                         maxMenuHeight={this.props.menuHeight}
+                        menuPlacement={this.props.menuPlacement}
+                        menuPosition={this.props.menuPosition}
                         onFocus={this.handleFocus}
                         {...propsOverride}
                     />
@@ -412,6 +415,8 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     }}
                     reduceOptions={(_, loaded) => loaded}
                     maxMenuHeight={this.props.menuHeight}
+                    menuPlacement={this.props.menuPlacement}
+                    menuPosition={this.props.menuPosition}
                     onFocus={this.handleFocus}
                     {...propsOverride}
                 />
