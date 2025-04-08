@@ -223,7 +223,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
 
     getOptions = async (props: CustomDropdownContainerProps = this.props): Promise<Option[]> => {
         const startTime = Date.now();
-        await this.waitUntil(() => props.options.status !== ValueStatus.Loading || Date.now() > startTime + 500);
+        await this.waitUntil(() => props.options.status !== ValueStatus.Loading || Date.now() > startTime + 5000);
         if (!props.options || props.options.status !== ValueStatus.Available) {
             return [];
         }
@@ -260,7 +260,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     if (this.props.paginate) {
                         this.props.options.setLimit(page * this.props.pageSize);
                     }
-                    timeout = setTimeout(() => resolve(this.getOptions()), 500);
+                    timeout = setTimeout(() => resolve(this.getOptions()), 5000);
                 });
 
                 clearTimeout(timeout);
@@ -300,7 +300,7 @@ export default class CustomDropdown extends Component<CustomDropdownContainerPro
                     if (this.props.paginate) {
                         this.props.options.setLimit(page * this.props.pageSize);
                     }
-                    timeout = setTimeout(() => resolve(this.getOptions()), 500);
+                    timeout = setTimeout(() => resolve(this.getOptions()), 5000);
                 });
 
                 clearTimeout(timeout);
